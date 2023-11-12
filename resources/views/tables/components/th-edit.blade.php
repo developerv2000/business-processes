@@ -1,0 +1,1 @@
+{{ __('app.edit-shortcut') }}
