@@ -33,7 +33,7 @@ Route::middleware('auth', 'auth.session')->group(function () {
     Route::get('/', [ManufacturerController::class, 'index'])->name('manufacturers.index');
 
     Route::prefix('manufacturers')->controller(ManufacturerController::class)->name('manufacturers.')->group(function () {
-        Route::get('/create', 'create')->name('create');
+        Route::get('/create', 'create')->name('create'); 
         Route::get('/edit/{item}', 'edit')->name('edit');
         Route::get('/trash', 'trash')->name('trash');
 

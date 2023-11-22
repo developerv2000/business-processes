@@ -25,9 +25,12 @@ class DatabaseSeeder extends Seeder
             BlacklistSeeder::class,
             MnnSeeder::class,
             CurrencySeeder::class,
-            StatusSeeder::class,
+            ProcessStatusSeeder::class,
+            CountryCodeSeeder::class,
+            ProcessOwnerSeeder::class,
             ManufacturerSeeder::class,
             GenericSeeder::class,
+            ProcessSeeder::class,
         ]);
     }
 }

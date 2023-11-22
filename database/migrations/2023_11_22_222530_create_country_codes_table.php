@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('statuses', function (Blueprint $table) {
+        Schema::create('country_codes', function (Blueprint $table) {
             $table->unsignedSmallInteger('id')->autoIncrement();
-            $table->string('name');
-            $table->unsignedSmallInteger('parent_id')->nullable();
+            $table->string('name')->unique();
         });
     }
 
@@ -23,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('statuses');
+        Schema::dropIfExists('country_codes');
     }
 };

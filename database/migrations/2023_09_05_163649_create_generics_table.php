@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('generics', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedInteger('id')->autoIncrement();
             $table->unsignedInteger('manufacturer_id');
             $table->unsignedMediumInteger('mnn_id');
             $table->string('brand')->nullable();
