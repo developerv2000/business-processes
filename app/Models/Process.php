@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Helper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -89,5 +90,91 @@ class Process extends Model
                     ]);
             }
         ]);
+    }
+
+    public static function getItemsFinalized($params, $items = null, $finaly = 'paginate')
+    {
+        $items = $items ?: self::query();
+        $items = self::filter($items);
+        $items = self::finalize($params, $items, $finaly);
+
+        return $items;
+    }
+
+    private static function filter($items)
+    {
+        $whereColumns = [
+            'country_code_id',
+            'status_id',
+        ];
+
+        $whereDateColumns = [
+            'date',
+        ];
+
+        $whereRelationColumns = [
+            [
+                'relationName' => 'manufacturer',
+                'name' => 'id',
+            ],
+
+            [
+                'relationName' => 'manufacturer',
+                'name' => 'analyst_user_id',
+            ],
+
+            [
+                'relationName' => 'manufacturer',
+                'name' => 'bdm_user_id',
+            ],
+
+            [
+                'relationName' => 'generic',
+                'name' => 'mnn_id',
+            ],
+
+            [
+                'relationName' => 'generic',
+                'name' => 'category_id',
+            ],
+
+            [
+                'relationName' => 'generic',
+                'name' => 'form_id',
+            ],
+        ];
+
+        $belongsToManyRelations = [
+            'owners',
+        ];
+
+        $items = Helper::filterWhereColumns($items, $whereColumns);
+        $items = Helper::filterWhereDateColumns($items, $whereDateColumns);
+        $items = Helper::filterWhereRelationColumns($items, $whereRelationColumns);
+        $items = Helper::filterBelongsToManyRelations($items, $belongsToManyRelations);
+
+        return $items;
+    }
+
+    private static function finalize($params, $items, $finaly)
+    {
+        $items = $items
+            ->withRelations()
+            ->orderBy($params['orderBy'], $params['orderType'])
+            ->orderBy('id', $params['orderType']);
+
+        switch ($finaly) {
+            case 'paginate':
+                $items = $items
+                    ->paginate($params['paginationLimit'], ['*'], 'page', $params['currentPage'])
+                    ->appends(request()->except('page'));
+                break;
+
+            case 'get':
+                $items = $items->get();
+                break;
+        }
+
+        return $items;
     }
 }

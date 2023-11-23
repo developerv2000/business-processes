@@ -227,7 +227,7 @@ class Manufacturer extends Model
     /**
      * Used in related model pages
      */
-    public static function getAllUMinifed()
+    public static function getAllMinifed()
     {
         return self::select('id', 'name')->withOnly([])->get();
     }

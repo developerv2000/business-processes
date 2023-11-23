@@ -4,11 +4,14 @@ namespace App\Providers;
 
 use App\Models\Blacklist;
 use App\Models\Country;
+use App\Models\CountryCode;
 use App\Models\ExpirationDate;
 use App\Models\Manufacturer;
 use App\Models\ManufacturerCategory;
 use App\Models\Meeting;
 use App\Models\Mnn;
+use App\Models\ProcessOwner;
+use App\Models\ProcessStatus;
 use App\Models\ProductCategory;
 use App\Models\ProductForm;
 use App\Models\Role;
@@ -40,12 +43,39 @@ class AppServiceProvider extends ServiceProvider
                 'analystUsers' => User::getAnalystsMinified(),
                 'countries' => Country::getAll(),
                 'zones' => Zone::getAll(),
-            ])
-                ->with([
-                    'productCategories' => ProductCategory::getAll(),
-                    'blacklists' => Blacklist::getAll(),
-                    'statusOptions' => Manufacturer::getStatusOptions(),
-                ]);
+                'productCategories' => ProductCategory::getAll(),
+                'blacklists' => Blacklist::getAll(),
+                'statusOptions' => Manufacturer::getStatusOptions(),
+            ]);
+        });
+
+        // Generics
+        View::composer(['filters.generics', 'generics.create', 'generics.edit'], function ($view) {
+            $view->with([
+                'manufacturers' => Manufacturer::getAllMinifed(),
+                'analystUsers' => User::getAnalystsMinified(),
+                'bdmUsers' => User::getBdmsMinifed(),
+                'categories' => ProductCategory::getAll(),
+                'productForms' => ProductForm::getAll(),
+                'expirationDates' => ExpirationDate::getAll(),
+                'zones' => Zone::getAll(),
+                'mnns' => Mnn::getAll(),
+            ]);
+        });
+
+        // Processes
+        View::composer(['filters.processes', 'processes.create', 'processes.edit'], function ($view) {
+            $view->with([
+                'countryCodes' => CountryCode::getAll(),
+                'statuses' => ProcessStatus::getAll(),
+                'manufacturers' => Manufacturer::getAllMinifed(),
+                'analystUsers' => User::getAnalystsMinified(),
+                'bdmUsers' => User::getBdmsMinifed(),
+                'categories' => ProductCategory::getAll(),
+                'productForms' => ProductForm::getAll(),
+                'mnns' => Mnn::getAll(),
+                'owners' => ProcessOwner::getAll(),
+            ]);
         });
 
         // Meetings
@@ -54,22 +84,8 @@ class AppServiceProvider extends ServiceProvider
                 'availableYears' => Meeting::getAvailableYears(),
                 'analystUsers' => User::getAnalystsMinified(),
                 'bdmUsers' => User::getBdmsMinifed(),
-                'manufacturers' => Manufacturer::getAllUMinifed(),
+                'manufacturers' => Manufacturer::getAllMinifed(),
                 'countries' => Country::getAll(),
-            ]);
-        });
-
-        // Generics
-        View::composer(['filters.generics', 'generics.create', 'generics.edit'], function ($view) {
-            $view->with([
-                'manufacturers' => Manufacturer::getAllUMinifed(),
-                'analystUsers' => User::getAnalystsMinified(),
-                'bdmUsers' => User::getBdmsMinifed(),
-                'categories' => ProductCategory::getAll(),
-                'productForms' => ProductForm::getAll(),
-                'expirationDates' => ExpirationDate::getAll(),
-                'zones' => Zone::getAll(),
-                'mnns' => Mnn::getAll(),
             ]);
         });
 

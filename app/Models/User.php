@@ -143,12 +143,12 @@ class User extends Authenticatable
 
     public static function getBdmsMinifed()
     {
-        return self::bdms()->select('id', 'name')->get();
+        return self::bdms()->select('id', 'name')->withOnly([])->get();
     }
 
     public static function getAnalystsMinified()
     {
-        return self::analysts()->select('id', 'name')->get();
+        return self::analysts()->select('id', 'name')->withOnly([])->get();
     }
 
     // ********** Miscellaneous **********
@@ -174,6 +174,7 @@ class User extends Authenticatable
         $settings['manufacturerColumns'] = $this->getDefaultManufacturerColumns();
         $settings['meetingColumns'] = $this->getDefaultMeetingColumns();
         $settings['genericColumns'] = $this->getDefaultGenericColumns();
+        $settings['processColumns'] = $this->getDefaultProcessColumns();
 
         $this->update(['settings' => $settings]);
     }
@@ -382,6 +383,33 @@ class User extends Authenticatable
             ['name' => 'All comments', 'order' => $order++, 'width' => 146, 'visible' => 1],
             ['name' => 'BDM', 'order' => $order++, 'width' => 142, 'visible' => 1],
             ['name' => 'Analyst', 'order' => $order++, 'width' => 142, 'visible' => 1],
+        ];
+    }
+
+    private function getDefaultProcessColumns()
+    {
+        $order = 1;
+
+        return [
+            ['name' => 'ID', 'order' => $order++, 'width' => 54, 'visible' => 1],
+            ['name' => 'Edit', 'order' => $order++, 'width' => 44, 'visible' => 1],
+            ['name' => 'Date', 'order' => $order++, 'width' => 100, 'visible' => 1],
+            ['name' => 'Country', 'order' => $order++, 'width' => 86, 'visible' => 1],
+            ['name' => 'НПП/УДС', 'order' => $order++, 'width' => 84, 'visible' => 1],
+            ['name' => 'Manufacturer', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Manuf/country', 'order' => $order++, 'width' => 114, 'visible' => 1],
+            ['name' => 'BDM', 'order' => $order++, 'width' => 142, 'visible' => 1],
+            ['name' => 'Analyst', 'order' => $order++, 'width' => 142, 'visible' => 1],
+            ['name' => 'Prod/categ', 'order' => $order++, 'width' => 130, 'visible' => 1],
+            ['name' => 'Generic', 'order' => $order++, 'width' => 180, 'visible' => 1],
+            ['name' => 'Form', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Dose', 'order' => $order++, 'width' => 180, 'visible' => 1],
+            ['name' => 'Pack', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Status', 'order' => $order++, 'width' => 160, 'visible' => 1],
+            ['name' => 'General status', 'order' => $order++, 'width' => 116, 'visible' => 1],
+            ['name' => 'Owners', 'order' => $order++, 'width' => 154, 'visible' => 1],
+            ['name' => 'Process date', 'order' => $order++, 'width' => 130, 'visible' => 1],
+            ['name' => 'Days past', 'order' => $order++, 'width' => 120, 'visible' => 1],
         ];
     }
 }

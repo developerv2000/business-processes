@@ -6,6 +6,7 @@ use App\Http\Controllers\GenericController;
 use App\Http\Controllers\ManufacturerController;
 use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\MnnController;
+use App\Http\Controllers\ProcessController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
@@ -33,7 +34,7 @@ Route::middleware('auth', 'auth.session')->group(function () {
     Route::get('/', [ManufacturerController::class, 'index'])->name('manufacturers.index');
 
     Route::prefix('manufacturers')->controller(ManufacturerController::class)->name('manufacturers.')->group(function () {
-        Route::get('/create', 'create')->name('create'); 
+        Route::get('/create', 'create')->name('create');
         Route::get('/edit/{item}', 'edit')->name('edit');
         Route::get('/trash', 'trash')->name('trash');
 
@@ -81,6 +82,19 @@ Route::middleware('auth', 'auth.session')->group(function () {
         Route::post('/get-similar-products', 'getSimilarProducts');  // Used on creating and editing for uniqness
     });
 
+    Route::prefix('processes')->controller(ProcessController::class)->name('processes.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::get('/edit/{item}', 'edit')->name('edit');
+        Route::get('/trash', 'trash')->name('trash');
+
+        Route::post('/store', 'store')->name('store');
+        Route::post('/update/{item}', 'update')->name('update');
+        Route::post('/destroy', 'destroy')->name('destroy');
+        Route::post('/restore', 'restore')->name('restore');
+        Route::post('/export', 'export')->name('export');
+    });
+
     Route::prefix('mnns')->controller(MnnController::class)->name('mnns.')->middleware('moderator')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/create', 'create')->name('create');
@@ -107,6 +121,7 @@ Route::middleware('auth', 'auth.session')->group(function () {
         Route::post('/update/manufacturers', 'updateManufacturers')->name('update.manufacturers');
         Route::post('/update/meetings', 'updateMeetings')->name('update.meetings');
         Route::post('/update/generics', 'updateGenerics')->name('update.generics');
+        Route::post('/update/processes', 'updateProcesses')->name('update.processes');
     });
 
     Route::prefix('profile')->controller(ProfileController::class)->name('profile.')->group(function () {

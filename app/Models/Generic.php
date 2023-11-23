@@ -141,18 +141,13 @@ class Generic extends Model
 
         $whereRelationColumns = [
             [
-                'name' => 'country_id',
                 'relationName' => 'manufacturer',
-            ],
-
-            [
                 'name' => 'analyst_user_id',
-                'relationName' => 'manufacturer',
             ],
 
             [
-                'name' => 'bdm_user_id',
                 'relationName' => 'manufacturer',
+                'name' => 'bdm_user_id',
             ],
         ];
 

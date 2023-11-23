@@ -15,6 +15,12 @@
                     request()->routeIs('comments.generic'),
             ])>{{ __('IVP') }}</x-navbar.link>
 
+            <x-navbar.link icon="stacks" href="{{ route('processes.index') }}" @class([
+                'navbar-link--active' =>
+                    request()->routeIs('processes.*') ||
+                    request()->routeIs('comments.process'),
+            ])>{{ __('VPS') }}</x-navbar.link>
+
             <x-navbar.link icon="calendar_month" href="{{ route('meetings.index') }}" @class(['navbar-link--active' => request()->routeIs('meetings.*')])>
                 {{ __('Meetings') }}
             </x-navbar.link>

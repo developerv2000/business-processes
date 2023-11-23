@@ -29,4 +29,9 @@ class ProcessStatus extends Model
     {
         $query->whereNotNull('parent_id');
     }
+
+    public static function getAll()
+    {
+        return self::orderBy('id')->get();
+    }
 }
