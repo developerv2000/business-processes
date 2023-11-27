@@ -19,20 +19,6 @@
             ])
 
             @include('filters.components.belongs-to-select', [
-                'label' => 'Status',
-                'attribute' => 'status_id',
-                'options' => $statuses,
-                'optionsCaptionAttribute' => 'name',
-            ])
-
-            @include('filters.components.belongs-to-select', [
-                'label' => 'Manufacturer',
-                'attribute' => 'id',
-                'options' => $manufacturers,
-                'optionsCaptionAttribute' => 'name',
-            ])
-
-            @include('filters.components.belongs-to-select', [
                 'label' => 'BDM',
                 'attribute' => 'bdm_user_id',
                 'options' => $bdmUsers,
@@ -43,6 +29,28 @@
                 'label' => 'Analyst',
                 'attribute' => 'analyst_user_id',
                 'options' => $analystUsers,
+                'optionsCaptionAttribute' => 'name',
+            ])
+
+            @include('filters.components.belongs-to-select', [
+                'label' => 'Status',
+                'attribute' => 'status_id',
+                'options' => $statuses,
+                'optionsCaptionAttribute' => 'name',
+            ])
+
+            @include('filters.components.multiple-select', [
+                'label' => 'Owners',
+                'attribute' => 'owners[]',
+                'requestAttribute' => 'owners',
+                'options' => $owners,
+                'optionsCaptionAttribute' => 'name',
+            ])
+
+            @include('filters.components.belongs-to-select', [
+                'label' => 'Manufacturer',
+                'attribute' => 'manufacturer_id',
+                'options' => $manufacturers,
                 'optionsCaptionAttribute' => 'name',
             ])
 
@@ -67,12 +75,14 @@
                 'optionsCaptionAttribute' => 'name',
             ])
 
-            @include('filters.components.multiple-select', [
-                'label' => 'Owners',
-                'attribute' => 'owners[]',
-                'requestAttribute' => 'owners',
-                'options' => $owners,
-                'optionsCaptionAttribute' => 'name',
+            @include('filters.components.text-input', [
+                'label' => 'Dose',
+                'attribute' => 'dose',
+            ])
+
+            @include('filters.components.text-input', [
+                'label' => 'Pack',
+                'attribute' => 'pack',
             ])
 
             <x-form.submit class="fiter-form__submit">{{ __('Update') }}</x-form.submit>

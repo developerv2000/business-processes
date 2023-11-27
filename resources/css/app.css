@@ -1154,6 +1154,11 @@ a {
 .td__image {
     width: 60px;
 }
+
+.td__link {
+    color: var(--main-color);
+    text-decoration: underline;
+}
 /* ------------ /END Table ------------ */
 
 

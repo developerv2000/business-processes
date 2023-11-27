@@ -65,6 +65,10 @@
         {{ $item->pack }}
     @break
 
+    @case('Processes')
+        <a class="td__link" href="{{ $item->processes_link }}">{{ __('All processes ') . $item->untrashed_processes_count }}</a>
+    @break
+
     @case('Minimum volume')
         {{ $item->minimum_volume }}
     @break

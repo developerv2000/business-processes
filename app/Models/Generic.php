@@ -55,6 +55,16 @@ class Generic extends Model
         return $this->belongsTo(Manufacturer::class)->withTrashed();
     }
 
+    public function untrashedProcesses()
+    {
+        return $this->hasMany(Process::class);
+    }
+
+    public function processes()
+    {
+        return $this->hasMany(Process::class)->withTrashed();
+    }
+
     public function mnn()
     {
         return $this->belongsTo(Mnn::class);
@@ -88,6 +98,16 @@ class Generic extends Model
     public function lastComment()
     {
         return $this->morphOne(Comment::class, 'commentable')->latestOfMany();
+    }
+
+    public function getProcessesLinkAttribute()
+    {
+        return route('processes.index')
+            . '?manufacturer_id=' . $this->manufacturer_id
+            . '&mnn_id=' . $this->mnn_id
+            . '&form_id=' . $this->form_id
+            . '&dose=' . $this->dose
+            . '&pack=' . $this->pack;
     }
 
     // ********** Querying **********
@@ -128,6 +148,7 @@ class Generic extends Model
 
         $whereLikeColumns = [
             'dose',
+            'pack',
             'brand',
         ];
 
@@ -175,6 +196,7 @@ class Generic extends Model
         switch ($finaly) {
             case 'paginate':
                 $items = $items
+                    ->withCount('untrashedProcesses')
                     ->paginate($params['paginationLimit'], ['*'], 'page', $params['currentPage'])
                     ->appends(request()->except('page'));
                 break;

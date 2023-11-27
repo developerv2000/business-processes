@@ -47,6 +47,11 @@
                 'attribute' => 'dose',
             ])
 
+            @include('filters.components.text-input', [
+                'label' => 'Pack',
+                'attribute' => 'pack',
+            ])
+
             @include('filters.components.belongs-to-select', [
                 'label' => 'BDM',
                 'attribute' => 'bdm_user_id',

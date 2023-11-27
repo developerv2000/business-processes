@@ -366,6 +366,7 @@ class User extends Authenticatable
             ['name' => 'Root form', 'order' => $order++, 'width' => 140, 'visible' => 1],
             ['name' => 'Dose', 'order' => $order++, 'width' => 180, 'visible' => 1],
             ['name' => 'Pack', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Processes', 'order' => $order++, 'width' => 180, 'visible' => 1],
             ['name' => 'Minimum volume', 'order' => $order++, 'width' => 140, 'visible' => 1],
             ['name' => 'Expiration date', 'order' => $order++, 'width' => 140, 'visible' => 1],
             ['name' => 'Category', 'order' => $order++, 'width' => 104, 'visible' => 1],

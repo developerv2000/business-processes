@@ -46,7 +46,7 @@ class Helper
         $queryString = parse_url($url, PHP_URL_QUERY);
         parse_str($queryString, $queryParams);
 
-        foreach($queryParams as $key => $value) {
+        foreach ($queryParams as $key => $value) {
             $request->{$key} = $value;
         }
     }
@@ -131,6 +131,43 @@ class Helper
 
             $items = $items->whereHas($column['relationName'], function ($query) use ($column, $request) {
                 $query->where($column['name'], $request->{$column['name']});
+            });
+        }
+
+        return $items;
+    }
+
+    public static function filterWhereRelationLikeColumns($items, $columns)
+    {
+        $request = request();
+
+        foreach ($columns as $column) {
+            if (!isset($request->{$column['name']})) continue;
+
+            $items = $items->whereHas($column['relationName'], function ($query) use ($column, $request) {
+                $query->where($column['name'], 'LIKE', '%' . $request->{$column['name']} . '%');
+            });
+        }
+
+        return $items;
+    }
+
+    /**
+     * Sometimes there may be ambigious situations
+     * For example, while filtering process,
+     * both process and its manufacturer relation has got ID`s,
+     * but we need to filter manufacturers.id
+     * While filtering id can cause ambigious where clause
+     */
+    public static function filterWhereRelationAmbigiousColumns($items, $columns)
+    {
+        $request = request();
+
+        foreach ($columns as $column) {
+            if (!isset($request->{$column['name']})) continue;
+
+            $items = $items->whereHas($column['relationName'], function ($query) use ($column, $request) {
+                $query->where($column['ambigiousNme'], $request->{$column['name']});
             });
         }
 

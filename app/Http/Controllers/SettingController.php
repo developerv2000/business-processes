@@ -27,6 +27,13 @@ class SettingController extends Controller
         return true;
     }
 
+    public function updateProcesses(Request $request)
+    {
+        $this->updateColumns($request, 'processColumns');
+
+        return true;
+    }
+
     public function updateFullWidth(Request $request)
     {
         $user = $request->user();

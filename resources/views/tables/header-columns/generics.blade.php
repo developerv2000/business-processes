@@ -7,28 +7,21 @@
     {{-- Static text --}}
     @case('BDM')
     @case('Analyst')
-
     @case('НПП/УДС')
     @case('Country')
-
     @case('Category')
     @case('Dose')
-
     @case('Pack')
+    @case('Processes')
     @case('Minimum volume')
-
     @case('Dossier')
     @case('Zones')
-
     @case('Relationships')
     @case('Bioequivalence')
-
     @case('Info')
     @case('Root form')
-
     @case('Patent expiry')
     @case('Last comment')
-
     @case('Comment date')
     @case('All comments')
         @include('tables.components.th-unlinked-title')

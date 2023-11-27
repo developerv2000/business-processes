@@ -115,11 +115,6 @@ class Process extends Model
         $whereRelationColumns = [
             [
                 'relationName' => 'manufacturer',
-                'name' => 'id',
-            ],
-
-            [
-                'relationName' => 'manufacturer',
                 'name' => 'analyst_user_id',
             ],
 
@@ -144,6 +139,26 @@ class Process extends Model
             ],
         ];
 
+        $whereRelationAmbigiousColumns = [
+            [
+                'relationName' => 'manufacturer',
+                'name' => 'manufacturer_id',
+                'ambigiousNme' => 'manufacturers.id',
+            ],
+        ];
+
+        $whereRelationLikeColumns = [
+            [
+                'relationName' => 'generic',
+                'name' => 'dose',
+            ],
+
+            [
+                'relationName' => 'generic',
+                'name' => 'pack',
+            ],
+        ];
+
         $belongsToManyRelations = [
             'owners',
         ];
@@ -151,6 +166,8 @@ class Process extends Model
         $items = Helper::filterWhereColumns($items, $whereColumns);
         $items = Helper::filterWhereDateColumns($items, $whereDateColumns);
         $items = Helper::filterWhereRelationColumns($items, $whereRelationColumns);
+        $items = Helper::filterWhereRelationAmbigiousColumns($items, $whereRelationAmbigiousColumns);
+        $items = Helper::filterWhereRelationLikeColumns($items, $whereRelationLikeColumns);
         $items = Helper::filterBelongsToManyRelations($items, $belongsToManyRelations);
 
         return $items;
