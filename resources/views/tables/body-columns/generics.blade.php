@@ -70,7 +70,7 @@
 
         @include('tables.components.td-view-link', [
             'href' => $item->processes_link,
-            'text' => __('All processes ') . $item->untrashed_processes_count,
+            'text' => __('All processes') . ' ' . $item->untrashed_processes_count,
         ])
     @break
 
