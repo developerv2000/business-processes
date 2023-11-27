@@ -2067,5 +2067,19 @@ class ProductFormSeeder extends Seeder
             $item->parent_id = $childs[$i]['parent_id'];
             $item->save();
         }
+
+        // Additionals
+        $item = new ProductForm();
+        $item->name = 'SACHET';
+        $item->save();
+
+        $item = new ProductForm();
+        $item->name = 'SOLUTION';
+        $item->parent_id = 9;
+        $item->save();
+
+        $item = new ProductForm();
+        $item->name = 'PATCHES';
+        $item->save();
     }
 }

@@ -34,7 +34,10 @@
     @break
 
     @case('Meetings')
-        @include('tables.components.td-view-link', ['href' => route('meetings.index') . '?manufacturer_id=' . $item->id])
+        @include('tables.components.td-view-link', [
+            'href' => route('meetings.index') . '?manufacturer_id=' . $item->id,
+            'text' => __('View')
+        ])
     @break
 
     @case('Country')
@@ -118,7 +121,10 @@
     @break
 
     @case('All comments')
-        @include('tables.components.td-view-link', ['href' => route('comments.manufacturer', $item->id)])
+        @include('tables.components.td-view-link', [
+            'href' => route('comments.manufacturer', $item->id),
+            'text' => __('View')
+        ])
     @break
 
     @default
