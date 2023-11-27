@@ -66,7 +66,12 @@
     @break
 
     @case('Processes')
-        <a class="td__link" href="{{ $item->processes_link }}">{{ __('All processes ') . $item->untrashed_processes_count }}</a>
+        <a class="td__link td__link--margined" href="{{ route('processes.create') }}?generic_id={{ $item->id }}">{{ __('Add process') }}</a>
+
+        @include('tables.components.td-view-link', [
+            'href' => $item->processes_link,
+            'text' => __('All processes ') . $item->untrashed_processes_count,
+        ])
     @break
 
     @case('Minimum volume')
@@ -132,7 +137,10 @@
     @break
 
     @case('All comments')
-        @include('tables.components.td-view-link', ['href' => route('comments.generic', $item->id)])
+        @include('tables.components.td-view-link', [
+            'href' => route('comments.generic', $item->id),
+            'text' => __('View'),
+        ])
     @break
 
     @default

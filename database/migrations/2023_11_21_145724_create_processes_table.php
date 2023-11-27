@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedSmallInteger('country_code_id');
             $table->unsignedSmallInteger('status_id');
             $table->date('date'); // process date
-            $table->unsignedSmallInteger('days_past')->default(0);
+            $table->unsignedSmallInteger('days_past');
             $table->softDeletes();
         });
     }

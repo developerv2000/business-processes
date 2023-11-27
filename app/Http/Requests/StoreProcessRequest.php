@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreProcessRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class StoreProcessRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,14 @@ class StoreProcessRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'generic_id' => Rule::exists('generics', 'id'),
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'generic_id.exists' => trans('validation.exists'),
         ];
     }
 }

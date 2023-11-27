@@ -1,9 +1,9 @@
-@extends('layouts.app', ['class' => 'generics-create rightbarless'])
+@extends('layouts.app', ['class' => 'processes-create rightbarless'])
 
 @section('main')
     <div class="prehead prehead--intended styled-box">
         @include('layouts.breadcrumbs', [
-            'crumbs' => [__('IVP'), __('Add new element')],
+            'crumbs' => [__('VPS'), __('Add new element')],
             'fullScreen' => false,
         ])
 
@@ -12,136 +12,68 @@
         </div>
     </div>
 
-    <form class="form main-form create-form" action="{{ route('generics.store') }}" method="POST" id="create-form">
+    <form class="form main-form create-form" action="{{ route('processes.store') }}" method="POST" id="create-form">
         @csrf
 
+        <input type="hidden" name="generic_id" value="{{ $generic->id }}">
+
         <div class="form__divider">
-            @include('form-components.create.belongs-to-select', [
+            @include('form-components.create.readonly-input', [
                 'label' => 'Manufacturer',
-                'required' => true,
-                'attribute' => 'manufacturer_id',
-                'options' => $manufacturers,
-                'optionsCaptionAttribute' => 'name',
+                'value' => $generic->manufacturer->name,
             ])
 
-            @include('form-components.create.belongs-to-select', [
+            @include('form-components.create.readonly-input', [
                 'label' => 'Generic',
-                'required' => true,
-                'attribute' => 'mnn_id',
-                'options' => $mnns,
-                'optionsCaptionAttribute' => 'name',
+                'value' => $generic->mnn->name,
             ])
 
-            @include('form-components.create.belongs-to-select', [
+            @include('form-components.create.readonly-input', [
                 'label' => 'Form',
-                'required' => true,
-                'attribute' => 'form_id',
-                'options' => $productForms,
-                'optionsCaptionAttribute' => 'name',
+                'value' => $generic->form->name,
             ])
-        </div>
 
-        <div class="form__divider similar-products generics-similar-products"></div>
-
-        <div class="form__divider">
-            @include('form-components.create.text-input', [
+            @include('form-components.create.readonly-input', [
                 'label' => 'Dose',
-                'required' => false,
-                'attribute' => 'dose',
+                'value' => $generic->dose,
             ])
 
-            @include('form-components.create.text-input', [
+            @include('form-components.create.readonly-input', [
                 'label' => 'Pack',
-                'required' => false,
-                'attribute' => 'pack',
-            ])
-
-            @include('form-components.create.text-input', [
-                'label' => 'Brand',
-                'required' => false,
-                'attribute' => 'brand',
-            ])
-
-            @include('form-components.create.belongs-to-select', [
-                'label' => 'Category',
-                'required' => true,
-                'attribute' => 'category_id',
-                'options' => $categories,
-                'optionsCaptionAttribute' => 'name',
+                'value' => $generic->pack,
             ])
         </div>
 
         <div class="form__divider">
-            @include('form-components.create.text-input', [
-                'label' => 'Minimum volume',
-                'required' => false,
-                'attribute' => 'minimum_volume',
+            @include('form-components.create.belongs-to-select', [
+                'label' => 'Country',
+                'required' => true,
+                'attribute' => 'country_code_id',
+                'options' => $countryCodes,
+                'optionsCaptionAttribute' => 'name',
             ])
 
             @include('form-components.create.belongs-to-select', [
-                'label' => 'Expiration date',
+                'label' => 'Status',
                 'required' => true,
-                'attribute' => 'expiration_date_id',
-                'options' => $expirationDates,
-                'optionsCaptionAttribute' => 'limit',
-            ])
-
-            @include('form-components.create.text-input', [
-                'label' => 'Dossier',
-                'required' => false,
-                'attribute' => 'dossier',
+                'attribute' => 'status_id',
+                'options' => $statuses,
+                'optionsCaptionAttribute' => 'name',
             ])
 
             @include('form-components.create.multiple-select', [
-                'label' => 'Zones',
+                'label' => 'Owners',
                 'required' => true,
-                'attribute' => 'zones[]',
-                'options' => $zones,
+                'attribute' => 'owners[]',
+                'options' => $owners,
                 'optionsCaptionAttribute' => 'name',
             ])
 
             @include('form-components.create.text-input', [
-                'label' => 'Bioequivalence',
-                'required' => false,
-                'attribute' => 'bioequivalence',
-            ])
-
-            @include('form-components.create.text-input', [
-                'label' => 'Additional payment',
-                'required' => false,
-                'attribute' => 'additional_payment',
-            ])
-        </div>
-
-        <div class="form__divider">
-            @include('form-components.create.text-input', [
-                'label' => 'Info',
-                'required' => false,
-                'attribute' => 'info',
-            ])
-
-            @include('form-components.create.text-input', [
-                'label' => 'Patent expiry',
-                'required' => false,
-                'attribute' => 'patent_expiry',
-            ])
-        </div>
-
-        <div class="form__divider">
-            @include('form-components.create.switch', [
-                'label' => 'Registered in EU',
-                'attribute' => 'registered_in_eu',
-            ])
-
-            @include('form-components.create.switch', [
-                'label' => 'Marketed in EU',
-                'attribute' => 'marketed_in_eu',
-            ])
-
-            @include('form-components.create.textarea', [
-                'label' => 'Comment',
-                'required' => false,
-                'attribute' => 'comment',
+                'type' => 'date',
+                'label' => 'Process date',
+                'required' => true,
+                'attribute' => 'date',
             ])
 
             <x-form.submit class="main-form__submit">{{ __('Store') }}</x-form.submit>

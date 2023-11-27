@@ -170,6 +170,7 @@ a {
 .ava__desc:empty {
     display: none;
 }
+
 /* ------------ /end Ava ------------ */
 
 /* ------------ Buttons ------------ */
@@ -296,6 +297,7 @@ a {
     font-size: 20px;
     color: var(--success-color);
 }
+
 /* ------------ /end Buttons ------------ */
 
 /* ------------ Badge ------------ */
@@ -462,6 +464,7 @@ a {
 .profile-dropdown .navbar-button {
     padding: 4px 12px;
 }
+
 /* ------------ /end Dropdown ------------ */
 
 
@@ -528,6 +531,11 @@ a {
 
 .input--highlight {
     border-color: var(--main-color);
+}
+
+.input:read-only,
+.textarea:read-only {
+    background-color: #f1f1f1;
 }
 
 .form-group--error .input:focus,
@@ -650,7 +658,7 @@ a {
     width: 1em;
     height: 1em;
     vertical-align: top;
-    background-color: rgba(0,0,0,0);
+    background-color: rgba(0, 0, 0, 0);
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -1143,6 +1151,7 @@ a {
     display: flex;
     align-items: center;
     gap: 8px;
+    width: max-content;
     text-decoration: none;
 }
 
@@ -1159,6 +1168,12 @@ a {
     color: var(--main-color);
     text-decoration: underline;
 }
+
+.td__link--margined {
+    display: inline-block;
+    margin-bottom: 8px;
+}
+
 /* ------------ /END Table ------------ */
 
 
@@ -1428,6 +1443,7 @@ a {
     font-size: 15px;
     color: #c5c5c5;
 }
+
 /* ------------ /END Comments ------------ */
 
 
@@ -1460,4 +1476,5 @@ a {
 .similar-products__empty-text {
     margin: 0;
 }
+
 /* ------------ /END Generic pages ------------ */

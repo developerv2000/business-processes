@@ -67,7 +67,7 @@ class AppServiceProvider extends ServiceProvider
         View::composer(['filters.processes', 'processes.create', 'processes.edit'], function ($view) {
             $view->with([
                 'countryCodes' => CountryCode::getAll(),
-                'statuses' => ProcessStatus::getAll(),
+                'statuses' => ProcessStatus::getAllChilds(),
                 'manufacturers' => Manufacturer::getAllMinifed(),
                 'analystUsers' => User::getAnalystsMinified(),
                 'bdmUsers' => User::getBdmsMinifed(),

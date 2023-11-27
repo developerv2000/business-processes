@@ -34,4 +34,9 @@ class ProcessStatus extends Model
     {
         return self::orderBy('id')->get();
     }
+
+    public static function getAllChilds()
+    {
+        return self::onlyChilds()->orderBy('id')->get();
+    }
 }

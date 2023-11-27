@@ -12,6 +12,7 @@ return [
     'unique-user-name' => 'Пользователь с таким именем уже существует.',
     'unique-user-email' => 'Пользователь с такой почтой уже существует.',
     'invalid-timestamp' => 'Неверный формат даты. Действительный формат: "год-месяц-день часы-минуты-секунды"',
+    'exists' => 'Поле не существует. Пожалуйста, обновите страницу и попробуйте заново.',
 
     /*
     |--------------------------------------------------------------------------
@@ -61,7 +62,6 @@ return [
     'email' => 'The :attribute field must be a valid email address.',
     'ends_with' => 'The :attribute field must end with one of the following: :values.',
     'enum' => 'The selected :attribute is invalid.',
-    'exists' => 'The selected :attribute is invalid.',
     'file' => 'The :attribute field must be a file.',
     'filled' => 'The :attribute field must have a value.',
     'gt' => [

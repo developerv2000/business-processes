@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Support\Helper;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -29,6 +30,10 @@ class Process extends Model
     {
         static::creating(function ($item) {
             $item->status_update_date = now();
+        });
+
+        static::created(function ($item) {
+            $item->validateDaysPast(now());
         });
     }
 
@@ -193,5 +198,21 @@ class Process extends Model
         }
 
         return $items;
+    }
+
+    // ********** Miscellaneous **********
+    public static function createFromRequest($request)
+    {
+        $item = self::create($request->all());
+
+        // BelongsToMany relations
+        $item->owners()->attach($request->input('owners'));
+    }
+
+    public function validateDaysPast($now)
+    {
+        $date = Carbon::createFromFormat('Y-m-d', $this->date);
+        $this->days_past = $now->diffInDays($date);
+        $this->save();
     }
 }

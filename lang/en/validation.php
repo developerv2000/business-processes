@@ -12,7 +12,7 @@ return [
     'unique-user-name' => 'User with a given name already exists.',
     'unique-user-email' => 'User with a given email already exists.',
     'invalid-timestamp' => 'Invalid date format. Valid format is "year-month-date hour-minute-second"',
-
+    'exists' => 'Field doesn`t exists. Please, reload page and try again.',
     /*
     |--------------------------------------------------------------------------
     | Validation Language Lines
@@ -62,7 +62,6 @@ return [
     'email' => 'The :attribute field must be a valid email address.',
     'ends_with' => 'The :attribute field must end with one of the following: :values.',
     'enum' => 'The selected :attribute is invalid.',
-    'exists' => 'The selected :attribute is invalid.',
     'file' => 'The :attribute field must be a file.',
     'filled' => 'The :attribute field must have a value.',
     'gt' => [

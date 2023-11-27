@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Process;
 use App\Http\Requests\StoreProcessRequest;
 use App\Http\Requests\UpdateProcessRequest;
+use App\Models\Generic;
 use App\Models\User;
 use App\Support\Helper;
 use App\Support\Traits\Destroyable;
@@ -23,7 +24,7 @@ class ProcessController extends Controller
 
         $allColumns = collect($request->user()->settings['processColumns']);
         $visibleColumns = User::filterVisibleColumns($allColumns);
-        
+
         return view('processes.index', compact('params', 'items', 'allColumns', 'visibleColumns'));
     }
 
@@ -36,16 +37,19 @@ class ProcessController extends Controller
         return view('generics.trash', compact('params', 'items'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        return view('generics.create');
+        $generic = Generic::find($request->generic_id);
+        $generic->load('manufacturer');
+
+        return view('processes.create', compact('generic'));
     }
 
-    public function store(StoreGenericRequest $request)
+    public function store(StoreProcessRequest $request)
     {
-        Generic::createFromRequest($request);
+        Process::createFromRequest($request);
 
-        return to_route('generics.index');
+        return to_route('processes.index');
     }
 
     public function edit(Generic $item)
