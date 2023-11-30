@@ -45,10 +45,10 @@
         </div>
 
         <div class="form__divider">
-            @include('form-components.create.belongs-to-select', [
+            @include('form-components.create.multiple-select', [
                 'label' => 'Country',
                 'required' => true,
-                'attribute' => 'country_code_id',
+                'attribute' => 'country_code_ids[]',
                 'options' => $countryCodes,
                 'optionsCaptionAttribute' => 'name',
             ])

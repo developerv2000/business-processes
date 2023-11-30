@@ -1166,12 +1166,12 @@ a {
 
 .td__link {
     color: var(--main-color);
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 .td__link--margined {
     display: inline-block;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
 }
 
 /* ------------ /END Table ------------ */

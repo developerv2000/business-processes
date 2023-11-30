@@ -203,10 +203,16 @@ class Process extends Model
     // ********** Miscellaneous **********
     public static function createFromRequest($request)
     {
-        $item = self::create($request->all());
+        $countryCodes = $request->input('country_code_ids');
 
-        // BelongsToMany relations
-        $item->owners()->attach($request->input('owners'));
+        foreach ($countryCodes as $countryCode) {
+            $item = new self($request->all());
+            $item->country_code_id = $countryCode;
+            $item->save();
+
+            // BelongsToMany relations
+            $item->owners()->attach($request->input('owners'));
+        }
     }
 
     public function validateDaysPast($now)
