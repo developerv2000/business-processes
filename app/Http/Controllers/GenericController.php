@@ -71,7 +71,7 @@ class GenericController extends Controller
     {
         Helper::addExportParamsToRequest();
         $params = self::getRequestParams();
-        $items = Generic::getItemsFinalized($params, null, 'get');
+        $items = Generic::getItemsFinalized($params, null, 'query');
 
         return Generic::exportItems($items);
     }

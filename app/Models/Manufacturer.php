@@ -219,6 +219,9 @@ class Manufacturer extends Model
             case 'get':
                 $items = $items->get();
                 break;
+
+            case 'query':
+                break;
         }
 
         return $items;
@@ -275,42 +278,44 @@ class Manufacturer extends Model
         $row = 2;
 
         // fill excel cells
-        foreach ($items as $item) {
-            $worksheet->setCellValue('A' . $row, $item->id);
-            $worksheet->setCellValue('B' . $row, $item->updated_at);
-            $worksheet->setCellValue('C' . $row, $item->bdm->name);
-            $worksheet->setCellValue('D' . $row, $item->analyst->name);
-            $worksheet->setCellValue('E' . $row, $item->category->name);
-            $worksheet->setCellValue('F' . $row, $item->country->name);
-            $worksheet->setCellValue('G' . $row, $item->name);
-            $worksheet->setCellValue('H' . $row, $item->cooperates ? __('Cooperates') : '');
-            $worksheet->setCellValue('I' . $row, $item->active ? __('Active') : __('Stoped'));
-            $worksheet->setCellValue('J' . $row, $item->important ? __('Important') : '');
+        $items->chunk(100, function ($items) use (&$worksheet, &$row) {
+            foreach ($items as $item) {
+                $worksheet->setCellValue('A' . $row, $item->id);
+                $worksheet->setCellValue('B' . $row, $item->updated_at);
+                $worksheet->setCellValue('C' . $row, $item->bdm->name);
+                $worksheet->setCellValue('D' . $row, $item->analyst->name);
+                $worksheet->setCellValue('E' . $row, $item->category->name);
+                $worksheet->setCellValue('F' . $row, $item->country->name);
+                $worksheet->setCellValue('G' . $row, $item->name);
+                $worksheet->setCellValue('H' . $row, $item->cooperates ? __('Cooperates') : '');
+                $worksheet->setCellValue('I' . $row, $item->active ? __('Active') : __('Stoped'));
+                $worksheet->setCellValue('J' . $row, $item->important ? __('Important') : '');
 
-            $prodCategories = $item->productCategories->pluck('name')->implode(' ');
-            $worksheet->setCellValue('K' . $row, $prodCategories);
+                $prodCategories = $item->productCategories->pluck('name')->implode(' ');
+                $worksheet->setCellValue('K' . $row, $prodCategories);
 
-            $zones = $item->zones->pluck('name')->implode(' ');
-            $worksheet->setCellValue('L' . $row, $zones);
+                $zones = $item->zones->pluck('name')->implode(' ');
+                $worksheet->setCellValue('L' . $row, $zones);
 
-            $blacklists = $item->blacklists->pluck('name')->implode(' ');
-            $worksheet->setCellValue('M' . $row, $blacklists);
+                $blacklists = $item->blacklists->pluck('name')->implode(' ');
+                $worksheet->setCellValue('M' . $row, $blacklists);
 
-            $presences = $item->presences->pluck('name')->implode(' ');
-            $worksheet->setCellValue('N' . $row, $presences);
+                $presences = $item->presences->pluck('name')->implode(' ');
+                $worksheet->setCellValue('N' . $row, $presences);
 
-            $worksheet->setCellValue('O' . $row, $item->website);
-            $worksheet->setCellValue('P' . $row, $item->profile);
-            $worksheet->setCellValue('Q' . $row, $item->relationships);
+                $worksheet->setCellValue('O' . $row, $item->website);
+                $worksheet->setCellValue('P' . $row, $item->profile);
+                $worksheet->setCellValue('Q' . $row, $item->relationships);
 
-            $comments = $item->comments->pluck('body')->implode(' / ');
-            $worksheet->setCellValue('R' . $row, $comments);
+                $comments = $item->comments->pluck('body')->implode(' / ');
+                $worksheet->setCellValue('R' . $row, $comments);
 
-            $worksheet->setCellValue('S' . $row, $item->lastComment?->created_at);
-            $worksheet->setCellValue('T' . $row, $item->created_at);
+                $worksheet->setCellValue('S' . $row, $item->lastComment?->created_at);
+                $worksheet->setCellValue('T' . $row, $item->created_at);
 
-            $row++;
-        }
+                $row++;
+            }
+        });
 
         // save file
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');

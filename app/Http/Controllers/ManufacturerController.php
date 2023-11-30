@@ -64,7 +64,7 @@ class ManufacturerController extends Controller
     {
         Helper::addExportParamsToRequest();
         $params = self::getRequestParams();
-        $items = Manufacturer::getItemsFinalized($params, null, 'get');
+        $items = Manufacturer::getItemsFinalized($params, null, 'query');
 
         return Manufacturer::exportItems($items);
     }

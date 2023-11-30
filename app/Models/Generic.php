@@ -204,6 +204,9 @@ class Generic extends Model
             case 'get':
                 $items = $items->get();
                 break;
+
+            case 'query':
+                break;
         }
 
         return $items;
@@ -259,43 +262,45 @@ class Generic extends Model
         $row = 2;
 
         // fill excel cells
-        foreach ($items as $item) {
-            $worksheet->setCellValue('A' . $row, $item->id);
-            $worksheet->setCellValue('B' . $row, $item->created_at);
-            $worksheet->setCellValue('C' . $row, $item->manufacturer->category->name);
-            $worksheet->setCellValue('D' . $row, $item->manufacturer->country->name);
-            $worksheet->setCellValue('E' . $row, $item->manufacturer->name);
-            $worksheet->setCellValue('F' . $row, $item->brand);
-            $worksheet->setCellValue('G' . $row, $item->mnn->name);
-            $worksheet->setCellValue('H' . $row, $item->form->name);
-            $worksheet->setCellValue('I' . $row, $item->form->parent ? $item->form->parent->name : $item->form->name);
-            $worksheet->setCellValue('J' . $row, $item->dose);
-            $worksheet->setCellValue('K' . $row, $item->pack);
-            $worksheet->setCellValue('L' . $row, $item->minimum_volume);
-            $worksheet->setCellValue('M' . $row, $item->expirationDate->limit);
-            $worksheet->setCellValue('N' . $row, $item->category->name);
-            $worksheet->setCellValue('O' . $row, $item->dossier);
+        $items->chunk(100, function ($items) use (&$worksheet, &$row) {
+            foreach ($items as $item) {
+                $worksheet->setCellValue('A' . $row, $item->id);
+                $worksheet->setCellValue('B' . $row, $item->created_at);
+                $worksheet->setCellValue('C' . $row, $item->manufacturer->category->name);
+                $worksheet->setCellValue('D' . $row, $item->manufacturer->country->name);
+                $worksheet->setCellValue('E' . $row, $item->manufacturer->name);
+                $worksheet->setCellValue('F' . $row, $item->brand);
+                $worksheet->setCellValue('G' . $row, $item->mnn->name);
+                $worksheet->setCellValue('H' . $row, $item->form->name);
+                $worksheet->setCellValue('I' . $row, $item->form->parent ? $item->form->parent->name : $item->form->name);
+                $worksheet->setCellValue('J' . $row, $item->dose);
+                $worksheet->setCellValue('K' . $row, $item->pack);
+                $worksheet->setCellValue('L' . $row, $item->minimum_volume);
+                $worksheet->setCellValue('M' . $row, $item->expirationDate->limit);
+                $worksheet->setCellValue('N' . $row, $item->category->name);
+                $worksheet->setCellValue('O' . $row, $item->dossier);
 
-            $zones = $item->zones->pluck('name')->implode(' ');
-            $worksheet->setCellValue('P' . $row, $zones);
+                $zones = $item->zones->pluck('name')->implode(' ');
+                $worksheet->setCellValue('P' . $row, $zones);
 
-            $worksheet->setCellValue('Q' . $row, $item->bioequivalence);
-            $worksheet->setCellValue('R' . $row, $item->additional_payment);
-            $worksheet->setCellValue('S' . $row, $item->relationships);
-            $worksheet->setCellValue('T' . $row, $item->info);
-            $worksheet->setCellValue('U' . $row, $item->patent_expiry);
-            $worksheet->setCellValue('V' . $row, $item->registered_in_eu ? __('Registered') : '');
-            $worksheet->setCellValue('W' . $row, $item->marketed_in_eu ? __('Marketed') : '');
+                $worksheet->setCellValue('Q' . $row, $item->bioequivalence);
+                $worksheet->setCellValue('R' . $row, $item->additional_payment);
+                $worksheet->setCellValue('S' . $row, $item->relationships);
+                $worksheet->setCellValue('T' . $row, $item->info);
+                $worksheet->setCellValue('U' . $row, $item->patent_expiry);
+                $worksheet->setCellValue('V' . $row, $item->registered_in_eu ? __('Registered') : '');
+                $worksheet->setCellValue('W' . $row, $item->marketed_in_eu ? __('Marketed') : '');
 
-            $comments = $item->comments->pluck('body')->implode(' / ');
-            $worksheet->setCellValue('X' . $row, $comments);
+                $comments = $item->comments->pluck('body')->implode(' / ');
+                $worksheet->setCellValue('X' . $row, $comments);
 
-            $worksheet->setCellValue('Y' . $row, $item->lastComment?->created_at);
-            $worksheet->setCellValue('Z' . $row, $item->manufacturer->bdm->name);
-            $worksheet->setCellValue('AA' . $row, $item->manufacturer->analyst->name);
+                $worksheet->setCellValue('Y' . $row, $item->lastComment?->created_at);
+                $worksheet->setCellValue('Z' . $row, $item->manufacturer->bdm->name);
+                $worksheet->setCellValue('AA' . $row, $item->manufacturer->analyst->name);
 
-            $row++;
-        }
+                $row++;
+            }
+        });
 
         // save file
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
