@@ -2081,5 +2081,9 @@ class ProductFormSeeder extends Seeder
         $item = new ProductForm();
         $item->name = 'PATCHES';
         $item->save();
+
+        $item = new ProductForm();
+        $item->name = 'OVULES';
+        $item->save();
     }
 }

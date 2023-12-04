@@ -106,8 +106,8 @@ class Generic extends Model
             . '?manufacturer_id=' . $this->manufacturer_id
             . '&mnn_id=' . $this->mnn_id
             . '&form_id=' . $this->form_id
-            . '&dose=' . $this->dose
-            . '&pack=' . $this->pack;
+            . '&dose=' . urlencode($this->dose)
+            . '&pack=' . urldecode($this->pack);
     }
 
     // ********** Querying **********
