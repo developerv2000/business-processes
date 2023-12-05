@@ -39,4 +39,15 @@ class ProcessStatus extends Model
     {
         return self::onlyChilds()->orderBy('id')->get();
     }
+
+    /**
+     * Each root processes got responsible child,
+     * which is used as proposed status, while creating process
+     *
+     * At the current time only 3 first stages used
+     */
+    public function getResponsibleChild()
+    {
+        return self::childs()->where('stage_responsible', true)->first();
+    }
 }

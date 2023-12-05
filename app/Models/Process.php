@@ -75,8 +75,8 @@ class Process extends Model
     {
         return $query->with([
             'generic' => function ($query) {
-                $query->select('id', 'manufacturer_id', 'mnn_id', 'category_id', 'form_id', 'dose', 'pack')
-                    ->withOnly(['mnn', 'category', 'form']);
+                $query->select('id', 'manufacturer_id', 'mnn_id', 'category_id', 'form_id', 'dose', 'pack', 'minimum_volume', 'expiration_date_id')
+                    ->withOnly(['mnn', 'category', 'form', 'expirationDate']);
             },
 
             'manufacturer' => function ($query) {

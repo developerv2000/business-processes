@@ -20,4 +20,9 @@ class ExpirationDate extends Model
     {
         return self::orderBy('id')->get();
     }
+
+    public static function getOnGoingID()
+    {
+        return self::where('limit', 'onGoing')->first()->id;
+    }
 }

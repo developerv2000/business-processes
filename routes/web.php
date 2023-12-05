@@ -93,6 +93,8 @@ Route::middleware('auth', 'auth.session')->group(function () {
         Route::post('/destroy', 'destroy')->name('destroy');
         Route::post('/restore', 'restore')->name('restore');
         Route::post('/export', 'export')->name('export');
+
+        Route::post('/get-create-inputs', 'getCreateInputs');  // Used while creating on status update
     });
 
     Route::prefix('mnns')->controller(MnnController::class)->name('mnns.')->middleware('moderator')->group(function () {

@@ -6,6 +6,7 @@ use App\Models\Process;
 use App\Http\Requests\StoreProcessRequest;
 use App\Http\Requests\UpdateProcessRequest;
 use App\Models\Generic;
+use App\Models\ProcessStatus;
 use App\Models\User;
 use App\Support\Helper;
 use App\Support\Traits\Destroyable;
@@ -42,7 +43,10 @@ class ProcessController extends Controller
         $generic = Generic::find($request->generic_id);
         $generic->load('manufacturer');
 
-        return view('processes.create', compact('generic'));
+        $proposedStatus = $generic->getProposedProcessStatus();
+        $statusStage = $proposedStatus->parent->id;
+
+        return view('processes.create', compact('generic', 'proposedStatus', 'statusStage'));
     }
 
     public function store(StoreProcessRequest $request)
@@ -78,6 +82,14 @@ class ProcessController extends Controller
         $items = Generic::getItemsFinalized($params, null, 'get');
 
         return Generic::exportItems($items);
+    }
+
+    public function getCreateInputs(Request $request)
+    {
+        $status = ProcessStatus::find($request->status_id);
+        $statusStage = $status->parent->id;
+
+        return view('processes.create-stage-inputs', compact('statusStage'));
     }
 
     private function getRequestParams()

@@ -1,6 +1,8 @@
 import './bootstrap';
 
 const GET_GENERICS_SIMILAR_PRODUCTS_URL = '/generics/get-similar-products'
+const GET_CREATE_PROCESSES_INPUTS_URL = '/processes/get-create-inputs'
+
 const windowPathName = window.location.origin + window.location.pathname;
 const mainWrapper = document.querySelector('.main-wrapper');
 const spinner = document.querySelector('.spinner');
@@ -16,7 +18,7 @@ window.addEventListener('load', () => {
 function setupComponents() {
     // ********** Selectize **********
     // singular Selectize
-    $('.selectize-singular').selectize({
+    $('.selectize-singular:not(.selectize--manually-initializable)').selectize({
         plugins: ["auto_position"],
     });
 
@@ -250,9 +252,9 @@ function setupForms() {
             }
 
             const data = {
-                'manufacturer_id' : manufacturerID,
-                'mnn_id' : mnnID,
-                'form_id' : formID,
+                'manufacturer_id': manufacturerID,
+                'mnn_id': mnnID,
+                'form_id': formID,
             }
 
             axios.post(GET_GENERICS_SIMILAR_PRODUCTS_URL, data, {
@@ -267,6 +269,36 @@ function setupForms() {
                     hideSpinner();
                 });
         }
+    }
+
+    // ********** Processes create/update form **********
+    // Statuses select
+    if (document.querySelector('.statusses-selectize')) {
+        let inputsContainer = document.querySelector('.processes-create__additional-inputs-container');
+
+        $('.statusses-selectize').selectize({
+            plugins: ["auto_position"],
+            onChange(value) {
+                showSpinner();
+
+                const data = {
+                    'status_id': value,
+                }
+
+                axios.post(GET_CREATE_PROCESSES_INPUTS_URL, data, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => {
+                        // Replace old inputs with new one
+                        inputsContainer.innerHTML = response.data;
+                    })
+                    .finally(function () {
+                        hideSpinner();
+                    });
+            }
+        });
     }
 }
 

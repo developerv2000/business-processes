@@ -254,6 +254,27 @@ class Generic extends Model
         $this->storeComment($request->comment);
     }
 
+    /**
+     * Used while adding Process
+     */
+    public function getProposedProcessStatus()
+    {
+        // First stage (Вб)
+        if ($this->expiration_date_id == ExpirationDate::getOnGoingID()) {
+            $stage = 1;
+        // Second stage (ПО)
+        } else if (!$this->minimum_volume) {
+            $stage = 2;
+        // Third stage (АЦ)
+        } else {
+            $stage = 3;
+        }
+
+        $rootStatus = ProcessStatus::where('stage', $stage)->first();
+
+        return $rootStatus->getResponsibleChild();
+    }
+
     public static function exportItems($items)
     {
         $template = storage_path(self::STORAGE_EXCEL_TEMPLATE_PATH);

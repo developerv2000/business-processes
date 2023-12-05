@@ -45,19 +45,21 @@
         </div>
 
         <div class="form__divider">
+            <x-form.group-validateable label="Status" error-name="status_id" required="1">
+                <select class="selectize-singular statusses-selectize selectize--manually-initializable" name="status_id" required="1">
+                    @foreach ($statuses as $status)
+                        <option value="{{ $status->id }}" @selected($proposedStatus->id == $status->id)>{{ $status->name }}</option>
+                    @endforeach
+                </select>
+            </x-form.group-validateable>
+        </div>
+
+        <div class="form__divider">
             @include('form-components.create.multiple-select', [
                 'label' => 'Country',
                 'required' => true,
                 'attribute' => 'country_code_ids[]',
                 'options' => $countryCodes,
-                'optionsCaptionAttribute' => 'name',
-            ])
-
-            @include('form-components.create.belongs-to-select', [
-                'label' => 'Status',
-                'required' => true,
-                'attribute' => 'status_id',
-                'options' => $statuses,
                 'optionsCaptionAttribute' => 'name',
             ])
 
@@ -77,6 +79,10 @@
             ])
 
             <x-form.submit class="main-form__submit">{{ __('Store') }}</x-form.submit>
+        </div>
+
+        <div class="processes-create__additional-inputs-container">
+            @include('processes.create-stage-inputs')
         </div>
     </form>
 @endsection
