@@ -15,8 +15,8 @@ return new class extends Migration
             $table->unsignedSmallInteger('id')->autoIncrement();
             $table->string('name');
             $table->unsignedSmallInteger('parent_id')->nullable();
-            $table->unsignedSmallInteger('stage')->unique()->nullable(); // only roots
-            $table->boolean('stage_responsible')->nullable(); // only childs
+            $table->unsignedSmallInteger('stage')->unique()->nullable(); // only roots. Used on process create
+            $table->unsignedSmallInteger('responsible_child_id')->nullable(); // used on process create
         });
     }
 

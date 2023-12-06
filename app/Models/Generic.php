@@ -255,7 +255,8 @@ class Generic extends Model
     }
 
     /**
-     * Used while adding Process
+     * Used on Process create
+     * Only first 3 stages are used
      */
     public function getProposedProcessStatus()
     {
@@ -272,7 +273,7 @@ class Generic extends Model
 
         $rootStatus = ProcessStatus::where('stage', $stage)->first();
 
-        return $rootStatus->getResponsibleChild();
+        return $rootStatus->responsibleChild;
     }
 
     public static function exportItems($items)

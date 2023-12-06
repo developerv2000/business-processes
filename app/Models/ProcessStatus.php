@@ -25,6 +25,17 @@ class ProcessStatus extends Model
         return $this->hasMany(self::class, 'parent_id');
     }
 
+    /**
+     * Each root processes got stage responsible child,
+     * which are used as proposed status, while creating process
+     *
+     * At the current time only 3 first stages are used
+     */
+    public function responsibleChild()
+    {
+        return $this->hasOne(self::class, 'id', 'responsible_child_id');
+    }
+
     public function scopeOnlyChilds($query)
     {
         $query->whereNotNull('parent_id');
@@ -38,16 +49,5 @@ class ProcessStatus extends Model
     public static function getAllChilds()
     {
         return self::onlyChilds()->orderBy('id')->get();
-    }
-
-    /**
-     * Each root processes got responsible child,
-     * which is used as proposed status, while creating process
-     *
-     * At the current time only 3 first stages used
-     */
-    public function getResponsibleChild()
-    {
-        return self::childs()->where('stage_responsible', true)->first();
     }
 }

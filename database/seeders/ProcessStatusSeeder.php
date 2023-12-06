@@ -16,11 +16,13 @@ class ProcessStatusSeeder extends Seeder
         // Parents
         $parents = ['ВП', 'ПО', 'АЦ', 'СЦ', 'Кк', 'КД', 'НПР', 'Р', 'Зя'];
         $stage = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        $responsible_child_id = [10, 12, 14, 16, 20, 21, 23, 25, 26];
 
         for ($i = 0; $i < count($parents); $i++) {
             $item = new ProcessStatus();
             $item->name = $parents[$i];
             $item->stage = $stage[$i];
+            $item->responsible_child_id = $responsible_child_id[$i];
             $item->save();
         }
 
@@ -33,7 +35,6 @@ class ProcessStatusSeeder extends Seeder
             $item = new ProcessStatus();
             $item->name = $childs[$i];
             $item->parent_id = $parent_id[$i];
-            $item->stage_responsible = $stageResponsible[$i];
             $item->save();
         }
     }

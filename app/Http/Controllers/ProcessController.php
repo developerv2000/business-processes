@@ -43,10 +43,10 @@ class ProcessController extends Controller
         $generic = Generic::find($request->generic_id);
         $generic->load('manufacturer');
 
-        $proposedStatus = $generic->getProposedProcessStatus();
-        $statusStage = $proposedStatus->parent->id;
+        $proposedChildStatus = $generic->getProposedProcessStatus();
+        $processStage = $proposedChildStatus->parent->stage;
 
-        return view('processes.create', compact('generic', 'proposedStatus', 'statusStage'));
+        return view('processes.create', compact('generic', 'proposedChildStatus', 'processStage'));
     }
 
     public function store(StoreProcessRequest $request)
@@ -86,10 +86,10 @@ class ProcessController extends Controller
 
     public function getCreateInputs(Request $request)
     {
-        $status = ProcessStatus::find($request->status_id);
-        $statusStage = $status->parent->id;
+        $childStatus = ProcessStatus::find($request->status_id);
+        $processStage = $childStatus->parent->id;
 
-        return view('processes.create-stage-inputs', compact('statusStage'));
+        return view('processes.create-stage-inputs', compact('processStage'));
     }
 
     private function getRequestParams()

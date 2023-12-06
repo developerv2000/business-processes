@@ -45,10 +45,10 @@
         </div>
 
         <div class="form__divider">
-            <x-form.group-validateable label="Status" error-name="status_id" required="1">
+            <x-form.group-validateable label="{{ __('Status') }}" error-name="status_id" required="1">
                 <select class="selectize-singular statusses-selectize selectize--manually-initializable" name="status_id" required="1">
                     @foreach ($statuses as $status)
-                        <option value="{{ $status->id }}" @selected($proposedStatus->id == $status->id)>{{ $status->name }}</option>
+                        <option value="{{ $status->id }}" @selected($proposedChildStatus->id == $status->id)>{{ $status->name }}</option>
                     @endforeach
                 </select>
             </x-form.group-validateable>
