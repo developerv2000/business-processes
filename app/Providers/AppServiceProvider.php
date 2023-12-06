@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Blacklist;
 use App\Models\Country;
 use App\Models\CountryCode;
+use App\Models\Currency;
 use App\Models\ExpirationDate;
 use App\Models\Manufacturer;
 use App\Models\ManufacturerCategory;
@@ -75,6 +76,13 @@ class AppServiceProvider extends ServiceProvider
                 'productForms' => ProductForm::getAll(),
                 'mnns' => Mnn::getAll(),
                 'owners' => ProcessOwner::getAll(),
+            ]);
+        });
+
+        View::composer(['processes.create-stage-inputs'], function ($view) {
+            $view->with([
+                'expirationDates' => ExpirationDate::getAll(),
+                'currencies' => Currency::getAll(),
             ]);
         });
 

@@ -22,4 +22,9 @@ class Currency extends Model
             $item->save();
         });
     }
+
+    public static function getAll()
+    {
+        return self::orderBy('id')->get();
+    }
 }

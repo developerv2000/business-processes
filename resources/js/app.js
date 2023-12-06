@@ -282,6 +282,7 @@ function setupForms() {
                 showSpinner();
 
                 const data = {
+                    'generic_id': document.querySelector('input[name="generic_id"]').value,
                     'status_id': value,
                 }
 
@@ -293,6 +294,7 @@ function setupForms() {
                     .then(response => {
                         // Replace old inputs with new one
                         inputsContainer.innerHTML = response.data;
+                        initializeNewComponents();
                     })
                     .finally(function () {
                         hideSpinner();
@@ -353,4 +355,11 @@ function showSpinner() {
 
 function hideSpinner() {
     spinner.classList.remove('spinner--visible');
+}
+
+function initializeNewComponents() {
+    // singular Selectize
+    $('select.selectize-singular:not(.selectized)').selectize({
+        plugins: ["auto_position"],
+    });
 }
