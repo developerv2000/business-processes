@@ -27,4 +27,12 @@ class Currency extends Model
     {
         return self::orderBy('id')->get();
     }
+
+    public static function convertToUSD($price, $currencyName)
+    {
+        $currency = self::where('name', $currencyName)->first();
+        $converted = $price * $currency->usd_ratio;
+
+        return $converted;
+    }
 }

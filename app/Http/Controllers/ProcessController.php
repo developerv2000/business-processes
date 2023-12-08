@@ -29,15 +29,6 @@ class ProcessController extends Controller
         return view('processes.index', compact('params', 'items', 'allColumns', 'visibleColumns'));
     }
 
-    public function trash(Request $request)
-    {
-        $params = self::getRequestParams();
-        $trashedItems = Generic::onlyTrashed();
-        $items = Generic::getItemsFinalized($params, $trashedItems);
-
-        return view('generics.trash', compact('params', 'items'));
-    }
-
     public function create(Request $request)
     {
         $generic = Generic::find($request->generic_id);
@@ -60,38 +51,9 @@ class ProcessController extends Controller
 
     public function store(StoreProcessRequest $request)
     {
-        return redirect()->back();
         Process::createFromRequest($request);
 
         return to_route('processes.index');
-    }
-
-    public function edit(Generic $item)
-    {
-        return view('generics.edit', compact('item'));
-    }
-
-    public function update(UpdateGenericRequest $request, Generic $item)
-    {
-        $item->updateFromRequest($request);
-
-        return redirect($request->input('previous_url'));
-    }
-
-    public function getSimilarProducts(Request $request)
-    {
-        $similarProducts = Generic::getSimilarProducts($request);
-
-        return view('generics.similar-products', compact('similarProducts'));
-    }
-
-    public function export()
-    {
-        Helper::addExportParamsToRequest();
-        $params = self::getRequestParams();
-        $items = Generic::getItemsFinalized($params, null, 'get');
-
-        return Generic::exportItems($items);
     }
 
     private function getRequestParams()

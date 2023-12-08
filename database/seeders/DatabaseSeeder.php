@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
             ProcessOwnerSeeder::class,
             ManufacturerSeeder::class,
             GenericSeeder::class,
-            ProcessSeeder::class,
+            // ProcessSeeder::class,
         ]);
     }
 }

@@ -23,6 +23,7 @@ class Process extends Model
         'countryCode',
         'status',
         'owners',
+        'currency',
     ];
 
     // ********** Events **********
@@ -30,10 +31,26 @@ class Process extends Model
     {
         static::creating(function ($item) {
             $item->status_update_date = now();
+            $item->synchronizeGenericColumnsUpdate();
         });
 
         static::created(function ($item) {
-            $item->validateDaysPast(now());
+            $item->validateDaysPast();
+            $item->validateStageTwoStartDate();
+            $item->validatePriceInUSD();
+            $item->validateIncreasedPrice();
+        });
+
+        static::updating(function ($item) {
+            $item->validateStatusUpdateDate();
+            $item->synchronizeGenericColumnsUpdate();
+        });
+
+        static::updated(function ($item) {
+            $item->validateDaysPast();
+            $item->validateStageTwoStartDate();
+            $item->validatePriceInUSD();
+            $item->validateIncreasedPrice();
         });
     }
 
@@ -70,13 +87,18 @@ class Process extends Model
         return $this->belongsToMany(ProcessOwner::class, 'process_processowners', 'process_id', 'owner_id');
     }
 
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class);
+    }
+
     // ********** Querying **********
     public function scopeWithRelations($query)
     {
         return $query->with([
             'generic' => function ($query) {
                 $query->select('id', 'manufacturer_id', 'mnn_id', 'category_id', 'form_id', 'dose', 'pack', 'minimum_volume', 'expiration_date_id')
-                    ->withOnly(['mnn', 'category', 'form', 'expirationDate']);
+                    ->withOnly(['mnn', 'category', 'form', 'expirationDate', 'zones']);
             },
 
             'manufacturer' => function ($query) {
@@ -208,6 +230,7 @@ class Process extends Model
         foreach ($countryCodes as $countryCode) {
             $item = new self($request->all());
             $item->country_code_id = $countryCode;
+
             $item->save();
 
             // BelongsToMany relations
@@ -215,10 +238,92 @@ class Process extends Model
         }
     }
 
-    public function validateDaysPast($now)
+    /**
+     * Validate days_past field relative to date field
+     *
+     * Default $now variable is used, because thousand of items
+     * can be upated through loop
+
+     * Used on models created & updated events
+     */
+    public function validateDaysPast($now = null)
     {
+        if (!$now) $now = now();
         $date = Carbon::createFromFormat('Y-m-d', $this->date);
         $this->days_past = $now->diffInDays($date);
         $this->save();
+    }
+
+    /**
+     * Update status_update_date field on status update
+     *
+     * Used on models updating event
+     */
+    private function validateStatusUpdateDate()
+    {
+        if ($this->isDirty('status_id')) {
+            $this->status_update_date = now();
+        }
+    }
+
+    /**
+     * Synchronize Generic Expiration date & Minimum volume columns
+     *
+     * Used on models creating & updating events
+     */
+    private function synchronizeGenericColumnsUpdate()
+    {
+        $generic = Generic::find($this->generic_id);
+        $generic->expiration_date_id = request('expiration_date_id');
+        $generic->minimum_volume = request('minimum_volume');
+        $generic->save();
+    }
+
+    /**
+     * Set stage_2_start_date field as now on stage >= 2 select
+     *
+     * Used on models created & updated events
+     */
+    private function validateStageTwoStartDate()
+    {
+        // Remove start date on status backward
+        if ($this->status->parent->stage == 1) {
+            $this->stage_2_start_date = null;
+            $this->save();
+        }
+        // Else update date if already not set
+        else if (!$this->stage_2_start_date) {
+            $this->stage_2_start_date = now();
+            $this->save();
+        }
+    }
+
+    /**
+     * Validate manufacturer_followed_offered_price_in_usd field
+     *
+     * Used on models created & updated events
+     */
+    private function validatePriceInUSD()
+    {
+        $price = $this->manufacturer_followed_offered_price;
+        $currencyName = $this->currency?->name;
+
+        // $price & $currency can be null on early stages
+        if ($price & $currencyName) {
+            $converted = Currency::convertToUSD($price, $currencyName);
+            $this->manufacturer_followed_offered_price_in_usd = $converted;
+            $this->save();
+        }
+    }
+
+    /**
+     * Update increased_price_percentage and increased_price_date fields,
+     * If increased_price field updated after stage 5
+     *
+     * Used on models created & updated events
+     */
+    private function validateIncreasedPrice()
+    {
+        
     }
 }

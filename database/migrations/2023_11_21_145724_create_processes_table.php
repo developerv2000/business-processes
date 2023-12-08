@@ -32,16 +32,29 @@ return new class extends Migration
             $table->unsignedDecimal('manufacturer_first_offered_price', 8, 4)->nullable(); // unchangeable
             $table->unsignedDecimal('manufacturer_followed_offered_price', 8, 4)->nullable();
             $table->unsignedDecimal('our_first_offered_price', 8, 4)->nullable(); // unchangeable
-            $table->unsignedDecimal('our_followed_offered__price', 8, 4)->nullable();
+            $table->unsignedDecimal('our_followed_offered_price', 8, 4)->nullable();
             $table->unsignedSmallInteger('currency_id')->nullable();
+            $table->unsignedDecimal('manufacturer_followed_offered_price_in_usd', 8, 4)->nullable();
 
             // Stage 4 (СЦ)
-            $table->unsignedDecimal('agreed', 8, 4)->nullable();
+            $table->unsignedDecimal('agreed_price', 8, 4)->nullable();
 
             // Stage 5 (КК)
             $table->string('marketing_authorization_holder')->nullable();
             $table->string('trademark_en')->nullable();
             $table->string('trademark_ru')->nullable();
+
+            // After КК fields
+            $table->unsignedDecimal('increased_price', 8, 4)->nullable();
+            $table->unsignedDecimal('increased_price_percentage', 8, 4)->nullable();
+            $table->date('increased_price_date')->nullable();
+            $table->string('product_link')->nullable();
+            $table->string('dossier_status')->nullable();
+            $table->string('clinical_trial_year')->nullable();
+            $table->string('clinical_trial_countries')->nullable();
+            $table->string('clinical_trial_ich_country')->nullable();
+            $table->string('additional_1')->nullable();
+            $table->string('additional_2')->nullable();
 
             $table->softDeletes();
         });

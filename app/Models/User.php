@@ -406,8 +406,43 @@ class User extends Authenticatable
             ['name' => 'Form', 'order' => $order++, 'width' => 140, 'visible' => 1],
             ['name' => 'Dose', 'order' => $order++, 'width' => 160, 'visible' => 1],
             ['name' => 'Pack', 'order' => $order++, 'width' => 110, 'visible' => 1],
+
+            ['name' => 'MAH', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'TM ENG', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'TM RUS', 'order' => $order++, 'width' => 140, 'visible' => 1],
+
+            ['name' => 'Price 1', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Price 2', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Currency', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'USD', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Agreed', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Our price 2', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Our price 1', 'order' => $order++, 'width' => 140, 'visible' => 1],
+
+            ['name' => 'Price increased (new price)', 'order' => $order++, 'width' => 190, 'visible' => 1],
+            ['name' => 'Price increased %', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Price increased date', 'order' => $order++, 'width' => 150, 'visible' => 1],
+
+            ['name' => 'Expiration date', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Minimum value', 'order' => $order++, 'width' => 140, 'visible' => 1],
+
+            ['name' => 'Product link', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Dossier status', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Year КИ/БЭ', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Сountries КИ/БЭ', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'ICH country КИ/БЭ', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Zones', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Additional 1', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Additional 2', 'order' => $order++, 'width' => 140, 'visible' => 1],
+
             ['name' => 'Status', 'order' => $order++, 'width' => 160, 'visible' => 1],
             ['name' => 'General status', 'order' => $order++, 'width' => 116, 'visible' => 1],
+
+            ['name' => 'Process date', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Year 1', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Year 2', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Year 3', 'order' => $order++, 'width' => 140, 'visible' => 1],
+
             ['name' => 'Owners', 'order' => $order++, 'width' => 154, 'visible' => 1],
             ['name' => 'Process date', 'order' => $order++, 'width' => 130, 'visible' => 1],
             ['name' => 'Days past', 'order' => $order++, 'width' => 120, 'visible' => 1],
