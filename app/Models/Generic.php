@@ -102,12 +102,14 @@ class Generic extends Model
 
     public function getProcessesLinkAttribute()
     {
-        return route('processes.index')
-            . '?manufacturer_id=' . $this->manufacturer_id
-            . '&mnn_id=' . $this->mnn_id
-            . '&form_id=' . $this->form_id
-            . '&dose=' . urlencode($this->dose)
-            . '&pack=' . urldecode($this->pack);
+        return urlencode(
+            route('processes.index')
+                . '?manufacturer_id=' . $this->manufacturer_id
+                . '&mnn_id=' . $this->mnn_id
+                . '&form_id=' . $this->form_id
+                . '&dose=' . $this->dose
+                . '&pack=' . $this->pack
+        );
     }
 
     // ********** Querying **********
@@ -263,10 +265,10 @@ class Generic extends Model
         // First stage (Вб)
         if ($this->expiration_date_id == ExpirationDate::getOnGoingID()) {
             $stage = 1;
-        // Second stage (ПО)
+            // Second stage (ПО)
         } else if (!$this->minimum_volume) {
             $stage = 2;
-        // Third stage (АЦ)
+            // Third stage (АЦ)
         } else {
             $stage = 3;
         }

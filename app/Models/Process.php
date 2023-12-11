@@ -38,19 +38,19 @@ class Process extends Model
             $item->validateDaysPast();
             $item->validateStageTwoStartDate();
             $item->validatePriceInUSD();
-            $item->validateIncreasedPrice();
+            $item->validateIncreasedPriceAfterCreate();
         });
 
         static::updating(function ($item) {
             $item->validateStatusUpdateDate();
             $item->synchronizeGenericColumnsUpdate();
+            $item->validateIncreasedPriceOnUpdating();
         });
 
         static::updated(function ($item) {
             $item->validateDaysPast();
             $item->validateStageTwoStartDate();
             $item->validatePriceInUSD();
-            $item->validateIncreasedPrice();
         });
     }
 
@@ -230,7 +230,6 @@ class Process extends Model
         foreach ($countryCodes as $countryCode) {
             $item = new self($request->all());
             $item->country_code_id = $countryCode;
-
             $item->save();
 
             // BelongsToMany relations
@@ -248,10 +247,10 @@ class Process extends Model
      */
     public function validateDaysPast($now = null)
     {
-        if (!$now) $now = now();
+        if (!$now) $now = Carbon::createFromFormat('Y-m-d', date('Y-m-d'));
         $date = Carbon::createFromFormat('Y-m-d', $this->date);
-        $this->days_past = $now->diffInDays($date);
-        $this->save();
+        $this->days_past = $date->diffInDays($now, false);
+        $this->saveQuietly();
     }
 
     /**
@@ -259,7 +258,7 @@ class Process extends Model
      *
      * Used on models updating event
      */
-    private function validateStatusUpdateDate()
+    public function validateStatusUpdateDate()
     {
         if ($this->isDirty('status_id')) {
             $this->status_update_date = now();
@@ -271,12 +270,14 @@ class Process extends Model
      *
      * Used on models creating & updating events
      */
-    private function synchronizeGenericColumnsUpdate()
+    public function synchronizeGenericColumnsUpdate()
     {
-        $generic = Generic::find($this->generic_id);
-        $generic->expiration_date_id = request('expiration_date_id');
-        $generic->minimum_volume = request('minimum_volume');
-        $generic->save();
+        if (request('expiration_date_id')) {
+            $generic = Generic::find($this->generic_id);
+            $generic->expiration_date_id = request('expiration_date_id');
+            $generic->minimum_volume = request('minimum_volume');
+            $generic->save();
+        }
     }
 
     /**
@@ -284,17 +285,17 @@ class Process extends Model
      *
      * Used on models created & updated events
      */
-    private function validateStageTwoStartDate()
+    public function validateStageTwoStartDate()
     {
         // Remove start date on status backward
         if ($this->status->parent->stage == 1) {
             $this->stage_2_start_date = null;
-            $this->save();
+            $this->saveQuietly();
         }
         // Else update date if already not set
         else if (!$this->stage_2_start_date) {
             $this->stage_2_start_date = now();
-            $this->save();
+            $this->saveQuietly();
         }
     }
 
@@ -303,7 +304,7 @@ class Process extends Model
      *
      * Used on models created & updated events
      */
-    private function validatePriceInUSD()
+    public function validatePriceInUSD()
     {
         $price = $this->manufacturer_followed_offered_price;
         $currencyName = $this->currency?->name;
@@ -312,18 +313,36 @@ class Process extends Model
         if ($price & $currencyName) {
             $converted = Currency::convertToUSD($price, $currencyName);
             $this->manufacturer_followed_offered_price_in_usd = $converted;
-            $this->save();
+            $this->saveQuietly();
         }
     }
 
     /**
      * Update increased_price_percentage and increased_price_date fields,
-     * If increased_price field updated after stage 5
+     * due to agreed price, If increased_price field is filled
      *
-     * Used on models created & updated events
+     * Used on models created event
      */
-    private function validateIncreasedPrice()
+    public function validateIncreasedPriceAfterCreate()
     {
-        
+        if ($this->increased_price) {
+            $this->increased_price_percentage = round(($this->increased_price * 100) / $this->agreed_price, 2);
+            $this->increased_price_date = now();
+            $this->saveQuietly();
+        }
+    }
+
+    /**
+     * Update increased_price_percentage and increased_price_date fields,
+     * due to agreed price, If increased_price field updated after stage 5
+     *
+     * Used on models updating event
+     */
+    public function validateIncreasedPriceOnUpdating()
+    {
+        if ($this->isDirty('increased_price')) {
+            $this->increased_price_percentage = round(($this->increased_price * 100) / $this->agreed_price, 2);
+            $this->increased_price_date = now();
+        }
     }
 }

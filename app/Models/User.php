@@ -438,7 +438,7 @@ class User extends Authenticatable
             ['name' => 'Status', 'order' => $order++, 'width' => 160, 'visible' => 1],
             ['name' => 'General status', 'order' => $order++, 'width' => 116, 'visible' => 1],
 
-            ['name' => 'Process date', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'ПО date', 'order' => $order++, 'width' => 140, 'visible' => 1],
             ['name' => 'Year 1', 'order' => $order++, 'width' => 140, 'visible' => 1],
             ['name' => 'Year 2', 'order' => $order++, 'width' => 140, 'visible' => 1],
             ['name' => 'Year 3', 'order' => $order++, 'width' => 140, 'visible' => 1],

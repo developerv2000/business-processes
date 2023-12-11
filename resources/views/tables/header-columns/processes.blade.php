@@ -39,7 +39,6 @@
     @case('Additional 1')
     @case('Additional 2')
     @case('General status')
-    @case('Process date')
     @case('Year 1')
     @case('Year 2')
     @case('Year 3')
@@ -63,6 +62,10 @@
 
     @case('Status')
         @include('tables.components.th-link', ['orderBy' => 'status_id'])
+    @break
+
+    @case('ПО date')
+        @include('tables.components.th-link', ['orderBy' => 'stage_2_start_date'])
     @break
 
     @case('Process date')

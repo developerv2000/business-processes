@@ -7,6 +7,14 @@
         @include('tables.components.td-edit', ['href' => route('processes.edit', $item->id)])
     @break
 
+    @case('Date')
+        @include('tables.components.td-date', ['attribute' => 'status_update_date'])
+    @break
+
+    @case('Country')
+        {{ $item->countryCode->name }}
+    @break
+
     @case('НПП/УДС')
         <span @class([
             'badge',
@@ -53,8 +61,126 @@
         {{ $item->generic->pack }}
     @break
 
+    @case('MAH')
+        {{ $item->marketing_authorization_holder }}
+    @break
+
+    @case('TM ENG')
+        {{ $item->trademark_en }}
+    @break
+
+    @case('TM RUS')
+        {{ $item->trademark_ru }}
+    @break
+
+    @case('Price 1')
+        {{ $item->manufacturer_first_offered_price }}
+    @break
+
+    @case('Price 2')
+        {{ $item->manufacturer_followed_offered_price }}
+    @break
+
+    @case('Currency')
+        {{ $item->currency?->name }}
+    @break
+
+    @case('USD')
+        {{ $item->manufacturer_followed_offered_price_in_usd }}
+    @break
+
+    @case('Agreed')
+        {{ $item->agreed_price }}
+    @break
+
+    @case('Our price 2')
+        {{ $item->our_followed_offered_price }}
+    @break
+
+    @case('Our price 1')
+        {{ $item->our_first_offered_price }}
+    @break
+
+    @case('Price increased (new price)')
+        {{ $item->increased_price }}
+    @break
+
+    @case('Price increased %')
+        {{ $item->increased_price_percentage }}
+    @break
+
+    @case('Price increased date')
+        @if ($item->increased_price_date)
+            @include('tables.components.td-date', ['attribute' => 'increased_price_date'])
+        @endif
+    @break
+
+    @case('Expiration date')
+        {{ $item->generic->expirationDate->limit }}
+    @break
+
+    @case('Minimum value')
+        {{ $item->generic->minimum_volume }}
+    @break
+
+    @case('Product link')
+        {{ $item->product_link }}
+    @break
+
+    @case('Dossier status')
+        {{ $item->dossier_status }}
+    @break
+
+    @case('Year КИ/БЭ')
+        {{ $item->clinical_trial_year }}
+    @break
+
+    @case('Сountries КИ/БЭ')
+        {{ $item->clinical_trial_countries }}
+    @break
+
+    @case('ICH country КИ/БЭ')
+        {{ $item->clinical_trial_ich_country }}
+    @break
+
+    @case('Zones')
+        @foreach ($item->generic->zones as $zone)
+            {{ $zone->name }}<br>
+        @endforeach
+    @break
+
+    @case('Additional 1')
+        {{ $item->additional_1 }}
+    @break
+
+    @case('Additional 2')
+        {{ $item->additional_2 }}
+    @break
+
+    @case('Status')
+        {{ $item->status->name }}
+    @break
+
     @case('General status')
         {{ $item->status->parent->name }}
+    @break
+
+    @case('ПО date')
+        @if ($item->stage_2_start_date)
+            @include('tables.components.td-date', ['attribute' => 'stage_2_start_date'])
+        @endif
+    @break
+
+    @case('Year 1')
+        {{ $item->year_1 }}
+    @break
+
+    @case('Year 2')
+        {{ $item->year_2 }}
+    @break
+
+    @case('Year 3')
+        {{ $item->year_3 }}
     @break
 
     @case('Owners')
@@ -63,24 +189,12 @@
         @endforeach
     @break
 
-    @case('Days past')
-        {{ $item->days_past }}
-    @break
-
-    @case('Date')
-        @include('tables.components.td-date', ['attribute' => 'status_update_date'])
-    @break
-
-    @case('Country')
-        {{ $item->countryCode->name }}
-    @break
-
-    @case('Status')
-        {{ $item->status->name }}
-    @break
-
     @case('Process date')
         @include('tables.components.td-date', ['attribute' => 'date'])
+    @break
+
+    @case('Days past')
+        {{ $item->days_past }}
     @break
 
     @default
