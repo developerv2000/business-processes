@@ -102,14 +102,12 @@ class Generic extends Model
 
     public function getProcessesLinkAttribute()
     {
-        return urlencode(
-            route('processes.index')
+        return route('processes.index')
                 . '?manufacturer_id=' . $this->manufacturer_id
                 . '&mnn_id=' . $this->mnn_id
                 . '&form_id=' . $this->form_id
-                . '&dose=' . $this->dose
-                . '&pack=' . $this->pack
-        );
+                . '&dose=' . urlencode($this->dose)
+                . '&pack=' . urlencode($this->pack);
     }
 
     // ********** Querying **********
