@@ -13,6 +13,6 @@ class CountryCode extends Model
 
     public static function getAll()
     {
-        return self::orderBy('name')->get();
+        return self::orderBy('usage_count', 'desc')->get();
     }
 }

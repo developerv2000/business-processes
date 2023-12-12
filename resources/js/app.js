@@ -143,6 +143,13 @@ function setupComponents() {
 }
 
 function setupForms() {
+    // ********** Main Form **********
+    // Show spinner to escape multiple submit button
+    document.querySelector('.main-form.create-form, .main-form.edit-form')
+        .addEventListener('submit', () => {
+            showSpinner();
+        });
+
     // ********** Filter Form **********
     const filterForm = document.querySelector('.filter-form');
 

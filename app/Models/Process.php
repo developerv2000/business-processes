@@ -232,6 +232,7 @@ class Process extends Model
 
             $item = new self($request->all());
             $item->country_code_id = $countryCode->id;
+
             // For each country codes used seperately year inputs
             // following pattern year_[1-3]_countryCodeName
             $item->year_1 = $request->input('year_1_' . $countryCode->name);
@@ -241,6 +242,10 @@ class Process extends Model
 
             // BelongsToMany relations
             $item->owners()->attach($request->input('owners'));
+
+            // increment country code usage count for prioritizing
+            $countryCode->usage_count = $countryCode->usage_count + 1;
+            $countryCode->save();
         }
     }
 
