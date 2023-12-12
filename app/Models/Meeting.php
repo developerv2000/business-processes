@@ -13,7 +13,7 @@ class Meeting extends Model
 
     const DEFAULT_ORDER_BY = 'id';
     const DEFAULT_ORDER_TYPE = 'desc';
-    const DEFAULT_PAGINATION_LIMIT = 20;
+    const DEFAULT_PAGINATION_LIMIT = 40;
     const START_FROM_YEAR = 2016;
 
     public $timestamps = false;

@@ -14,7 +14,7 @@ class Process extends Model
 
     const DEFAULT_ORDER_BY = 'id';
     const DEFAULT_ORDER_TYPE = 'desc';
-    const DEFAULT_PAGINATION_LIMIT = 20;
+    const DEFAULT_PAGINATION_LIMIT = 40;
 
     public $timestamps = false;
     protected $guarded = ['id'];
@@ -225,11 +225,18 @@ class Process extends Model
     // ********** Miscellaneous **********
     public static function createFromRequest($request)
     {
-        $countryCodes = $request->input('country_code_ids');
+        $countryCodeIDs = $request->input('country_code_ids');
 
-        foreach ($countryCodes as $countryCode) {
+        foreach ($countryCodeIDs as $countryCodeID) {
+            $countryCode = CountryCode::find($countryCodeID);
+
             $item = new self($request->all());
-            $item->country_code_id = $countryCode;
+            $item->country_code_id = $countryCode->id;
+            // For each country codes used seperately year inputs
+            // following pattern year_[1-3]_countryCodeName
+            $item->year_1 = $request->input('year_1_' . $countryCode->name);
+            $item->year_2 = $request->input('year_2_' . $countryCode->name);
+            $item->year_3 = $request->input('year_3_' . $countryCode->name);
             $item->save();
 
             // BelongsToMany relations

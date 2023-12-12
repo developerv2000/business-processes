@@ -65,7 +65,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         // Processes
-        View::composer(['filters.processes', 'processes.create', 'processes.edit'], function ($view) {
+        View::composer(['filters.processes', 'processes.create.index', 'processes.edit'], function ($view) {
             $view->with([
                 'countryCodes' => CountryCode::getAll(),
                 'statuses' => ProcessStatus::getAllChilds(),
@@ -79,7 +79,7 @@ class AppServiceProvider extends ServiceProvider
             ]);
         });
 
-        View::composer(['processes.create-stage-inputs'], function ($view) {
+        View::composer(['processes.create.stage-inputs'], function ($view) {
             $view->with([
                 'expirationDates' => ExpirationDate::getAll(),
                 'currencies' => Currency::getAll(),

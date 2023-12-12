@@ -1,13 +1,15 @@
 import './bootstrap';
 
 const GET_GENERICS_SIMILAR_PRODUCTS_URL = '/generics/get-similar-products'
-const GET_CREATE_PROCESSES_INPUTS_URL = '/processes/get-create-inputs'
+const GET_PROCESSES_CREATE_FORM_INPUTS_URL = '/processes/get-create-form-stage-inputs'
+const GET_PROCESSES_CREATE_FORM_YEAR_INPUTS_URL = '/processes/get-create-form-year-inputs'
 
 const windowPathName = window.location.origin + window.location.pathname;
 const mainWrapper = document.querySelector('.main-wrapper');
 const spinner = document.querySelector('.spinner');
 const restoreModal = document.querySelector('.single-restore-modal');
 const deleteTargetModal = document.querySelector('.delete-target-modal');
+var countryCodesSelectize; // used as global to access it locally (used only on processes create)
 
 window.addEventListener('load', () => {
     setupComponents();
@@ -31,7 +33,7 @@ function setupComponents() {
     });
 
     // multiple Selectize
-    $('.selectize-multiple').selectize({
+    $('.selectize-multiple:not(.selectize--manually-initializable)').selectize({
         plugins: ["auto_position"],
     });
 
@@ -274,35 +276,71 @@ function setupForms() {
     // ********** Processes create/update form **********
     // Statuses select
     if (document.querySelector('.statusses-selectize')) {
-        let inputsContainer = document.querySelector('.processes-create__additional-inputs-container');
-
         $('.statusses-selectize').selectize({
             plugins: ["auto_position"],
             onChange(value) {
-                showSpinner();
+                updateCreateProcessesStageInputs(value);
+            }
+        });
+    }
 
-                const data = {
-                    'generic_id': document.querySelector('input[name="generic_id"]').value,
-                    'status_id': value,
-                }
-
-                axios.post(GET_CREATE_PROCESSES_INPUTS_URL, data, {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                    .then(response => {
-                        // Replace old inputs with new one
-                        inputsContainer.innerHTML = response.data;
-                        initializeNewComponents();
-                    })
-                    .finally(function () {
-                        hideSpinner();
-                    });
+    // Country codes select
+    if (document.querySelector('.country-codes-selectize')) {
+        countryCodesSelectize = $('.country-codes-selectize').selectize({
+            plugins: ["auto_position"],
+            onChange(values) {
+                updateCreateProcessesYearInputs(values);
             }
         });
     }
 }
+
+function updateCreateProcessesStageInputs(status_id) {
+    showSpinner();
+
+    const data = {
+        'generic_id': document.querySelector('input[name="generic_id"]').value,
+        'status_id': status_id,
+    }
+
+    axios.post(GET_PROCESSES_CREATE_FORM_INPUTS_URL, data, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => {
+            // Replace old inputs with new one`s
+            document.querySelector('.processes-create__stage-inputs-container').innerHTML = response.data;
+            initializeNewComponents();
+            updateCreateProcessesYearInputs(countryCodesSelectize[0].selectize.getValue());
+        })
+        .finally(function () {
+            hideSpinner();
+        });
+}
+
+function updateCreateProcessesYearInputs(values) {
+    showSpinner();
+
+    const data = {
+        'country_code_ids': values,
+        'status_id': document.querySelector('select[name="status_id"]').value,
+    }
+
+    axios.post(GET_PROCESSES_CREATE_FORM_YEAR_INPUTS_URL, data, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => {
+            // Replace old inputs with new one`s
+            document.querySelector('.processes-create__year-inputs-container').innerHTML = response.data;
+        })
+        .finally(function () {
+            hideSpinner();
+        });
+}
+
 
 function setupTables() {
     // Limited texts

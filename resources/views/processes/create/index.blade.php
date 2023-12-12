@@ -45,7 +45,7 @@
         </div>
 
         <div class="form__divider">
-            <x-form.group-validateable label="{{ __('Status') }}" error-name="status_id" required>
+            <x-form.group-validateable label="{{ __('Status') }}" error-name="status_id" required="1">
                 <select class="selectize-singular statusses-selectize selectize--manually-initializable" name="status_id" required>
                     @foreach ($statuses as $status)
                         <option value="{{ $status->id }}" @selected($proposedChildStatus->id == $status->id)>{{ $status->name }}</option>
@@ -55,13 +55,13 @@
         </div>
 
         <div class="form__divider">
-            @include('form-components.create.multiple-select', [
-                'label' => 'Country',
-                'required' => true,
-                'attribute' => 'country_code_ids[]',
-                'options' => $countryCodes,
-                'optionsCaptionAttribute' => 'name',
-            ])
+            <x-form.group label="{{ __('Country') }}" required="1">
+                <select class="selectize-multiple country-codes-selectize selectize--manually-initializable" name="country_code_ids[]" required multiple>
+                    @foreach ($countryCodes as $country)
+                        <option value="{{ $country->id }}" @selected($selectedCountryCodes->contains('id', $country->id))>{{ $country->name }}</option>
+                    @endforeach
+                </select>
+            </x-form.group>
 
             @include('form-components.create.multiple-select', [
                 'label' => 'Owners',
@@ -79,10 +79,9 @@
             ])
         </div>
 
-        <div class="processes-create__additional-inputs-container">
-            @include('processes.create-stage-inputs')
-        </div>
-        
+        <div class="processes-create__year-inputs-container">@include('processes.create.year-inputs')</div>
+        <div class="processes-create__stage-inputs-container">@include('processes.create.stage-inputs')</div>
+
         <x-form.submit class="main-form__submit">{{ __('Store') }}</x-form.submit>
     </form>
 @endsection

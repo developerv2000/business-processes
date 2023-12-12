@@ -14,7 +14,7 @@ class Generic extends Model
 
     const DEFAULT_ORDER_BY = 'created_at';
     const DEFAULT_ORDER_TYPE = 'desc';
-    const DEFAULT_PAGINATION_LIMIT = 20;
+    const DEFAULT_PAGINATION_LIMIT = 40;
 
     const STORAGE_EXCEL_TEMPLATE_PATH = 'app/excel/templates/ivp.xlsx';
     const STORAGE_EXCEL_EXPORT_PATH = 'app/excel/exports/ivp';
