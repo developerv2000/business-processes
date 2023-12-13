@@ -14,7 +14,7 @@
 
     <form class="form main-form create-form" action="{{ route('processes.store') }}" method="POST" id="create-form">
         @csrf
-
+        <input type="hidden" name="previous_url" value="{{ old('previous_url', url()->previous()) }}">
         <input type="hidden" name="generic_id" value="{{ $generic->id }}">
 
         <div class="form__divider">

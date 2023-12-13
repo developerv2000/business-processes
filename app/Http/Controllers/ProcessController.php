@@ -75,7 +75,7 @@ class ProcessController extends Controller
     {
         Process::createFromRequest($request);
 
-        return to_route('processes.index');
+        return redirect($request->previous_url);
     }
 
     private function getRequestParams()
