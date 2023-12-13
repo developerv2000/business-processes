@@ -78,6 +78,24 @@ class ProcessController extends Controller
         return redirect($request->previous_url);
     }
 
+    public function edit(Process $item)
+    {
+        return view('processes.edit.index', compact('item'));
+    }
+
+    /**
+     * Return required stage inputs for each stage
+     * on status select change
+     */
+    public function getEditFormStageInputs(Request $request)
+    {
+        $item = Process::find($request->process_id);
+        $childStatus = ProcessStatus::find($request->status_id);
+        $processStage = $childStatus->parent->stage;
+
+        return view('processes.edit.stage-inputs', compact('item', 'processStage'));
+    }
+
     private function getRequestParams()
     {
         return Helper::getRequestParamsFor(Process::class);

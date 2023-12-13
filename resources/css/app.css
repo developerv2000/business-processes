@@ -1482,7 +1482,8 @@ a {
 
 /* ------------ Processes pages ------------ */
 .processes-create__year-inputs-container:empty,
-.processes-create__stage-inputs-container:empty {
+.processes-create__stage-inputs-container:empty,
+.processes-edit__stage-inputs-container:empty {
     display: none;
 }
 /* ------------ /END Processes pages ------------ */

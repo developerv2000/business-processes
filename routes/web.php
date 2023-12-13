@@ -95,7 +95,8 @@ Route::middleware('auth', 'auth.session')->group(function () {
         Route::post('/export', 'export')->name('export');
 
         Route::post('/get-create-form-stage-inputs', 'getCreateFormStageInputs');  // Used while creating on status change
-        Route::post('/get-create-form-year-inputs', 'getCreateFormYearInputs');  // Used while creating on countries change
+        Route::post('/get-create-form-year-inputs', 'getCreateFormYearInputs');  // Used while creating on status & countries change
+        Route::post('/get-edit-form-stage-inputs', 'getEditFormStageInputs');  // Used while editing on status change
     });
 
     Route::prefix('mnns')->controller(MnnController::class)->name('mnns.')->middleware('moderator')->group(function () {

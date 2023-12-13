@@ -3,6 +3,7 @@ import './bootstrap';
 const GET_GENERICS_SIMILAR_PRODUCTS_URL = '/generics/get-similar-products'
 const GET_PROCESSES_CREATE_FORM_INPUTS_URL = '/processes/get-create-form-stage-inputs'
 const GET_PROCESSES_CREATE_FORM_YEAR_INPUTS_URL = '/processes/get-create-form-year-inputs'
+const GET_PROCESSES_EDIT_FORM_INPUTS_URL = '/processes/get-edit-form-stage-inputs'
 
 const windowPathName = window.location.origin + window.location.pathname;
 const mainWrapper = document.querySelector('.main-wrapper');
@@ -281,8 +282,8 @@ function setupForms() {
     }
 
     // ********** Processes create/update form **********
-    // Statuses select
-    if (document.querySelector('.statusses-selectize')) {
+    // Create form statuses select
+    if (document.querySelector('.processes-create .statusses-selectize')) {
         $('.statusses-selectize').selectize({
             plugins: ["auto_position"],
             onChange(value) {
@@ -291,12 +292,22 @@ function setupForms() {
         });
     }
 
-    // Country codes select
+    // Create form country codes select
     if (document.querySelector('.country-codes-selectize')) {
         countryCodesSelectize = $('.country-codes-selectize').selectize({
             plugins: ["auto_position"],
             onChange(values) {
                 updateCreateProcessesYearInputs(values);
+            }
+        });
+    }
+
+    // Edit form statuses select
+    if (document.querySelector('.processes-edit .statusses-selectize')) {
+        $('.statusses-selectize').selectize({
+            plugins: ["auto_position"],
+            onChange(value) {
+                updateEditProcessesStageInputs(value);
             }
         });
     }
@@ -342,6 +353,29 @@ function updateCreateProcessesYearInputs(values) {
         .then(response => {
             // Replace old inputs with new one`s
             document.querySelector('.processes-create__year-inputs-container').innerHTML = response.data;
+        })
+        .finally(function () {
+            hideSpinner();
+        });
+}
+
+function updateEditProcessesStageInputs(status_id) {
+    showSpinner();
+
+    const data = {
+        'process_id': document.querySelector('input[name="id"]').value,
+        'status_id': status_id,
+    }
+
+    axios.post(GET_PROCESSES_EDIT_FORM_INPUTS_URL, data, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => {
+            // Replace old inputs with new one`s
+            document.querySelector('.processes-edit__stage-inputs-container').innerHTML = response.data;
+            initializeNewComponents();
         })
         .finally(function () {
             hideSpinner();
