@@ -40,12 +40,14 @@
         {{-- Stage 3 (АЦ) --}}
         @if ($processStage > 2)
             <div class="form__divider">
-                @include('form-components.edit.float-input', [
-                    'label' => 'Price 1',
-                    'step' => 0.01,
-                    'required' => true,
-                    'attribute' => 'manufacturer_first_offered_price',
-                ])
+                @unless ($item->manufacturer_first_offered_price)
+                    @include('form-components.edit.float-input', [
+                        'label' => 'Price 1',
+                        'step' => 0.01,
+                        'required' => true,
+                        'attribute' => 'manufacturer_first_offered_price',
+                    ])
+                @endunless
 
                 @include('form-components.edit.float-input', [
                     'label' => 'Price 2',
@@ -62,12 +64,14 @@
                     'optionsCaptionAttribute' => 'name',
                 ])
 
-                @include('form-components.edit.float-input', [
-                    'label' => 'Our price 1',
-                    'step' => 0.01,
-                    'required' => true,
-                    'attribute' => 'our_first_offered_price',
-                ])
+                @unless ($item->our_first_offered_price)
+                    @include('form-components.edit.float-input', [
+                        'label' => 'Our price 1',
+                        'step' => 0.01,
+                        'required' => true,
+                        'attribute' => 'our_first_offered_price',
+                    ])
+                @endunless
 
                 @include('form-components.edit.float-input', [
                     'label' => 'Our price 2',

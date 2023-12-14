@@ -96,6 +96,13 @@ class ProcessController extends Controller
         return view('processes.edit.stage-inputs', compact('item', 'processStage'));
     }
 
+    public function update(UpdateProcessRequest $request, Process $item)
+    {
+        $item->updateFromRequest($request);
+
+        return redirect($request->input('previous_url'));
+    }
+
     private function getRequestParams()
     {
         return Helper::getRequestParamsFor(Process::class);

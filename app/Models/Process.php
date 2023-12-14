@@ -249,6 +249,14 @@ class Process extends Model
         }
     }
 
+    public function updateFromRequest($request)
+    {
+        $this->update($request->all());
+
+        // BelongsToMany relations
+        $this->owners()->sync($request->input('owners'));
+    }
+
     /**
      * Validate days_past field relative to date field
      *
@@ -259,10 +267,11 @@ class Process extends Model
      */
     public function validateDaysPast($now = null)
     {
+        $item = $this->fresh();
         if (!$now) $now = Carbon::createFromFormat('Y-m-d', date('Y-m-d'));
-        $date = Carbon::createFromFormat('Y-m-d', $this->date);
-        $this->days_past = $date->diffInDays($now, false);
-        $this->saveQuietly();
+        $date = Carbon::createFromFormat('Y-m-d', $item->date);
+        $item->days_past = $date->diffInDays($now, false);
+        $item->saveQuietly();
     }
 
     /**
@@ -273,7 +282,7 @@ class Process extends Model
     public function validateStatusUpdateDate()
     {
         if ($this->isDirty('status_id')) {
-            $this->status_update_date = now();
+            $this->status_update_date = date('Y-m-d');
         }
     }
 
@@ -288,7 +297,10 @@ class Process extends Model
             $generic = Generic::find($this->generic_id);
             $generic->expiration_date_id = request('expiration_date_id');
             $generic->minimum_volume = request('minimum_volume');
-            $generic->save();
+
+            if ($generic->isDirty('expiration_date_id') || $generic->isDirty('minimum_volume')) {
+                $generic->save();
+            }
         }
     }
 
@@ -299,15 +311,17 @@ class Process extends Model
      */
     public function validateStageTwoStartDate()
     {
+        $item = $this->fresh();
+
         // Remove start date on status backward
-        if ($this->status->parent->stage == 1) {
-            $this->stage_2_start_date = null;
-            $this->saveQuietly();
+        if ($item->status->parent->stage == 1) {
+            $item->stage_2_start_date = null;
+            $item->saveQuietly();
         }
         // Else update date if already not set
-        else if (!$this->stage_2_start_date) {
-            $this->stage_2_start_date = now();
-            $this->saveQuietly();
+        else if (!$item->stage_2_start_date) {
+            $item->stage_2_start_date = date('Y-m-d');
+            $item->saveQuietly();
         }
     }
 
@@ -318,14 +332,16 @@ class Process extends Model
      */
     public function validatePriceInUSD()
     {
-        $price = $this->manufacturer_followed_offered_price;
-        $currencyName = $this->currency?->name;
+        $item = $this->fresh();
+
+        $price = $item->manufacturer_followed_offered_price;
+        $currencyName = $item->currency?->name;
 
         // $price & $currency can be null on early stages
         if ($price & $currencyName) {
             $converted = Currency::convertToUSD($price, $currencyName);
-            $this->manufacturer_followed_offered_price_in_usd = $converted;
-            $this->saveQuietly();
+            $item->manufacturer_followed_offered_price_in_usd = $converted;
+            $item->saveQuietly();
         }
     }
 
@@ -339,7 +355,7 @@ class Process extends Model
     {
         if ($this->increased_price) {
             $this->increased_price_percentage = round(($this->increased_price * 100) / $this->agreed_price, 2);
-            $this->increased_price_date = now();
+            $this->increased_price_date = date('Y-m-d');
             $this->saveQuietly();
         }
     }
@@ -354,7 +370,7 @@ class Process extends Model
     {
         if ($this->isDirty('increased_price')) {
             $this->increased_price_percentage = round(($this->increased_price * 100) / $this->agreed_price, 2);
-            $this->increased_price_date = now();
+            $this->increased_price_date = date('Y-m-d');
         }
     }
 }
