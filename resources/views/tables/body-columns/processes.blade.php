@@ -119,7 +119,7 @@
         {{ $item->generic->expirationDate->limit }}
     @break
 
-    @case('Minimum value')
+    @case('Minimum volume')
         {{ $item->generic->minimum_volume }}
     @break
 
@@ -135,7 +135,7 @@
         {{ $item->clinical_trial_year }}
     @break
 
-    @case('Сountries КИ/БЭ')
+    @case('Countries КИ/БЭ')
         {{ $item->clinical_trial_countries }}
     @break
 

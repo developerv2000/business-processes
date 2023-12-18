@@ -311,6 +311,11 @@ function setupForms() {
             }
         });
     }
+
+    // ********** Excape multiple export action **********
+    document.querySelector('.export-form')?.addEventListener('submit', (evt) => {
+        evt.target.querySelector('.button').disabled = true;
+    });
 }
 
 function updateCreateProcessesStageInputs(status_id) {

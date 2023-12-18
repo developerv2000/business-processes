@@ -204,6 +204,10 @@ a {
     display: none;
 }
 
+.button:disabled {
+    cursor: not-allowed;
+}
+
 .button--main {
     background-color: var(--main-color);
 }

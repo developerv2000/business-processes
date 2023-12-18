@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class Process extends Model
 {
@@ -15,6 +16,9 @@ class Process extends Model
     const DEFAULT_ORDER_BY = 'id';
     const DEFAULT_ORDER_TYPE = 'desc';
     const DEFAULT_PAGINATION_LIMIT = 40;
+
+    const STORAGE_EXCEL_TEMPLATE_PATH = 'app/excel/templates/vps.xlsx';
+    const STORAGE_EXCEL_EXPORT_PATH = 'app/excel/exports/vps';
 
     public $timestamps = false;
     protected $guarded = ['id'];
@@ -386,5 +390,84 @@ class Process extends Model
             $this->increased_price_percentage = round(($this->increased_price * 100) / $this->agreed_price, 2);
             $this->increased_price_date = date('Y-m-d');
         }
+    }
+
+    public static function exportItems($items)
+    {
+        $template = storage_path(self::STORAGE_EXCEL_TEMPLATE_PATH);
+        $spreadsheet = IOFactory::load($template);
+        $worksheet = $spreadsheet->getActiveSheet();
+        $row = 2;
+
+        // fill excel cells
+        $items->chunk(400, function ($items) use (&$worksheet, &$row) {
+            foreach ($items as $item) {
+                $worksheet->setCellValue('A' . $row, $item->id);
+                $worksheet->setCellValue('B' . $row, $item->status_update_date);
+                $worksheet->setCellValue('C' . $row, $item->countryCode->name);
+                $worksheet->setCellValue('D' . $row, $item->manufacturer->category->name);
+                $worksheet->setCellValue('E' . $row, $item->manufacturer->name);
+                $worksheet->setCellValue('F' . $row, $item->manufacturer->country->name);
+                $worksheet->setCellValue('G' . $row, $item->manufacturer->bdm->name);
+                $worksheet->setCellValue('H' . $row, $item->manufacturer->analyst->name);
+                $worksheet->setCellValue('I' . $row, $item->generic->category->name);
+                $worksheet->setCellValue('J' . $row, $item->generic->mnn->name);
+                $worksheet->setCellValue('K' . $row, $item->generic->form->name);
+                $worksheet->setCellValue('L' . $row, $item->generic->dose);
+                $worksheet->setCellValue('M' . $row, $item->generic->expirationDate->limit);
+                $worksheet->setCellValue('N' . $row, $item->generic->pack);
+
+                $worksheet->setCellValue('O' . $row, $item->marketing_authorization_holder);
+                $worksheet->setCellValue('P' . $row, $item->trademark_en);
+                $worksheet->setCellValue('Q' . $row, $item->trademark_ru);
+
+                $worksheet->setCellValue('R' . $row, $item->manufacturer_first_offered_price);
+                $worksheet->setCellValue('S' . $row, $item->manufacturer_followed_offered_price);
+                $worksheet->setCellValue('T' . $row, $item->currency?->name);
+                $worksheet->setCellValue('U' . $row, $item->manufacturer_followed_offered_price_in_usd);
+                $worksheet->setCellValue('V' . $row, $item->agreed_price);
+                $worksheet->setCellValue('W' . $row, $item->our_followed_offered_price);
+                $worksheet->setCellValue('X' . $row, $item->our_first_offered_price);
+                $worksheet->setCellValue('Y' . $row, $item->increased_price);
+                $worksheet->setCellValue('Z' . $row, $item->increased_price_percentage);
+                $worksheet->setCellValue('AA' . $row, $item->increased_price_date);
+                $worksheet->setCellValue('AB' . $row, $item->generic->expirationDate->limit);
+                $worksheet->setCellValue('AC' . $row, $item->generic->minimum_volume);
+
+                $worksheet->setCellValue('AD' . $row, $item->product_link);
+                $worksheet->setCellValue('AE' . $row, $item->dossier_status);
+                $worksheet->setCellValue('AF' . $row, $item->clinical_trial_year);
+                $worksheet->setCellValue('AG' . $row, $item->clinical_trial_countries);
+                $worksheet->setCellValue('AH' . $row, $item->clinical_trial_ich_country);
+
+                $zones = $item->generic->zones->pluck('name')->implode(' ');
+                $worksheet->setCellValue('AI' . $row, $zones);
+
+                $worksheet->setCellValue('AJ' . $row, $item->additional_1);
+                $worksheet->setCellValue('AK' . $row, $item->additional_2);
+                $worksheet->setCellValue('AL' . $row, $item->status->name);
+                $worksheet->setCellValue('AM' . $row, $item->status->parent->name);
+                $worksheet->setCellValue('AN' . $row, $item->stage_2_start_date);
+                $worksheet->setCellValue('AO' . $row, $item->year_1);
+                $worksheet->setCellValue('AP' . $row, $item->year_2);
+                $worksheet->setCellValue('AQ' . $row, $item->year_3);
+
+                $owners = $item->owners->pluck('name')->implode(' ');
+                $worksheet->setCellValue('AR' . $row, $owners);
+
+                $worksheet->setCellValue('AS' . $row, $item->date);
+                $worksheet->setCellValue('AT' . $row, $item->days_past);
+                $row++;
+            }
+        });
+
+        // save file
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $filename = date('Y-m-d H-i-s') . '.xlsx';
+        $filename = Helper::escapeDuplicateFilename($filename, storage_path(self::STORAGE_EXCEL_EXPORT_PATH));
+        $filePath = storage_path(self::STORAGE_EXCEL_EXPORT_PATH  . '/' . $filename);
+        $writer->save($filePath);
+
+        return response()->download($filePath);
     }
 }

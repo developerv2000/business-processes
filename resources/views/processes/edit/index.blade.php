@@ -29,7 +29,7 @@
 
         <div class="form__divider">
             @include('form-components.edit.belongs-to-select', [
-                'label' => 'Country code',
+                'label' => 'Country',
                 'required' => true,
                 'attribute' => 'country_code_id',
                 'options' => $countryCodes,

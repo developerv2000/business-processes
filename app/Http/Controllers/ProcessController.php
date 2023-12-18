@@ -112,6 +112,15 @@ class ProcessController extends Controller
         return redirect($request->input('previous_url'));
     }
 
+    public function export()
+    {
+        Helper::addExportParamsToRequest();
+        $params = self::getRequestParams();
+        $items = Process::getItemsFinalized($params, null, 'query');
+
+        return Process::exportItems($items);
+    }
+
     private function getRequestParams()
     {
         return Helper::getRequestParamsFor(Process::class);

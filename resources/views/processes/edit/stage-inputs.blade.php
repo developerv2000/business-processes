@@ -121,7 +121,7 @@
         @if ($processStage > 3)
             <div class="form__divider">
                 @include('form-components.edit.float-input', [
-                    'label' => 'Price increased NEW PRICE',
+                    'label' => 'Price increased (new price)',
                     'step' => 0.01,
                     'required' => false,
                     'attribute' => 'increased_price',
