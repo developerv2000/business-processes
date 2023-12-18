@@ -34,9 +34,21 @@ class Generic extends Model
     // ********** Events **********
     protected static function booted(): void
     {
+        static::deleting(function ($item) {
+            foreach ($item->untrashedProcesses as $process) {
+                $process->delete();
+            }
+        });
+
         static::restoring(function ($item) {
             if ($item->manufacturer->trashed()) {
                 $item->manufacturer->restoreQuietly();
+            }
+
+            foreach ($item->processes as $process) {
+                if ($process->trashed()) {
+                    $process->restoreQuietly();
+                }
             }
         });
 
@@ -45,6 +57,10 @@ class Generic extends Model
 
             foreach ($item->comments as $comment) {
                 $comment->delete();
+            }
+
+            foreach ($item->processes as $process) {
+                $process->forceDelete();
             }
         });
     }

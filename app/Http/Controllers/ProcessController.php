@@ -30,6 +30,15 @@ class ProcessController extends Controller
         return view('processes.index', compact('params', 'items', 'allColumns', 'visibleColumns'));
     }
 
+    public function trash(Request $request)
+    {
+        $params = self::getRequestParams();
+        $trashedItems = Process::onlyTrashed();
+        $items = Process::getItemsFinalized($params, $trashedItems);
+
+        return view('processes.trash', compact('params', 'items'));
+    }
+
     public function create(Request $request)
     {
         $generic = Generic::find($request->generic_id);

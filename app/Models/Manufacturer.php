@@ -54,6 +54,10 @@ class Manufacturer extends Model
             foreach ($item->generics as $generic) {
                 $generic->delete();
             }
+
+            foreach ($item->processes as $process) {
+                $process->delete();
+            }
         });
 
         static::restored(function ($item) {
@@ -63,6 +67,10 @@ class Manufacturer extends Model
 
             foreach ($item->generics()->onlyTrashed()->get() as $generic) {
                 $generic->restore();
+            }
+
+            foreach ($item->processes()->onlyTrashed()->get() as $process) {
+                $process->restore();
             }
         });
 
@@ -85,6 +93,10 @@ class Manufacturer extends Model
 
             foreach ($item->generics()->withTrashed()->get() as $generic) {
                 $generic->forceDelete();
+            }
+
+            foreach ($item->processes()->withTrashed()->get() as $process) {
+                $process->forceDelete();
             }
         });
     }
@@ -148,6 +160,18 @@ class Manufacturer extends Model
     public function generics()
     {
         return $this->hasMany(Generic::class);
+    }
+
+    public function processes()
+    {
+        return $this->hasManyThrough(
+            Process::class,
+            Generic::class,
+            'manufacturer_id', // Foreign key on Generics table
+            'generic_id',   // Foreign key on Processes table
+            'id',         // Local key on Manufacturers table
+            'id'          // Local key on Generics table
+        );
     }
 
     // ********** Querying **********

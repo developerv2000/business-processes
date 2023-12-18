@@ -52,12 +52,26 @@ class Process extends Model
             $item->validateStageTwoStartDate();
             $item->validatePriceInUSD();
         });
+
+        static::restoring(function ($item) {
+            if ($item->generic->trashed()) {
+                $item->generic->restoreQuietly();
+            }
+
+            if ($item->manufacturer->trashed()) {
+                $item->manufacturer->restoreQuietly();
+            }
+        });
+
+        static::forceDeleting(function ($item) {
+            $item->owners()->detach();
+        });
     }
 
     // ********** Relations **********
     public function generic()
     {
-        return $this->belongsTo(Generic::class);
+        return $this->belongsTo(Generic::class)->withTrashed();
     }
 
     public function manufacturer()
@@ -69,7 +83,7 @@ class Process extends Model
             'id', // Foreign key on the Manufacturer table
             'generic_id', // Local key on the Process table
             'manufacturer_id' // Local key on the Generic table
-        );
+        )->withTrashedParents()->withTrashed();
     }
 
     public function countryCode()
