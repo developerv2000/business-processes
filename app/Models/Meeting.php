@@ -58,8 +58,8 @@ class Meeting extends Model
     private static function filter($items)
     {
         $whereColumns = [
-            'manufacturer_id',
             'year',
+            'manufacturer_id',
         ];
 
         $whereLikeColumns = [
@@ -68,7 +68,7 @@ class Meeting extends Model
 
         $whereRelationColumns = [
             [
-                'name' => 'country_id',
+                'name' => 'bdm_user_id',
                 'relationName' => 'manufacturer',
             ],
 
@@ -78,7 +78,7 @@ class Meeting extends Model
             ],
 
             [
-                'name' => 'bdm_user_id',
+                'name' => 'country_id',
                 'relationName' => 'manufacturer',
             ],
         ];

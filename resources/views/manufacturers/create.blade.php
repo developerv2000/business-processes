@@ -63,13 +63,13 @@
             ])
 
             @include('form-components.create.textarea', [
-                'label' => 'Profile',
+                'label' => 'About company',
                 'required' => false,
                 'attribute' => 'profile',
             ])
 
             @include('form-components.create.textarea', [
-                'label' => 'Relationships',
+                'label' => 'Relationship',
                 'required' => false,
                 'attribute' => 'relationships',
             ])
@@ -105,7 +105,7 @@
             ])
 
             @include('form-components.create.multiple-select', [
-                'label' => 'Prod/categ',
+                'label' => 'Product category',
                 'required' => true,
                 'attribute' => 'productCategories[]',
                 'options' => $productCategories,
@@ -113,7 +113,7 @@
             ])
 
             @include('form-components.create.multiple-select', [
-                'label' => 'Blacklist',
+                'label' => 'Black list',
                 'required' => false,
                 'attribute' => 'blacklists[]',
                 'options' => $blacklists,

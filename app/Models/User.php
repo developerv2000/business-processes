@@ -333,7 +333,6 @@ class User extends Authenticatable
         $order = 1;
 
         return [
-            ['name' => 'ID', 'order' => $order++, 'width' => 54, 'visible' => 1],
             ['name' => 'Edit', 'order' => $order++, 'width' => 44, 'visible' => 1],
             ['name' => 'Year', 'order' => $order++, 'width' => 64, 'visible' => 1],
             ['name' => 'Country', 'order' => $order++, 'width' => 144, 'visible' => 1],
@@ -345,6 +344,7 @@ class User extends Authenticatable
             ['name' => 'Topic', 'order' => $order++, 'width' => 320, 'visible' => 1],
             ['name' => 'Result', 'order' => $order++, 'width' => 320, 'visible' => 1],
             ['name' => 'Outside the exhibition', 'order' => $order++, 'width' => 320, 'visible' => 1],
+            ['name' => 'ID', 'order' => $order++, 'width' => 90, 'visible' => 1],
         ];
     }
 

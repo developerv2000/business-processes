@@ -3,10 +3,6 @@
         @include('tables.components.td-edit', ['href' => route('meetings.edit', $item->id)])
     @break
 
-    @case('ID')
-        {{ $item->id }}
-    @break
-
     @case('Year')
         {{ $item->year }}
     @break
@@ -47,7 +43,7 @@
         @include('tables.components.td-limited-text', ['text' => $item->outside_the_exhibition])
     @break
 
-    @default
-        <h3>Undefined!</h3>
+    @case('ID')
+        {{ $item->id }}
     @break
 @endswitch

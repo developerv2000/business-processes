@@ -57,6 +57,7 @@
     "Status": "Статус",
     "Active": "Активный",
     "Stoped": "Остановлено",
+    "Stop/pause": "Стоп/пауза",
     "Important": "Важный",
     "Product category": "Категория продуктов",
     "Zones": "Зоны",
@@ -68,6 +69,13 @@
     "Date of creation": "Дата Создания",
     "Update Date": "Дата Обновления",
     "ID": "Номер",
+
+    "Year": "Год",
+    "Who met": "Кто встретил",
+    "Plan": "План",
+    "Topic": "Тема",
+    "Result": "Итог",
+    "Outside the exhibition": "За пределами выставки",
 
     "AAAAAAAAAAAA": "BBBBBBBBBBBBBBBBBB",
     "AAAAAAAAAAAA": "BBBBBBBBBBBBBBBBBB",

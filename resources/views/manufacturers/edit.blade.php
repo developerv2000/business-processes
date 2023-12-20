@@ -64,13 +64,13 @@
             ])
 
             @include('form-components.edit.textarea', [
-                'label' => 'Profile',
+                'label' => 'About company',
                 'required' => false,
                 'attribute' => 'profile',
             ])
 
             @include('form-components.edit.textarea', [
-                'label' => 'Relationships',
+                'label' => 'Relationship',
                 'required' => false,
                 'attribute' => 'relationships',
             ])
@@ -109,7 +109,7 @@
             ])
 
             @include('form-components.edit.multiple-select', [
-                'label' => 'Prod/categ',
+                'label' => 'Product category',
                 'required' => true,
                 'attribute' => 'productCategories[]',
                 'relationName' => 'productCategories',
@@ -118,7 +118,7 @@
             ])
 
             @include('form-components.edit.multiple-select', [
-                'label' => 'Blacklist',
+                'label' => 'Black list',
                 'required' => false,
                 'attribute' => 'blacklists[]',
                 'relationName' => 'blacklists',
