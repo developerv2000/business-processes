@@ -85,11 +85,6 @@
             ])
 
             @include('form-components.edit.switch', [
-                'label' => 'Cooperates',
-                'attribute' => 'cooperates',
-            ])
-
-            @include('form-components.edit.switch', [
                 'label' => 'Important',
                 'attribute' => 'important',
             ])

@@ -1,28 +1,6 @@
 @switch($column['name'])
-    @case('ID')
-        {{ $item->id }}
-    @break
-
     @case('Edit')
         @include('tables.components.td-edit', ['href' => route('manufacturers.edit', $item->id)])
-    @break
-
-    @case('Created at')
-        @include('tables.components.td-date', ['attribute' => 'created_at'])
-    @break
-
-    @case('Updated at')
-        @include('tables.components.td-date', ['attribute' => 'updated_at'])
-    @break
-
-    @case('Category')
-        <span @class([
-            'badge',
-            'badge--yellow' => $item->category->name == 'УДС',
-            'badge--purple' => $item->category->name == 'НПП',
-        ])>
-            {{ $item->category->name }}
-        </span>
     @break
 
     @case('BDM')
@@ -33,13 +11,6 @@
         <x-other.ava image="{{ $item->analyst->photo }}" name="{{ $item->analyst->name }}"></x-other.ava>
     @break
 
-    @case('Meetings')
-        @include('tables.components.td-view-link', [
-            'href' => route('meetings.index') . '?manufacturer_id=' . $item->id,
-            'text' => __('View')
-        ])
-    @break
-
     @case('Country')
         {{ $item->country->name }}
     @break
@@ -48,30 +19,14 @@
         {{ $item->name }}
     @break
 
-    @case('Website')
-        @include('tables.components.td-limited-text', ['text' => $item->website])
-    @break
-
-    @case('Profile')
-        @include('tables.components.td-limited-text', ['text' => $item->profile])
-    @break
-
-    @case('Relationships')
-        @include('tables.components.td-limited-text', ['text' => $item->relationships])
-    @break
-
-    @case('Presence')
-        <div class="td__limited-text" data-on-click="toggle-text-limit">
-            @foreach ($item->presences as $presence)
-                {{ $presence->name }}<br>
-            @endforeach
-        </div>
-    @break
-
-    @case('Cooperates')
-        @if ($item->cooperates)
-            <span class="badge badge--orange">{{ __('Cooperates') }}</span>
-        @endif
+    @case('Category')
+        <span @class([
+            'badge',
+            'badge--yellow' => $item->category->name == 'УДС',
+            'badge--purple' => $item->category->name == 'НПП',
+        ])>
+            {{ $item->category->name }}
+        </span>
     @break
 
     @case('Status')
@@ -88,13 +43,7 @@
         @endif
     @break
 
-    @case('Zones')
-        @foreach ($item->zones as $zone)
-            {{ $zone->name }}<br>
-        @endforeach
-    @break
-
-    @case('Prod/categ')
+    @case('Product category')
         <div class="td__categories">
             @foreach ($item->productCategories as $cat)
                 <span class="badge badge--green">{{ $cat->name }}</span>
@@ -102,17 +51,50 @@
         </div>
     @break
 
-    @case('Blacklist')
+    @case('Zones')
+        @foreach ($item->zones as $zone)
+            {{ $zone->name }}<br>
+        @endforeach
+    @break
+
+    @case('Black list')
         @foreach ($item->blacklists as $list)
             {{ $list->name }}<br>
         @endforeach
+    @break
+
+    @case('Presence')
+        <div class="td__limited-text" data-on-click="toggle-text-limit">
+            @foreach ($item->presences as $presence)
+                {{ $presence->name }}<br>
+            @endforeach
+        </div>
+    @break
+
+    @case('Website')
+        @include('tables.components.td-limited-text', ['text' => $item->website])
+    @break
+
+    @case('About company')
+        @include('tables.components.td-limited-text', ['text' => $item->profile])
+    @break
+
+    @case('Relationship')
+        @include('tables.components.td-limited-text', ['text' => $item->relationships])
+    @break
+
+    @case('Comments')
+        @include('tables.components.td-view-link', [
+            'href' => route('comments.manufacturer', $item->id),
+            'text' => __('View'),
+        ])
     @break
 
     @case('Last comment')
         @include('tables.components.td-limited-text', ['text' => $item->lastComment?->body])
     @break
 
-    @case('Comment date')
+    @case('Date Comments')
         @if ($item->lastComment)
             <div class="capitalized">
                 {{ Carbon\Carbon::parse($item->lastComment->created_at)->isoformat('DD MMM Y') }}
@@ -120,15 +102,23 @@
         @endif
     @break
 
-    @case('All comments')
+    @case('Date of creation')
+        @include('tables.components.td-date', ['attribute' => 'created_at'])
+    @break
+
+    @case('Update Date')
+        @include('tables.components.td-date', ['attribute' => 'updated_at'])
+    @break
+
+    @case('Meetings')
         @include('tables.components.td-view-link', [
-            'href' => route('comments.manufacturer', $item->id),
-            'text' => __('View')
+            'href' => route('meetings.index') . '?manufacturer_id=' . $item->id,
+            'text' => __('View'),
         ])
     @break
 
-    @default
-        <h3>Undefined!</h3>
+    @case('ID')
+        {{ $item->id }}
     @break
 
 @endswitch

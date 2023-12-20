@@ -14,16 +14,15 @@ return new class extends Migration
         Schema::create('manufacturers', function (Blueprint $table) {
             $table->unsignedInteger('id')->autoIncrement();
             $table->string('name')->unique();
+            $table->unsignedSmallInteger('bdm_user_id');
+            $table->unsignedSmallInteger('analyst_user_id');
+            $table->unsignedSmallInteger('country_id');
             $table->unsignedSmallInteger('category_id');
+            $table->boolean('active');
+            $table->boolean('important')->default(0);
             $table->string('website')->nullable();
             $table->string('profile', 6000)->nullable();
             $table->string('relationships', 6000)->nullable();
-            $table->unsignedSmallInteger('country_id');
-            $table->unsignedSmallInteger('bdm_user_id');
-            $table->unsignedSmallInteger('analyst_user_id');
-            $table->boolean('active');
-            $table->boolean('cooperates')->default(0);
-            $table->boolean('important')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

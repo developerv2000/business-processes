@@ -33,7 +33,6 @@ class ManufacturerFactory extends Factory
             'country_id' => rand(1, Country::count()),
             'bdm_user_id' => User::bdms()->inRandomOrder()->first()->id,
             'analyst_user_id' => User::analysts()->inRandomOrder()->first()->id,
-            'cooperates' => fake()->boolean(),
             'active' => fake()->boolean(),
             'important' => fake()->boolean(),
             'created_at' => fake()->dateTimeBetween('-10 year', 'now')

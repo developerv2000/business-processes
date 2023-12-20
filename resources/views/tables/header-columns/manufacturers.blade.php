@@ -4,37 +4,7 @@
         @include('tables.components.th-edit')
     @break
 
-    {{-- Static text --}}
-    @case('Meetings')
-    @case('Profile')
-    @case('Relationships')
-    @case('Presence')
-    @case('Zones')
-    @case('Prod/categ')
-    @case('Blacklist')
-    @case('Last comment')
-    @case('Comment date')
-    @case('All comments')
-        @include('tables.components.th-unlinked-title')
-    @break
-
     {{-- Links --}}
-    @case('ID')
-        @include('tables.components.th-link', ['orderBy' => 'id'])
-    @break
-
-    @case('Created at')
-        @include('tables.components.th-link', ['orderBy' => 'created_at'])
-    @break
-
-    @case('Updated at')
-        @include('tables.components.th-link', ['orderBy' => 'updated_at'])
-    @break
-
-    @case('Category')
-        @include('tables.components.th-link', ['orderBy' => 'category_id'])
-    @break
-
     @case('BDM')
         @include('tables.components.th-link', ['orderBy' => 'bdm_user_id'])
     @break
@@ -51,12 +21,8 @@
         @include('tables.components.th-link', ['orderBy' => 'name'])
     @break
 
-    @case('Website')
-        @include('tables.components.th-link', ['orderBy' => 'website'])
-    @break
-
-    @case('Cooperates')
-        @include('tables.components.th-link', ['orderBy' => 'cooperates'])
+    @case('Category')
+        @include('tables.components.th-link', ['orderBy' => 'category_id'])
     @break
 
     @case('Status')
@@ -67,7 +33,16 @@
         @include('tables.components.th-link', ['orderBy' => 'important'])
     @break
 
+    @case('Date of creation')
+        @include('tables.components.th-link', ['orderBy' => 'created_at'])
+    @break
+
+    @case('Update Date')
+        @include('tables.components.th-link', ['orderBy' => 'updated_at'])
+    @break
+
     @default
-        <h3>Undefined!</h3>
+        {{-- Static text --}}
+        @include('tables.components.th-unlinked-title')
     @break
 @endswitch

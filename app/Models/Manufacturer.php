@@ -187,41 +187,32 @@ class Manufacturer extends Model
     private static function filter($items)
     {
         $whereColumns = [
-            'category_id',
-            'bdm_user_id',
             'analyst_user_id',
+            'bdm_user_id',
             'country_id',
-            'cooperates',
+            'category_id',
             'active',
             'important',
         ];
 
         $whereDateColumns = [
-            'created_at'
+            'created_at',
+            'updated_at',
         ];
 
         $whereLikeColumns = [
             'name'
         ];
 
-        $whereBetweenDateColumns = [
-            [
-                'name' => 'created_at',
-                'from_date' => 'created_from_date',
-                'to_date' => 'created_to_date',
-            ]
-        ];
-
         $belongsToManyRelations = [
-            'zones',
             'productCategories',
+            'zones',
             'blacklists',
         ];
 
         $items = Helper::filterWhereColumns($items, $whereColumns);
         $items = Helper::filterWhereDateColumns($items, $whereDateColumns);
         $items = Helper::filterWhereLikeColumns($items, $whereLikeColumns);
-        $items = Helper::filterWhereBetweenDateColumns($items, $whereBetweenDateColumns);
         $items = Helper::filterBelongsToManyRelations($items, $belongsToManyRelations);
 
         return $items;
@@ -304,38 +295,37 @@ class Manufacturer extends Model
         // fill excel cells
         $items->chunk(400, function ($items) use (&$worksheet, &$row) {
             foreach ($items as $item) {
-                $worksheet->setCellValue('A' . $row, $item->id);
-                $worksheet->setCellValue('B' . $row, $item->updated_at);
-                $worksheet->setCellValue('C' . $row, $item->bdm->name);
-                $worksheet->setCellValue('D' . $row, $item->analyst->name);
+                $worksheet->setCellValue('A' . $row, $item->bdm->name);
+                $worksheet->setCellValue('B' . $row, $item->analyst->name);
+                $worksheet->setCellValue('C' . $row, $item->country->name);
+                $worksheet->setCellValue('D' . $row, $item->name);
                 $worksheet->setCellValue('E' . $row, $item->category->name);
-                $worksheet->setCellValue('F' . $row, $item->country->name);
-                $worksheet->setCellValue('G' . $row, $item->name);
-                $worksheet->setCellValue('H' . $row, $item->cooperates ? __('Cooperates') : '');
-                $worksheet->setCellValue('I' . $row, $item->active ? __('Active') : __('Stoped'));
-                $worksheet->setCellValue('J' . $row, $item->important ? __('Important') : '');
+                $worksheet->setCellValue('F' . $row, $item->active ? __('Active') : __('Stoped'));
+                $worksheet->setCellValue('G' . $row, $item->important ? __('Important') : '');
 
                 $prodCategories = $item->productCategories->pluck('name')->implode(' ');
-                $worksheet->setCellValue('K' . $row, $prodCategories);
+                $worksheet->setCellValue('H' . $row, $prodCategories);
 
                 $zones = $item->zones->pluck('name')->implode(' ');
-                $worksheet->setCellValue('L' . $row, $zones);
+                $worksheet->setCellValue('I' . $row, $zones);
 
                 $blacklists = $item->blacklists->pluck('name')->implode(' ');
-                $worksheet->setCellValue('M' . $row, $blacklists);
+                $worksheet->setCellValue('J' . $row, $blacklists);
 
                 $presences = $item->presences->pluck('name')->implode(' ');
-                $worksheet->setCellValue('N' . $row, $presences);
+                $worksheet->setCellValue('K' . $row, $presences);
 
-                $worksheet->setCellValue('O' . $row, $item->website);
-                $worksheet->setCellValue('P' . $row, $item->profile);
-                $worksheet->setCellValue('Q' . $row, $item->relationships);
+                $worksheet->setCellValue('L' . $row, $item->website);
+                $worksheet->setCellValue('M' . $row, $item->profile);
+                $worksheet->setCellValue('N' . $row, $item->relationships);
 
                 $comments = $item->comments->pluck('body')->implode(' / ');
-                $worksheet->setCellValue('R' . $row, $comments);
+                $worksheet->setCellValue('O' . $row, $comments);
 
-                $worksheet->setCellValue('S' . $row, $item->lastComment?->created_at);
-                $worksheet->setCellValue('T' . $row, $item->created_at);
+                $worksheet->setCellValue('P' . $row, $item->lastComment?->created_at);
+                $worksheet->setCellValue('Q' . $row, $item->created_at);
+                $worksheet->setCellValue('R' . $row, $item->updated_at);
+                $worksheet->setCellValue('S' . $row, $item->id);
 
                 $row++;
             }
@@ -351,6 +341,9 @@ class Manufacturer extends Model
         return response()->download($filePath);
     }
 
+    /**
+     * Used while creating/updating as radiobuttons
+     */
     public static function getStatusOptions()
     {
         return [
@@ -365,7 +358,6 @@ class Manufacturer extends Model
      */
     private function validateCheckboxAttributes($request)
     {
-        $this->cooperates = $request->cooperates ?? 0;
         $this->important = $request->important ?? 0;
         $this->save();
     }
