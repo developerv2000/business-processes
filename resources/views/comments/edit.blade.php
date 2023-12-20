@@ -18,13 +18,13 @@
 
         <div class="form__divider">
             @include('form-components.edit.textarea', [
-                'label' => 'Text',
+                'label' => 'Comment',
                 'required' => true,
                 'attribute' => 'body',
             ])
 
             @include('form-components.edit.text-input', [
-                'label' => 'Created at',
+                'label' => 'Date of creation',
                 'required' => true,
                 'attribute' => 'created_at',
             ])

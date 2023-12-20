@@ -1,25 +1,18 @@
 @switch($column['name'])
-    @case('ID')
-        {{ $item->id }}
-    @break
-
     @case('Edit')
         @include('tables.components.td-edit', ['href' => route('generics.edit', $item->id)])
     @break
 
-    @case('Created at')
-        @include('tables.components.td-date', ['attribute' => 'created_at'])
+    @case('Processes')
+        <a class="td__link td__link--margined" href="{{ route('processes.create') }}?generic_id={{ $item->id }}">{{ __('Add process') }}</a>
+
+        @include('tables.components.td-view-link', [
+            'href' => $item->processes_link,
+            'text' => __('All processes') . ' ' . $item->untrashed_processes_count,
+        ])
     @break
 
-    @case('BDM')
-        <x-other.ava image="{{ $item->manufacturer->bdm->photo }}" name="{{ $item->manufacturer->bdm->name }}"></x-other.ava>
-    @break
-
-    @case('Analyst')
-        <x-other.ava image="{{ $item->manufacturer->analyst->photo }}" name="{{ $item->manufacturer->analyst->name }}"></x-other.ava>
-    @break
-
-    @case('НПП/УДС')
+    @case('Category')
         <span @class([
             'badge',
             'badge--yellow' => $item->manufacturer->category->name == 'УДС',
@@ -33,15 +26,11 @@
         {{ $item->manufacturer->country->name }}
     @break
 
-    @case('Category')
-        <span class="badge badge--green">{{ $item->category->name }}</span>
-    @break
-
     @case('Manufacturer')
         {{ $item->manufacturer->name }}
     @break
 
-    @case('Brand')
+    @case('Manufacturer Brand')
         {{ $item->brand }}
     @break
 
@@ -53,11 +42,11 @@
         {{ $item->form->name }}
     @break
 
-    @case('Root form')
+    @case('Basic form')
         {{ $item->form->parent ? $item->form->parent->name : $item->form->name }}
     @break
 
-    @case('Dose')
+    @case('Dosage')
         @include('tables.components.td-limited-text', ['text' => $item->dose])
     @break
 
@@ -65,21 +54,16 @@
         {{ $item->pack }}
     @break
 
-    @case('Processes')
-        <a class="td__link td__link--margined" href="{{ route('processes.create') }}?generic_id={{ $item->id }}">{{ __('Add process') }}</a>
-
-        @include('tables.components.td-view-link', [
-            'href' => $item->processes_link,
-            'text' => __('All processes') . ' ' . $item->untrashed_processes_count,
-        ])
-    @break
-
-    @case('Minimum volume')
+    @case('MOQ')
         {{ $item->minimum_volume }}
     @break
 
-    @case('Expiration date')
+    @case('Shelf Life')
         {{ $item->expirationDate->limit }}
+    @break
+
+    @case('Product category')
+        <span class="badge badge--green">{{ $item->category->name }}</span>
     @break
 
     @case('Dossier')
@@ -96,19 +80,7 @@
         @include('tables.components.td-limited-text', ['text' => $item->bioequivalence])
     @break
 
-    @case('Additional payment')
-        @include('tables.components.td-limited-text', ['text' => $item->additional_payment])
-    @break
-
-    @case('Info')
-        @include('tables.components.td-limited-text', ['text' => $item->info])
-    @break
-
-    @case('Relationships')
-        @include('tables.components.td-limited-text', ['text' => $item->relationships])
-    @break
-
-    @case('Patent expiry')
+    @case('Validity period patent')
         @include('tables.components.td-limited-text', ['text' => $item->patent_expiry])
     @break
 
@@ -118,17 +90,28 @@
         @endif
     @break
 
-    @case('Marketed in EU')
+    @case('Sold in EU')
         @if ($item->marketed_in_eu)
-            <span class="badge badge--blue">{{ __('Marketed') }}</span>
+            <span class="badge badge--blue">{{ __('Sold') }}</span>
         @endif
+    @break
+
+    @case('Down payment')
+        @include('tables.components.td-limited-text', ['text' => $item->additional_payment])
+    @break
+
+    @case('Comments')
+        @include('tables.components.td-view-link', [
+            'href' => route('comments.manufacturer', $item->id),
+            'text' => __('View'),
+        ])
     @break
 
     @case('Last comment')
         @include('tables.components.td-limited-text', ['text' => $item->lastComment?->body])
     @break
 
-    @case('Comment date')
+    @case('Comments Date')
         @if ($item->lastComment)
             <div class="capitalized">
                 {{ Carbon\Carbon::parse($item->lastComment->created_at)->isoformat('DD MMM Y') }}
@@ -136,15 +119,24 @@
         @endif
     @break
 
-    @case('All comments')
-        @include('tables.components.td-view-link', [
-            'href' => route('comments.generic', $item->id),
-            'text' => __('View'),
-        ])
+    @case('BDM')
+        <x-other.ava image="{{ $item->manufacturer->bdm->photo }}" name="{{ $item->manufacturer->bdm->name }}"></x-other.ava>
     @break
 
-    @default
-        <h3>Undefined!</h3>
+    @case('Analyst')
+        <x-other.ava image="{{ $item->manufacturer->analyst->photo }}" name="{{ $item->manufacturer->analyst->name }}"></x-other.ava>
+    @break
+
+    @case('Date of creation')
+        @include('tables.components.td-date', ['attribute' => 'created_at'])
+    @break
+
+    @case('Update Date')
+        @include('tables.components.td-date', ['attribute' => 'updated_at'])
+    @break
+
+    @case('ID')
+        {{ $item->id }}
     @break
 
 @endswitch

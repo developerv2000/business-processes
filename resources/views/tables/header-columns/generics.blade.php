@@ -4,43 +4,12 @@
         @include('tables.components.th-edit')
     @break
 
-    {{-- Static text --}}
-    @case('BDM')
-    @case('Analyst')
-    @case('НПП/УДС')
-    @case('Country')
-    @case('Category')
-    @case('Dose')
-    @case('Pack')
-    @case('Processes')
-    @case('Minimum volume')
-    @case('Dossier')
-    @case('Zones')
-    @case('Relationships')
-    @case('Bioequivalence')
-    @case('Info')
-    @case('Root form')
-    @case('Patent expiry')
-    @case('Last comment')
-    @case('Comment date')
-    @case('All comments')
-        @include('tables.components.th-unlinked-title')
-    @break
-
     {{-- Links --}}
-    @case('ID')
-        @include('tables.components.th-link', ['orderBy' => 'id'])
-    @break
-
-    @case('Created at')
-        @include('tables.components.th-link', ['orderBy' => 'created_at'])
-    @break
-
     @case('Manufacturer')
         @include('tables.components.th-link', ['orderBy' => 'manufacturer_id'])
     @break
 
-    @case('Brand')
+    @case('Manufacturer Brand')
         @include('tables.components.th-link', ['orderBy' => 'brand'])
     @break
 
@@ -52,11 +21,11 @@
         @include('tables.components.th-link', ['orderBy' => 'form_id'])
     @break
 
-    @case('Expiration date')
+    @case('Shelf Life')
         @include('tables.components.th-link', ['orderBy' => 'expiration_date_id'])
     @break
 
-    @case('Additional payment')
+    @case('Down payment')
         @include('tables.components.th-link', ['orderBy' => 'additional_payment'])
     @break
 
@@ -64,11 +33,20 @@
         @include('tables.components.th-link', ['orderBy' => 'registered_in_eu'])
     @break
 
-    @case('Marketed in EU')
+    @case('Sold in EU')
         @include('tables.components.th-link', ['orderBy' => 'marketed_in_eu'])
     @break
 
+    @case('Date of creation')
+        @include('tables.components.th-link', ['orderBy' => 'created_at'])
+    @break
+
+    @case('Update Date')
+        @include('tables.components.th-link', ['orderBy' => 'updated_at'])
+    @break
+
     @default
-        <h3>Undefined!</h3>
+        {{-- Static text --}}
+        @include('tables.components.th-unlinked-title')
     @break
 @endswitch

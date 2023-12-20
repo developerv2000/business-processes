@@ -19,7 +19,6 @@ class Generic extends Model
     const STORAGE_EXCEL_TEMPLATE_PATH = 'app/excel/templates/ivp.xlsx';
     const STORAGE_EXCEL_EXPORT_PATH = 'app/excel/exports/ivp';
 
-    public $timestamps = false;
     protected $guarded = ['id'];
 
     protected $with = [
@@ -179,12 +178,25 @@ class Generic extends Model
         $whereRelationColumns = [
             [
                 'relationName' => 'manufacturer',
+                'name' => 'country_id',
+            ],
+
+            [
+                'relationName' => 'manufacturer',
                 'name' => 'analyst_user_id',
             ],
 
             [
                 'relationName' => 'manufacturer',
                 'name' => 'bdm_user_id',
+            ],
+        ];
+
+        $whereRelationAmbigiousColumns = [
+            [
+                'relationName' => 'manufacturer',
+                'name' => 'manufacturer_category_id',
+                'ambigiousNme' => 'manufacturers.category_id',
             ],
         ];
 
@@ -197,6 +209,7 @@ class Generic extends Model
         $items = Helper::filterWhereLikeColumns($items, $whereLikeColumns);
         $items = Helper::filterWhereBetweenDateColumns($items, $whereBetweenDateColumns);
         $items = Helper::filterWhereRelationColumns($items, $whereRelationColumns);
+        $items = Helper::filterWhereRelationAmbigiousColumns($items, $whereRelationAmbigiousColumns);
         $items = Helper::filterBelongsToManyRelations($items, $belongsToManyRelations);
 
         return $items;
@@ -247,9 +260,7 @@ class Generic extends Model
 
     public static function createFromRequest($request)
     {
-        $item = new Generic($request->all());
-        $item->created_at = now();
-        $item->save();
+        $item = self::create($request->all());
 
         // BelongsToMany relations
         $item->zones()->attach($request->input('zones'));
@@ -323,8 +334,6 @@ class Generic extends Model
 
                 $worksheet->setCellValue('Q' . $row, $item->bioequivalence);
                 $worksheet->setCellValue('R' . $row, $item->additional_payment);
-                $worksheet->setCellValue('S' . $row, $item->relationships);
-                $worksheet->setCellValue('T' . $row, $item->info);
                 $worksheet->setCellValue('U' . $row, $item->patent_expiry);
                 $worksheet->setCellValue('V' . $row, $item->registered_in_eu ? __('Registered') : '');
                 $worksheet->setCellValue('W' . $row, $item->marketed_in_eu ? __('Marketed') : '');

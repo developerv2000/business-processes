@@ -44,7 +44,7 @@
 
         <div class="form__divider">
             @include('form-components.edit.text-input', [
-                'label' => 'Dose',
+                'label' => 'Dosage',
                 'required' => false,
                 'attribute' => 'dose',
             ])
@@ -56,13 +56,13 @@
             ])
 
             @include('form-components.edit.text-input', [
-                'label' => 'Brand',
+                'label' => 'Manufacturer Brand',
                 'required' => false,
                 'attribute' => 'brand',
             ])
 
             @include('form-components.edit.belongs-to-select', [
-                'label' => 'Category',
+                'label' => 'Product category',
                 'required' => true,
                 'attribute' => 'category_id',
                 'options' => $categories,
@@ -72,19 +72,21 @@
 
         <div class="form__divider">
             @include('form-components.edit.text-input', [
-                'label' => 'Minimum volume',
+                'label' => 'MOQ',
                 'required' => false,
                 'attribute' => 'minimum_volume',
             ])
 
             @include('form-components.edit.belongs-to-select', [
-                'label' => 'Expiration date',
+                'label' => 'Shelf Life',
                 'required' => true,
                 'attribute' => 'expiration_date_id',
                 'options' => $expirationDates,
                 'optionsCaptionAttribute' => 'limit',
             ])
+        </div>
 
+        <div class="form__divider">
             @include('form-components.edit.text-input', [
                 'label' => 'Dossier',
                 'required' => false,
@@ -107,21 +109,13 @@
             ])
 
             @include('form-components.edit.text-input', [
-                'label' => 'Additional payment',
+                'label' => 'Down payment',
                 'required' => false,
                 'attribute' => 'additional_payment',
             ])
-        </div>
-
-        <div class="form__divider">
-            @include('form-components.edit.text-input', [
-                'label' => 'Info',
-                'required' => false,
-                'attribute' => 'info',
-            ])
 
             @include('form-components.edit.text-input', [
-                'label' => 'Patent expiry',
+                'label' => 'Validity period patent',
                 'required' => false,
                 'attribute' => 'patent_expiry',
             ])
@@ -134,7 +128,7 @@
             ])
 
             @include('form-components.edit.switch', [
-                'label' => 'Marketed in EU',
+                'label' => 'Sold in EU',
                 'attribute' => 'marketed_in_eu',
             ])
 

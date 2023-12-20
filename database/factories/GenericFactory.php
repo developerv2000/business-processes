@@ -37,12 +37,9 @@ class GenericFactory extends Factory
             'dossier' => fake()->sentences(2, true),
             'bioequivalence' => fake()->name() . ' ' . fake()->numberBetween(1, 5000),
             'additional_payment' => fake()->numberBetween(1, 10000) . '$',
-            'info' => fake()->sentences(3, true),
-            'relationships' => fake()->sentences(2, true),
             'patent_expiry' => fake()->dateTimeBetween('-10 year', 'now'),
             'registered_in_eu' => fake()->boolean(),
             'marketed_in_eu' => fake()->boolean(),
-            'created_at' => fake()->dateTimeBetween('-10 year', 'now')
         ];
     }
 

@@ -4,29 +4,6 @@
 
         <form class="form filter-form" action="{{ $action }}" method="GET">
             @include('filters.components.hidden-default-orders')
-            @include('filters.components.pagination-limit')
-
-            @include('filters.components.date-input', [
-                'label' => 'Created at',
-                'attribute' => 'created_at',
-            ])
-
-            @include('filters.components.date-input', [
-                'label' => 'From created at date',
-                'attribute' => 'created_from_date',
-            ])
-
-            @include('filters.components.date-input', [
-                'label' => 'To created at date',
-                'attribute' => 'created_to_date',
-            ])
-
-            @include('filters.components.belongs-to-select', [
-                'label' => 'Manufacturer',
-                'attribute' => 'manufacturer_id',
-                'options' => $manufacturers,
-                'optionsCaptionAttribute' => 'name',
-            ])
 
             @include('filters.components.belongs-to-select', [
                 'label' => 'Generic',
@@ -43,7 +20,7 @@
             ])
 
             @include('filters.components.text-input', [
-                'label' => 'Dose',
+                'label' => 'Dosage',
                 'attribute' => 'dose',
             ])
 
@@ -53,9 +30,30 @@
             ])
 
             @include('filters.components.belongs-to-select', [
-                'label' => 'BDM',
-                'attribute' => 'bdm_user_id',
-                'options' => $bdmUsers,
+                'label' => 'Country',
+                'attribute' => 'country_id',
+                'options' => $countries,
+                'optionsCaptionAttribute' => 'name',
+            ])
+
+            @include('filters.components.belongs-to-select', [
+                'label' => 'Manufacturer',
+                'attribute' => 'manufacturer_id',
+                'options' => $manufacturers,
+                'optionsCaptionAttribute' => 'name',
+            ])
+
+            @include('filters.components.belongs-to-select', [
+                'label' => 'Category',
+                'attribute' => 'manufacturer_category_id',
+                'options' => $manufacturerCategories,
+                'optionsCaptionAttribute' => 'name',
+            ])
+
+            @include('filters.components.belongs-to-select', [
+                'label' => 'Product category',
+                'attribute' => 'category_id',
+                'options' => $categories,
                 'optionsCaptionAttribute' => 'name',
             ])
 
@@ -67,19 +65,14 @@
             ])
 
             @include('filters.components.belongs-to-select', [
-                'label' => 'Category',
-                'attribute' => 'category_id',
-                'options' => $categories,
+                'label' => 'BDM',
+                'attribute' => 'bdm_user_id',
+                'options' => $bdmUsers,
                 'optionsCaptionAttribute' => 'name',
             ])
 
-            @include('filters.components.text-input', [
-                'label' => 'Brand',
-                'attribute' => 'brand',
-            ])
-
             @include('filters.components.belongs-to-select', [
-                'label' => 'Expiration date',
+                'label' => 'Shelf Life',
                 'attribute' => 'expiration_date_id',
                 'options' => $expirationDates,
                 'optionsCaptionAttribute' => 'limit',
@@ -93,15 +86,17 @@
                 'optionsCaptionAttribute' => 'name',
             ])
 
-            @include('filters.components.boolean-belongs-to-select', [
-                'label' => 'Registered in EU',
-                'attribute' => 'registered_in_eu',
+            @include('filters.components.date-input', [
+                'label' => 'Date of creation',
+                'attribute' => 'created_at',
             ])
 
-            @include('filters.components.boolean-belongs-to-select', [
-                'label' => 'Marketed in EU',
-                'attribute' => 'marketed_in_eu',
+            @include('filters.components.date-input', [
+                'label' => 'Update Date',
+                'attribute' => 'updated_at',
             ])
+
+            @include('filters.components.pagination-limit')
 
             <x-form.submit class="fiter-form__submit">{{ __('Update') }}</x-form.submit>
         </form>

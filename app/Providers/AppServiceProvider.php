@@ -61,6 +61,8 @@ class AppServiceProvider extends ServiceProvider
                 'expirationDates' => ExpirationDate::getAll(),
                 'zones' => Zone::getAll(),
                 'mnns' => Mnn::getAll(),
+                'countries' => Country::getAll(),
+                'manufacturerCategories' => ManufacturerCategory::getAll(),
             ]);
         });
 
