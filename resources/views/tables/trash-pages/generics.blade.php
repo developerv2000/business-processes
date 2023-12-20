@@ -4,29 +4,29 @@
         <tr>
             @include('tables.components.th-checkbox')
 
-            <th width="54">
-                @include('tables.components.th-static-link', ['text' => 'ID', 'orderBy' => 'id'])
-            </th>
-
             <th width="70">{{ __('app.restore-shortcut') }}</th>
 
             <th width="112">
                 @include('tables.components.th-static-link', ['text' => 'Deleted at', 'orderBy' => 'deleted_at'])
             </th>
 
-            <th width="84">{{ __('НПП/УДС') }}</th>
+            <th width="84">{{ __('Category') }}</th>
 
             <th width="144">{{ __('Country') }}</th>
 
             <th width="140">{{ __('Manufacturer') }}</th>
 
-            <th width="150">{{ __('Brand') }}</th>
+            <th width="182">{{ __('Manufacturer Brand') }}</th>
 
             <th width="180">{{ __('Generic') }}</th>
 
             <th width="142">{{ __('BDM') }}</th>
 
             <th width="142">{{ __('Analyst') }}</th>
+
+            <th width="90">
+                @include('tables.components.th-static-link', ['text' => 'ID', 'orderBy' => 'id'])
+            </th>
         </tr>
     </thead> {{-- Head end --}}
 
@@ -35,8 +35,6 @@
         @foreach ($items as $item)
             <tr title="{{ $item->name }}">
                 @include('tables.components.td-checkbox')
-
-                <td>{{ $item->id }}</td>
 
                 <td>
                     @include('tables.components.td-restore')
@@ -73,6 +71,8 @@
                 <td>
                     <x-other.ava image="{{ $item->manufacturer->analyst->photo }}" name="{{ $item->manufacturer->analyst->name }}"></x-other.ava>
                 </td>
+
+                <td>{{ $item->id }}</td>
             </tr>
         @endforeach
     </tbody> {{-- Body end --}}

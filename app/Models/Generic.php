@@ -313,37 +313,38 @@ class Generic extends Model
         // fill excel cells
         $items->chunk(400, function ($items) use (&$worksheet, &$row) {
             foreach ($items as $item) {
-                $worksheet->setCellValue('A' . $row, $item->id);
-                $worksheet->setCellValue('B' . $row, $item->created_at);
-                $worksheet->setCellValue('C' . $row, $item->manufacturer->category->name);
-                $worksheet->setCellValue('D' . $row, $item->manufacturer->country->name);
-                $worksheet->setCellValue('E' . $row, $item->manufacturer->name);
-                $worksheet->setCellValue('F' . $row, $item->brand);
-                $worksheet->setCellValue('G' . $row, $item->mnn->name);
-                $worksheet->setCellValue('H' . $row, $item->form->name);
-                $worksheet->setCellValue('I' . $row, $item->form->parent ? $item->form->parent->name : $item->form->name);
-                $worksheet->setCellValue('J' . $row, $item->dose);
-                $worksheet->setCellValue('K' . $row, $item->pack);
-                $worksheet->setCellValue('L' . $row, $item->minimum_volume);
-                $worksheet->setCellValue('M' . $row, $item->expirationDate->limit);
-                $worksheet->setCellValue('N' . $row, $item->category->name);
-                $worksheet->setCellValue('O' . $row, $item->dossier);
+                $worksheet->setCellValue('A' . $row, $item->manufacturer->category->name);
+                $worksheet->setCellValue('B' . $row, $item->manufacturer->country->name);
+                $worksheet->setCellValue('C' . $row, $item->manufacturer->name);
+                $worksheet->setCellValue('D' . $row, $item->brand);
+                $worksheet->setCellValue('E' . $row, $item->mnn->name);
+                $worksheet->setCellValue('F' . $row, $item->form->name);
+                $worksheet->setCellValue('G' . $row, $item->form->parent ? $item->form->parent->name : $item->form->name);
+                $worksheet->setCellValue('H' . $row, $item->dose);
+                $worksheet->setCellValue('I' . $row, $item->pack);
+                $worksheet->setCellValue('J' . $row, $item->minimum_volume);
+                $worksheet->setCellValue('K' . $row, $item->expirationDate->limit);
+                $worksheet->setCellValue('L' . $row, $item->category->name);
+                $worksheet->setCellValue('M' . $row, $item->dossier);
 
                 $zones = $item->zones->pluck('name')->implode(' ');
-                $worksheet->setCellValue('P' . $row, $zones);
+                $worksheet->setCellValue('N' . $row, $zones);
 
-                $worksheet->setCellValue('Q' . $row, $item->bioequivalence);
-                $worksheet->setCellValue('R' . $row, $item->additional_payment);
-                $worksheet->setCellValue('U' . $row, $item->patent_expiry);
-                $worksheet->setCellValue('V' . $row, $item->registered_in_eu ? __('Registered') : '');
-                $worksheet->setCellValue('W' . $row, $item->marketed_in_eu ? __('Marketed') : '');
+                $worksheet->setCellValue('O' . $row, $item->bioequivalence);
+                $worksheet->setCellValue('P' . $row, $item->patent_expiry);
+                $worksheet->setCellValue('Q' . $row, $item->registered_in_eu ? __('Registered') : '');
+                $worksheet->setCellValue('R' . $row, $item->marketed_in_eu ? __('Sold') : '');
+                $worksheet->setCellValue('S' . $row, $item->additional_payment);
 
                 $comments = $item->comments->pluck('body')->implode(' / ');
-                $worksheet->setCellValue('X' . $row, $comments);
+                $worksheet->setCellValue('T' . $row, $comments);
 
-                $worksheet->setCellValue('Y' . $row, $item->lastComment?->created_at);
-                $worksheet->setCellValue('Z' . $row, $item->manufacturer->bdm->name);
-                $worksheet->setCellValue('AA' . $row, $item->manufacturer->analyst->name);
+                $worksheet->setCellValue('U' . $row, $item->lastComment?->created_at);
+                $worksheet->setCellValue('V' . $row, $item->manufacturer->bdm->name);
+                $worksheet->setCellValue('W' . $row, $item->manufacturer->analyst->name);
+                $worksheet->setCellValue('X' . $row, $item->created_at);
+                $worksheet->setCellValue('Y' . $row, $item->updated_at);
+                $worksheet->setCellValue('Z' . $row, $item->id);
 
                 $row++;
             }

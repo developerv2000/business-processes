@@ -9,7 +9,7 @@
                 <div class="similar-products__list-text">
                     <span>{{ __('ID') }}: {{ $generic->id }}</span>
                     <span>{{ __('Form') }}: {{ $generic->form->name }}</span>
-                    <span>{{ __('Dose') }}: {{ $generic->dose }}</span>
+                    <span>{{ __('Dosage') }}: {{ $generic->dose }}</span>
                     <span>{{ __('Pack') }}: {{ $generic->pack }}</span>
                 </div>
             </div>

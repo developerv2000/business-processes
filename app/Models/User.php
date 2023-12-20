@@ -390,7 +390,6 @@ class User extends Authenticatable
         $order = 1;
 
         return [
-            ['name' => 'ID', 'order' => $order++, 'width' => 54, 'visible' => 1],
             ['name' => 'Edit', 'order' => $order++, 'width' => 44, 'visible' => 1],
             ['name' => 'Date', 'order' => $order++, 'width' => 100, 'visible' => 1],
             ['name' => 'Country', 'order' => $order++, 'width' => 86, 'visible' => 1],
@@ -444,6 +443,7 @@ class User extends Authenticatable
             ['name' => 'Owners', 'order' => $order++, 'width' => 154, 'visible' => 1],
             ['name' => 'Process date', 'order' => $order++, 'width' => 130, 'visible' => 1],
             ['name' => 'Days past', 'order' => $order++, 'width' => 120, 'visible' => 1],
+            ['name' => 'ID', 'order' => $order++, 'width' => 90, 'visible' => 1],
         ];
     }
 }

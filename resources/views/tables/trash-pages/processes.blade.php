@@ -4,10 +4,6 @@
         <tr>
             @include('tables.components.th-checkbox')
 
-            <th width="54">
-                @include('tables.components.th-static-link', ['text' => 'ID', 'orderBy' => 'id'])
-            </th>
-
             <th width="70">{{ __('app.restore-shortcut') }}</th>
 
             <th width="112">
@@ -39,6 +35,10 @@
             <th width="116">{{ __('General status') }}</th>
 
             <th width="120">{{ __('Days past') }}</th>
+
+            <th width="90">
+                @include('tables.components.th-static-link', ['text' => 'ID', 'orderBy' => 'id'])
+            </th>
         </tr>
     </thead> {{-- Head end --}}
 
@@ -47,8 +47,6 @@
         @foreach ($items as $item)
             <tr title="{{ $item->countryCode->name }}">
                 @include('tables.components.td-checkbox')
-
-                <td>{{ $item->id }}</td>
 
                 <td>
                     @include('tables.components.td-restore')
@@ -89,6 +87,8 @@
                 <td>{{ $item->status->parent->name }}</td>
 
                 <td>{{ $item->days_past }}</td>
+                
+                <td>{{ $item->id }}</td>
             </tr>
         @endforeach
     </tbody> {{-- Body end --}}
