@@ -1035,10 +1035,6 @@ a {
     overflow: auto;
 }
 
-.main.fullscreen .table-wrapper {
-    max-height: calc(100vh - var(--prehead-height) - var(--pagination-height));
-}
-
 .table {
     table-layout: fixed;
     width: 100%;
@@ -1208,6 +1204,27 @@ a {
 }
 
 /* ------------ /END Rightbar ------------ */
+
+
+/* ------------ Fullscreen ------------ */
+/* Inner Wrapper */
+.inner-wrapper.fullscreen {
+    grid-template-columns: 1fr var(--rightbar-width);
+}
+
+.inner-wrapper.fullscreen .leftbar {
+    display: none;
+}
+
+.inner-wrapper.fullscreen .table-wrapper {
+    max-height: calc(100vh - var(--prehead-height) - var(--pagination-height));
+}
+
+.inner-wrapper.fullscreen .rightbar {
+    max-height: 100%;
+    height: 100vh;;
+}
+/* ------------ /END Fullscreen ------------ */
 
 
 /* ------------ Modal ------------ */
