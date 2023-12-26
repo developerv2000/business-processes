@@ -1210,6 +1210,7 @@ a {
 /* Inner Wrapper */
 .inner-wrapper.fullscreen {
     grid-template-columns: 1fr var(--rightbar-width);
+    gap: 8px;
 }
 
 .inner-wrapper.fullscreen .leftbar {
