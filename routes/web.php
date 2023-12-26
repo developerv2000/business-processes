@@ -133,3 +133,4 @@ Route::middleware('auth', 'auth.session')->group(function () {
         Route::post('/update', 'update')->name('update');
     });
 });
+

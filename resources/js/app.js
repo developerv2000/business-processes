@@ -50,6 +50,24 @@ function setupComponents() {
         createOnBlur: true,
     });
 
+    // ********** DateRangePicker **********
+    $('.date-range-input').daterangepicker({
+        autoUpdateInput: false, // make it nullable
+        opens: 'left',
+        locale: {
+            format: 'DD/MM/YYYY'
+        },
+    });
+
+    // make it nullable
+    $('.date-range-input').on('apply.daterangepicker', function (ev, picker) {
+        $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+    });
+
+    $('.date-range-input').on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val('');
+    });
+
     // ********** Modal **********
     // Show modal
     document.querySelectorAll('[data-click-action="show-modal"]').forEach((item) => {

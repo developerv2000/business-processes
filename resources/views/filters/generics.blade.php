@@ -86,12 +86,12 @@
                 'optionsCaptionAttribute' => 'name',
             ])
 
-            @include('filters.components.date-input', [
+            @include('filters.components.date-range-input', [
                 'label' => 'Date of creation',
                 'attribute' => 'created_at',
             ])
 
-            @include('filters.components.date-input', [
+            @include('filters.components.date-range-input', [
                 'label' => 'Update Date',
                 'attribute' => 'updated_at',
             ])

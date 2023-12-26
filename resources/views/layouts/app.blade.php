@@ -14,12 +14,15 @@
     <link rel="stylesheet" href="{{ asset('plugins/normalize.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/selectize/selectize.css') }}">
 
+    {{-- JQuery DateRangePicker --}}
+    <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
+
     {{-- Styles --}}
     @vite('resources/css/app.css')
 </head>
 
 <body class="{{ $class }}">
-    <div class="main-wrapper @if(request()->user()->settings['fullWidth']) main-wrapper--expanded @endif">
+    <div class="main-wrapper @if (request()->user()->settings['fullWidth']) main-wrapper--expanded @endif">
         @include('layouts.header')
 
         <div class="inner-wrapper">
@@ -41,6 +44,12 @@
 
     {{-- JQuery UI --}}
     <script src="{{ asset('plugins/jquery/jquery-ui.min.js') }}"></script>
+
+    {{-- Moment.js (for DateRangePicker) --}}
+    <script src="{{ asset('plugins/moment.min.js') }}"></script>
+
+    {{-- JQuery DateRangePicker --}}
+    <script src="{{ asset('plugins/daterangepicker/daterangepicker.min.js') }}"></script>
 
     {{-- Selectize --}}
     <script src="{{ asset('plugins/selectize/selectize.min.js') }}"></script>

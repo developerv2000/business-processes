@@ -15,7 +15,7 @@ class Process extends Model
 
     const DEFAULT_ORDER_BY = 'id';
     const DEFAULT_ORDER_TYPE = 'desc';
-    const DEFAULT_PAGINATION_LIMIT = 40;
+    const DEFAULT_PAGINATION_LIMIT = 50;
 
     const STORAGE_EXCEL_TEMPLATE_PATH = 'app/excel/templates/vps.xlsx';
     const STORAGE_EXCEL_EXPORT_PATH = 'app/excel/exports/vps';

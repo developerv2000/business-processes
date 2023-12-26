@@ -9,6 +9,7 @@
 namespace App\Support;
 
 use App\Models\ProductForm;
+use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
 use Image;
@@ -87,19 +88,22 @@ class Helper
         return $items;
     }
 
-    public static function filterWhereBetweenDateColumns($items, $columns)
+    public static function filterWhereDateRangeColumns($items, $columns)
     {
         $request = request();
 
         foreach ($columns as $column) {
-            $fromDate = $request->{$column['from_date']};
-            if (!$fromDate) continue;
+            $dates = $request->{$column};
+            if (!$dates) continue;
 
-            $toDate = $request->{$column['to_date']} ?? now();
+            // Split from & to dates
+            $splitted = explode(' - ', $dates);
+            $fromDate = Carbon::createFromFormat('d/m/Y', $splitted[0])->format('Y-m-d');
+            $toDate = Carbon::createFromFormat('d/m/Y', $splitted[1])->format('Y-m-d');
 
             $items = $items
-                ->whereDate($column['name'], '>=', $fromDate)
-                ->whereDate($column['name'], '<=', $toDate);
+                ->whereDate($column, '>=', $fromDate)
+                ->whereDate($column, '<', $toDate);
         }
 
         return $items;

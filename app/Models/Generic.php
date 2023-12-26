@@ -14,7 +14,7 @@ class Generic extends Model
 
     const DEFAULT_ORDER_BY = 'created_at';
     const DEFAULT_ORDER_TYPE = 'desc';
-    const DEFAULT_PAGINATION_LIMIT = 40;
+    const DEFAULT_PAGINATION_LIMIT = 50;
 
     const STORAGE_EXCEL_TEMPLATE_PATH = 'app/excel/templates/ivp.xlsx';
     const STORAGE_EXCEL_EXPORT_PATH = 'app/excel/exports/ivp';
@@ -157,22 +157,15 @@ class Generic extends Model
             'marketed_in_eu',
         ];
 
-        $whereDateColumns = [
-            'created_at'
-        ];
-
         $whereLikeColumns = [
             'dose',
             'pack',
             'brand',
         ];
 
-        $whereBetweenDateColumns = [
-            [
-                'name' => 'created_at',
-                'from_date' => 'created_from_date',
-                'to_date' => 'created_to_date',
-            ]
+        $whereDateRangeColumns = [
+            'created_at',
+            'updated_at',
         ];
 
         $whereRelationColumns = [
@@ -205,9 +198,8 @@ class Generic extends Model
         ];
 
         $items = Helper::filterWhereColumns($items, $whereColumns);
-        $items = Helper::filterWhereDateColumns($items, $whereDateColumns);
         $items = Helper::filterWhereLikeColumns($items, $whereLikeColumns);
-        $items = Helper::filterWhereBetweenDateColumns($items, $whereBetweenDateColumns);
+        $items = Helper::filterWhereDateRangeColumns($items, $whereDateRangeColumns);
         $items = Helper::filterWhereRelationColumns($items, $whereRelationColumns);
         $items = Helper::filterWhereRelationAmbigiousColumns($items, $whereRelationAmbigiousColumns);
         $items = Helper::filterBelongsToManyRelations($items, $belongsToManyRelations);

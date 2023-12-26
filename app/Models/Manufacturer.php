@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class Manufacturer extends Model
@@ -16,7 +15,7 @@ class Manufacturer extends Model
 
     const DEFAULT_ORDER_BY = 'created_at';
     const DEFAULT_ORDER_TYPE = 'desc';
-    const DEFAULT_PAGINATION_LIMIT = 40;
+    const DEFAULT_PAGINATION_LIMIT = 50;
 
     const STORAGE_EXCEL_TEMPLATE_PATH = 'app/excel/templates/epp.xlsx';
     const STORAGE_EXCEL_EXPORT_PATH = 'app/excel/exports/epp';
@@ -195,11 +194,6 @@ class Manufacturer extends Model
             'important',
         ];
 
-        $whereDateColumns = [
-            'created_at',
-            'updated_at',
-        ];
-
         $whereLikeColumns = [
             'name'
         ];
@@ -210,10 +204,15 @@ class Manufacturer extends Model
             'blacklists',
         ];
 
+        $whereDateRangeColumns = [
+            'created_at',
+            'updated_at',
+        ];
+
         $items = Helper::filterWhereColumns($items, $whereColumns);
-        $items = Helper::filterWhereDateColumns($items, $whereDateColumns);
         $items = Helper::filterWhereLikeColumns($items, $whereLikeColumns);
         $items = Helper::filterBelongsToManyRelations($items, $belongsToManyRelations);
+        $items = Helper::filterWhereDateRangeColumns($items, $whereDateRangeColumns);
 
         return $items;
     }
