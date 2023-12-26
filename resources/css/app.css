@@ -1211,6 +1211,7 @@ a {
 .inner-wrapper.fullscreen {
     grid-template-columns: 1fr var(--rightbar-width);
     gap: 8px;
+    background-color: lavender;
 }
 
 .inner-wrapper.fullscreen .leftbar {
