@@ -39,6 +39,7 @@ class AppServiceProvider extends ServiceProvider
         // Manufacturers
         View::composer(['filters.manufacturers', 'manufacturers.create', 'manufacturers.edit'], function ($view) {
             $view->with([
+                'manufacturers' => Manufacturer::getAllMinifed(),
                 'categories' => ManufacturerCategory::getAll(),
                 'bdmUsers' => User::getBdmsMinifed(),
                 'analystUsers' => User::getAnalystsMinified(),

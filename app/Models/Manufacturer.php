@@ -189,13 +189,10 @@ class Manufacturer extends Model
             'analyst_user_id',
             'bdm_user_id',
             'country_id',
+            'id',
             'category_id',
             'active',
             'important',
-        ];
-
-        $whereLikeColumns = [
-            'name'
         ];
 
         $belongsToManyRelations = [
@@ -210,7 +207,6 @@ class Manufacturer extends Model
         ];
 
         $items = Helper::filterWhereColumns($items, $whereColumns);
-        $items = Helper::filterWhereLikeColumns($items, $whereLikeColumns);
         $items = Helper::filterBelongsToManyRelations($items, $belongsToManyRelations);
         $items = Helper::filterWhereDateRangeColumns($items, $whereDateRangeColumns);
 

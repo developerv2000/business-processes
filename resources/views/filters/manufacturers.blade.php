@@ -26,9 +26,11 @@
                 'optionsCaptionAttribute' => 'name',
             ])
 
-            @include('filters.components.text-input', [
+            @include('filters.components.single-select', [
                 'label' => 'Manufacturer',
-                'attribute' => 'name',
+                'attribute' => 'id',
+                'options' => $manufacturers,
+                'optionsCaptionAttribute' => 'name',
             ])
 
             @include('filters.components.belongs-to-select', [
