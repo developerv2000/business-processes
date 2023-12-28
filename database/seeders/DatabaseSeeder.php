@@ -28,9 +28,15 @@ class DatabaseSeeder extends Seeder
             ProcessStatusSeeder::class,
             CountryCodeSeeder::class,
             ProcessOwnerSeeder::class,
+            KvppStatusSeeder::class,
+            KvppPrioritySeeder::class,
+            KvppSourceSeeder::class,
+            PortfolioManagerSeeder::class,
+            PromoCompanySeeder::class,
             ManufacturerSeeder::class,
             GenericSeeder::class,
             // ProcessSeeder::class,
+            KvppSeeder::class
         ]);
     }
 }

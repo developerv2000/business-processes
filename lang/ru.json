@@ -5,6 +5,7 @@
     "EPP": "ЕПП",
     "IVP": "ИВП",
     "VPS": "ВПЦ",
+    "KVPP": "КВПП",
     "Meetings": "Встречи",
     "MNN": "МНН",
     "Users": "Пользователи",
@@ -132,5 +133,14 @@
     "ПО date": "Дата ПО",
     "Year 1": "Год 1",
     "Year 2": "Год 2",
-    "Year 3": "Год 3"
+    "Year 3": "Год 3",
+
+    "Priority": "Приоритет",
+    "Source": "Источник",
+    "Information": "Инофрмация",
+    "Date of forecast": "Дата ПО",
+    "Forecast 1 year": "Прогноз 1 год",
+    "Forecast 2 year": "Прогноз 2 год",
+    "Forecast 3 year": "Прогноз 3 год",
+    "Portfolio manager": "Менеджер"
 }

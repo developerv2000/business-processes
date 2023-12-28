@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\GenericController;
+use App\Http\Controllers\KvppController;
 use App\Http\Controllers\ManufacturerController;
 use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\MnnController;
@@ -99,6 +100,19 @@ Route::middleware('auth', 'auth.session')->group(function () {
         Route::post('/get-edit-form-stage-inputs', 'getEditFormStageInputs');  // Used while editing on status change
     });
 
+    Route::prefix('kvpp')->controller(KvppController::class)->name('kvpp.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::get('/edit/{item}', 'edit')->name('edit');
+        Route::get('/trash', 'trash')->name('trash');
+
+        Route::post('/store', 'store')->name('store');
+        Route::post('/update/{item}', 'update')->name('update');
+        Route::post('/destroy', 'destroy')->name('destroy');
+        Route::post('/restore', 'restore')->name('restore');
+        Route::post('/export', 'export')->name('export');
+    });
+
     Route::prefix('mnns')->controller(MnnController::class)->name('mnns.')->middleware('moderator')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/create', 'create')->name('create');
@@ -126,6 +140,7 @@ Route::middleware('auth', 'auth.session')->group(function () {
         Route::post('/update/meetings', 'updateMeetings')->name('update.meetings');
         Route::post('/update/generics', 'updateGenerics')->name('update.generics');
         Route::post('/update/processes', 'updateProcesses')->name('update.processes');
+        Route::post('/update/kvpp', 'updateKvpp')->name('update.kvpp');
     });
 
     Route::prefix('profile')->controller(ProfileController::class)->name('profile.')->group(function () {

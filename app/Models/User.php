@@ -175,6 +175,7 @@ class User extends Authenticatable
         $settings['meetingColumns'] = $this->getDefaultMeetingColumns();
         $settings['genericColumns'] = $this->getDefaultGenericColumns();
         $settings['processColumns'] = $this->getDefaultProcessColumns();
+        $settings['kvppColumns'] = $this->getDefaultKvppColumns();
 
         $this->update(['settings' => $settings]);
     }
@@ -444,6 +445,37 @@ class User extends Authenticatable
             ['name' => 'Process date', 'order' => $order++, 'width' => 130, 'visible' => 1],
             ['name' => 'Days past', 'order' => $order++, 'width' => 120, 'visible' => 1],
             ['name' => 'ID', 'order' => $order++, 'width' => 90, 'visible' => 1],
+        ];
+    }
+
+    private function getDefaultKvppColumns()
+    {
+        $order = 1;
+
+        return [
+            ['name' => 'Edit', 'order' => $order++, 'width' => 44, 'visible' => 1],
+            ['name' => 'Status', 'order' => $order++, 'width' => 80, 'visible' => 1],
+            ['name' => 'Country', 'order' => $order++, 'width' => 86, 'visible' => 1],
+            ['name' => 'Priority', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Source', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Generic', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Form', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Basic form', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Dosage', 'order' => $order++, 'width' => 160, 'visible' => 1],
+            ['name' => 'Pack', 'order' => $order++, 'width' => 110, 'visible' => 1],
+            ['name' => 'MAH', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Information', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Comments', 'order' => $order++, 'width' => 110, 'visible' => 1],
+            ['name' => 'Last comment', 'order' => $order++, 'width' => 240, 'visible' => 1],
+            ['name' => 'Comments Date', 'order' => $order++, 'width' => 128, 'visible' => 1],
+            ['name' => 'Date of forecast', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Forecast 1 year', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Forecast 2 year', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Forecast 3 year', 'order' => $order++, 'width' => 140, 'visible' => 1],
+            ['name' => 'Portfolio manager', 'order' => $order++, 'width' => 150, 'visible' => 1],
+            ['name' => 'Date of creation', 'order' => $order++, 'width' => 138, 'visible' => 1],
+            ['name' => 'Update Date', 'order' => $order++, 'width' => 150, 'visible' => 1],
+            ['name' => 'ID', 'order' => $order++, 'width' => 72, 'visible' => 1],
         ];
     }
 }
