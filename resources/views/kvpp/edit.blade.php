@@ -1,4 +1,4 @@
-@extends('layouts.app', ['class' => 'generics-edit rightbarless'])
+@extends('layouts.app', ['class' => 'kvpp-edit rightbarless'])
 
 @section('main')
     <div class="prehead prehead--intended styled-box">
@@ -12,19 +12,45 @@
         </div>
     </div>
 
-    <form class="form main-form edit-form" action="{{ route('generics.update', $item->id) }}" method="POST" id="edit-form">
+    <form class="form main-form edit-form" action="{{ route('kvpp.update', $item->id) }}" method="POST" id="edit-form">
         @csrf
         @include('form-components.edit.previous-url-input')
 
         <div class="form__divider">
             @include('form-components.edit.belongs-to-select', [
-                'label' => 'Manufacturer',
+                'label' => 'Status',
                 'required' => true,
-                'attribute' => 'manufacturer_id',
-                'options' => $manufacturers,
+                'attribute' => 'status_id',
+                'options' => $statuses,
                 'optionsCaptionAttribute' => 'name',
             ])
 
+            @include('form-components.edit.belongs-to-select', [
+                'label' => 'Country',
+                'required' => true,
+                'attribute' => 'country_code_id',
+                'options' => $countryCodes,
+                'optionsCaptionAttribute' => 'name',
+            ])
+
+            @include('form-components.edit.belongs-to-select', [
+                'label' => 'Priority',
+                'required' => true,
+                'attribute' => 'priority_id',
+                'options' => $priorities,
+                'optionsCaptionAttribute' => 'name',
+            ])
+
+            @include('form-components.edit.belongs-to-select', [
+                'label' => 'Source',
+                'required' => true,
+                'attribute' => 'source_id',
+                'options' => $sources,
+                'optionsCaptionAttribute' => 'name',
+            ])
+        </div>
+
+        <div class="form__divider">
             @include('form-components.edit.belongs-to-select', [
                 'label' => 'Generic',
                 'required' => true,
@@ -37,99 +63,36 @@
                 'label' => 'Form',
                 'required' => true,
                 'attribute' => 'form_id',
-                'options' => $productForms,
+                'options' => $forms,
                 'optionsCaptionAttribute' => 'name',
             ])
-        </div>
 
-        <div class="form__divider">
             @include('form-components.edit.text-input', [
                 'label' => 'Dosage',
-                'required' => false,
+                'required' => true,
                 'attribute' => 'dose',
             ])
 
             @include('form-components.edit.text-input', [
                 'label' => 'Pack',
-                'required' => false,
+                'required' => true,
                 'attribute' => 'pack',
             ])
-
-            @include('form-components.edit.text-input', [
-                'label' => 'Manufacturer Brand',
-                'required' => false,
-                'attribute' => 'brand',
-            ])
-
-            @include('form-components.edit.belongs-to-select', [
-                'label' => 'Product category',
-                'required' => true,
-                'attribute' => 'category_id',
-                'options' => $categories,
-                'optionsCaptionAttribute' => 'name',
-            ])
         </div>
 
         <div class="form__divider">
-            @include('form-components.edit.text-input', [
-                'label' => 'MOQ',
-                'required' => false,
-                'attribute' => 'minimum_volume',
-            ])
-
             @include('form-components.edit.belongs-to-select', [
-                'label' => 'Shelf Life',
+                'label' => 'MAH',
                 'required' => true,
-                'attribute' => 'expiration_date_id',
-                'options' => $expirationDates,
-                'optionsCaptionAttribute' => 'limit',
-            ])
-        </div>
-
-        <div class="form__divider">
-            @include('form-components.edit.text-input', [
-                'label' => 'Dossier',
-                'required' => false,
-                'attribute' => 'dossier',
-            ])
-
-            @include('form-components.edit.multiple-select', [
-                'label' => 'Zones',
-                'required' => true,
-                'attribute' => 'zones[]',
-                'relationName' => 'zones',
-                'options' => $zones,
+                'attribute' => 'promo_company_id',
+                'options' => $promoCompanies,
                 'optionsCaptionAttribute' => 'name',
             ])
 
             @include('form-components.edit.text-input', [
-                'label' => 'Bioequivalence',
+                'label' => 'Information',
                 'required' => false,
-                'attribute' => 'bioequivalence',
-            ])
-
-            @include('form-components.edit.text-input', [
-                'label' => 'Down payment',
-                'required' => false,
-                'attribute' => 'additional_payment',
-            ])
-
-            @include('form-components.edit.text-input', [
-                'label' => 'Validity period patent',
-                'required' => false,
-                'attribute' => 'patent_expiry',
-            ])
-        </div>
-
-        <div class="form__divider">
-            @include('form-components.edit.switch', [
-                'label' => 'Registered in EU',
-                'attribute' => 'registered_in_eu',
-            ])
-
-            @include('form-components.edit.switch', [
-                'label' => 'Sold in EU',
-                'attribute' => 'marketed_in_eu',
+                'attribute' => 'info',
             ])
 
             @if ($item->lastComment)
@@ -143,6 +106,41 @@
                 'label' => 'Add new comment',
                 'required' => false,
                 'attribute' => 'comment',
+            ])
+        </div>
+
+        <div class="form__divider">
+            @include('form-components.edit.text-input', [
+                'type' => 'date',
+                'label' => 'Date of forecast',
+                'required' => true,
+                'attribute' => 'date_of_forecast',
+            ])
+
+            @include('form-components.edit.text-input', [
+                'label' => 'Forecast 1 year',
+                'required' => true,
+                'attribute' => 'forecast_year_1',
+            ])
+
+            @include('form-components.edit.text-input', [
+                'label' => 'Forecast 2 year',
+                'required' => true,
+                'attribute' => 'forecast_year_2',
+            ])
+
+            @include('form-components.edit.text-input', [
+                'label' => 'Forecast 3 year',
+                'required' => true,
+                'attribute' => 'forecast_year_3',
+            ])
+
+            @include('form-components.edit.belongs-to-select', [
+                'label' => 'Portfolio manager',
+                'required' => true,
+                'attribute' => 'portfolio_manager_id',
+                'options' => $portfolioManagers,
+                'optionsCaptionAttribute' => 'name',
             ])
 
             <x-form.submit class="main-form__submit">{{ __('Update') }}</x-form.submit>

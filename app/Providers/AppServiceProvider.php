@@ -7,14 +7,19 @@ use App\Models\Country;
 use App\Models\CountryCode;
 use App\Models\Currency;
 use App\Models\ExpirationDate;
+use App\Models\KvppPriority;
+use App\Models\KvppSource;
+use App\Models\KvppStatus;
 use App\Models\Manufacturer;
 use App\Models\ManufacturerCategory;
 use App\Models\Meeting;
 use App\Models\Mnn;
+use App\Models\PortfolioManager;
 use App\Models\ProcessOwner;
 use App\Models\ProcessStatus;
 use App\Models\ProductCategory;
 use App\Models\ProductForm;
+use App\Models\PromoCompany;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Zone;
@@ -95,6 +100,20 @@ class AppServiceProvider extends ServiceProvider
             $view->with([
                 'expirationDates' => ExpirationDate::getAll(),
                 'currencies' => Currency::getAll(),
+            ]);
+        });
+
+        // KVPP
+        View::composer(['filters.kvpp', 'kvpp.create', 'kvpp.edit'], function ($view) {
+            $view->with([
+                'statuses' => KvppStatus::getAll(),
+                'countryCodes' => CountryCode::getAll(),
+                'priorities' => KvppPriority::getAll(),
+                'sources' => KvppSource::getAll(),
+                'mnns' => Mnn::getAll(),
+                'forms' => ProductForm::getAll(),
+                'promoCompanies' => PromoCompany::getAll(),
+                'portfolioManagers' => PortfolioManager::getAll(),
             ]);
         });
 

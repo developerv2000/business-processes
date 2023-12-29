@@ -1,10 +1,10 @@
-@extends('layouts.app', ['class' => 'generics-trash x-overflowed'])
+@extends('layouts.app', ['class' => 'kvpp-trash x-overflowed'])
 
 @section('main')
-    <div class="generics-trash__box styled-box">
+    <div class="kvpp-trash__box styled-box">
         <div class="prehead">
             @include('layouts.breadcrumbs', [
-                'crumbs' => [__('IVP'), __('Trash'), __('Filtered items') . ' - ' . $items->total()],
+                'crumbs' => [__('KVPP'), __('Trash'), __('Filtered items') . ' - ' . $items->total()],
                 'fullScreen' => true,
             ])
 
@@ -16,7 +16,7 @@
         </div>
 
         <div class="table-wrapper thin-scrollbar">
-            @include('tables.trash-pages.generics')
+            @include('tables.trash-pages.kvpp')
         </div>
 
         {{ $items->links('layouts.pagination') }}
@@ -26,12 +26,12 @@
 
 
     @if (request()->user()->isAdmin())
-        @include('modals.multiple-delete', ['action' => route('generics.destroy'), 'permanently' => true])
+        @include('modals.multiple-delete', ['action' => route('kvpp.destroy'), 'permanently' => true])
     @endif
 
-    @include('modals.single-restore', ['action' => route('generics.restore')])
+    @include('modals.single-restore', ['action' => route('kvpp.restore')])
 @endsection
 
 @section('rightbar')
-    @include('filters.generics', ['action' => route('generics.trash')])
+    @include('filters.kvpp', ['action' => route('kvpp.trash')])
 @endsection

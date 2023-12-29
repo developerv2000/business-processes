@@ -102,7 +102,7 @@
 
     @case('Comments')
         @include('tables.components.td-view-link', [
-            'href' => route('comments.manufacturer', $item->id),
+            'href' => route('comments.generic', $item->id),
             'text' => __('View'),
         ])
     @break

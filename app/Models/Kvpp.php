@@ -38,10 +38,6 @@ class Kvpp extends Model
             foreach ($item->comments as $comment) {
                 $comment->delete();
             }
-
-            foreach ($item->processes as $process) {
-                $process->forceDelete();
-            }
         });
     }
 
@@ -146,6 +142,22 @@ class Kvpp extends Model
         return $this->load(['comments' => function ($query) {
             $query->orderBy('id', 'desc');
         }]);
+    }
+
+    public static function createFromRequest($request)
+    {
+        $item = self::create($request->all());
+
+        // HasMany relations
+        $item->storeComment($request->comment);
+    }
+
+    public function updateFromRequest($request)
+    {
+        $this->update($request->all());
+
+        // HasMany relations
+        $this->storeComment($request->comment);
     }
 
     private function storeComment($comment)

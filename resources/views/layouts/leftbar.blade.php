@@ -21,7 +21,7 @@
                     request()->routeIs('comments.process'),
             ])>{{ __('VPS') }}</x-navbar.link>
 
-            <x-navbar.link icon="stacks" href="{{ route('kvpp.index') }}" @class([
+            <x-navbar.link icon="content_paste_search" href="{{ route('kvpp.index') }}" @class([
                 'navbar-link--active' =>
                     request()->routeIs('kvpp.*') ||
                     request()->routeIs('comments.kvpp'),

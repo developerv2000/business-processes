@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
 use App\Models\Generic;
+use App\Models\Kvpp;
 use App\Models\Manufacturer;
 use App\Support\Traits\Destroyable;
 use Illuminate\Http\Request;
@@ -30,6 +31,14 @@ class CommentController extends Controller
         $item->loadComments();
 
         return view('comments.generic', compact('item'));
+    }
+
+    public function kvpp(Request $request, Kvpp $kvpp)
+    {
+        $item = $kvpp;
+        $item->loadComments();
+
+        return view('comments.kvpp', compact('item'));
     }
 
     /**

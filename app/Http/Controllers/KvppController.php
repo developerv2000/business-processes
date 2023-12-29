@@ -30,50 +30,43 @@ class KvppController extends Controller
     public function trash(Request $request)
     {
         $params = self::getRequestParams();
-        $trashedItems = Generic::onlyTrashed();
-        $items = Generic::getItemsFinalized($params, $trashedItems);
+        $trashedItems = Kvpp::onlyTrashed();
+        $items = Kvpp::getItemsFinalized($params, $trashedItems);
 
-        return view('generics.trash', compact('params', 'items'));
+        return view('kvpp.trash', compact('params', 'items'));
     }
 
     public function create()
     {
-        return view('generics.create');
+        return view('kvpp.create');
     }
 
-    public function store(StoreGenericRequest $request)
+    public function store(StoreKvppRequest $request)
     {
-        Generic::createFromRequest($request);
+        Kvpp::createFromRequest($request);
 
-        return to_route('generics.index');
+        return to_route('kvpp.index');
     }
 
-    public function edit(Generic $item)
+    public function edit(Kvpp $item)
     {
-        return view('generics.edit', compact('item'));
+        return view('kvpp.edit', compact('item'));
     }
 
-    public function update(UpdateGenericRequest $request, Generic $item)
+    public function update(UpdateKvppRequest $request, Kvpp $item)
     {
         $item->updateFromRequest($request);
 
         return redirect($request->input('previous_url'));
     }
 
-    public function getSimilarProducts(Request $request)
-    {
-        $similarProducts = Generic::getSimilarProducts($request);
-
-        return view('generics.similar-products', compact('similarProducts'));
-    }
-
     public function export()
     {
         Helper::addExportParamsToRequest();
         $params = self::getRequestParams();
-        $items = Generic::getItemsFinalized($params, null, 'query');
+        $items = Kvpp::getItemsFinalized($params, null, 'query');
 
-        return Generic::exportItems($items);
+        return Kvpp::exportItems($items);
     }
 
     private function getRequestParams()

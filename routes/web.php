@@ -49,6 +49,7 @@ Route::middleware('auth', 'auth.session')->group(function () {
     Route::prefix('comments')->controller(CommentController::class)->name('comments.')->group(function () {
         Route::get('/manufacturer/{manufacturer}', 'manufacturer')->name('manufacturer');
         Route::get('/generic/{generic}', 'generic')->name('generic');
+        Route::get('/kvpp/{kvpp}', 'kvpp')->name('kvpp');
         Route::get('/edit/{item}', 'edit')->name('edit');
 
         Route::post('/store', 'store')->name('store');
