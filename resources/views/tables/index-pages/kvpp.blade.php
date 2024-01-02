@@ -15,7 +15,7 @@
     {{-- Body Start --}}
     <tbody>
         @foreach ($items as $item)
-            <tr>
+            <tr @class(['tr--whitesmoke' => $item->notActive()])>
                 @include('tables.components.td-checkbox')
 
                 @foreach ($visibleColumns as $column)

@@ -149,6 +149,7 @@ class Process extends Model
     private static function filter($items)
     {
         $whereColumns = [
+            'id',
             'country_code_id',
             'status_id',
         ];

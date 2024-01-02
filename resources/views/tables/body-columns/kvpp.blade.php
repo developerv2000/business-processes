@@ -22,6 +22,14 @@
         </span>
     @break
 
+    @case('Coincident')
+        @foreach ($item->getCoincidentProcesses() as $coincidentProcess)
+            <a class="td__link " href="{{ route('processes.index') }}?id={{ $coincidentProcess->id }}" target="_blank">
+                # {{ $coincidentProcess->id }} - {{ $coincidentProcess->status->parent->name }}
+            </a><br>
+        @endforeach
+    @break
+
     @case('Source')
         {{ $item->source->name }}
     @break

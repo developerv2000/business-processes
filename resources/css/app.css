@@ -1119,6 +1119,15 @@ a {
     cursor: pointer;
 }
 
+.table .tr--whitesmoke {
+    background-color: whitesmoke;
+    border-color: #cfcfcf;
+}
+
+.table .tr--whitesmoke:hover {
+    background-color: whitesmoke;
+}
+
 .td__edit {
     color: var(--main-color-lighter);
     justify-content: flex-start;

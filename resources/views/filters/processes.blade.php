@@ -85,6 +85,11 @@
                 'attribute' => 'pack',
             ])
 
+            @include('filters.components.text-input', [
+                'label' => 'ID',
+                'attribute' => 'id',
+            ])
+
             <x-form.submit class="fiter-form__submit">{{ __('Update') }}</x-form.submit>
         </form>
     </div>

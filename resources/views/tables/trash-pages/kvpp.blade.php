@@ -30,7 +30,7 @@
     {{-- Body Start --}}
     <tbody>
         @foreach ($items as $item)
-            <tr title="{{ $item->name }}">
+            <tr @class(['tr--whitesmoke' => $item->notActive()])>
                 @include('tables.components.td-checkbox')
 
                 <td>
@@ -75,7 +75,7 @@
                 <td>{{ $item->portfolioManager->name }}</td>
 
                 <td>@include('tables.components.td-date', ['attribute' => 'created_at'])</td>
-                
+
                 <td>{{ $item->id }}</td>
             </tr>
         @endforeach

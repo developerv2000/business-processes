@@ -35,7 +35,7 @@
     {{-- Body Start --}}
     <tbody>
         @foreach ($items as $item)
-            <tr title="{{ $item->name }}">
+            <tr>
                 @include('tables.components.td-checkbox')
 
                 <td>

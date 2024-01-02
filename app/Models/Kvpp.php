@@ -168,4 +168,31 @@ class Kvpp extends Model
             new Comment(['body' => $comment, 'user_id' => request()->user()->id, 'created_at' => now()]),
         );
     }
+
+    /**
+     * Used to highlight inactive table items <tr> background
+     */
+    public function notActive()
+    {
+        return $this->status->id != KvppStatus::getActiveItemID();
+    }
+
+    public function getCoincidentProcesses()
+    {
+        $_this = $this;
+
+        return Process::whereHas(
+            'generic',
+            function ($query) use ($_this) {
+                $query->where('mnn_id', $_this->mnn_id)
+                    ->where('form_id', $_this->form_id)
+                    ->where('dose', $_this->dose)
+                    ->where('pack', $_this->pack);
+            }
+        )
+            ->where('country_code_id', $this->country_code_id)
+            ->select('id', 'status_id')
+            ->withOnly('status')
+            ->get();
+    }
 }
