@@ -115,14 +115,11 @@ class Kvpp extends Model
 
         switch ($finaly) {
             case 'paginate':
-                $items = $items
-                    ->paginate($params['paginationLimit'], ['*'], 'page', $params['currentPage'])
+                return $items->paginate($params['paginationLimit'], ['*'], 'page', $params['currentPage'])
                     ->appends(request()->except('page'));
-                break;
 
             case 'get':
-                $items = $items->get();
-                break;
+                return $items->get();
 
             case 'query':
                 break;
@@ -179,17 +176,14 @@ class Kvpp extends Model
 
     public function getCoincidentProcesses()
     {
-        $_this = $this;
-
-        return Process::whereHas(
-            'generic',
-            function ($query) use ($_this) {
-                $query->where('mnn_id', $_this->mnn_id)
-                    ->where('form_id', $_this->form_id)
-                    ->where('dose', $_this->dose)
-                    ->where('pack', $_this->pack);
-            }
-        )
+        return Process::whereHas('generic', function ($query) {
+            $query->where([
+                'mnn_id' => $this->mnn_id,
+                'form_id' => $this->form_id,
+                'dose' => $this->dose,
+                'pack' => $this->pack,
+            ]);
+        })
             ->where('country_code_id', $this->country_code_id)
             ->select('id', 'status_id')
             ->withOnly('status')
