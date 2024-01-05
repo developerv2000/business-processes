@@ -80,10 +80,13 @@ class AppServiceProvider extends ServiceProvider
                 'manufacturers' => Manufacturer::getAllMinifed(),
                 'analystUsers' => User::getAnalystsMinified(),
                 'bdmUsers' => User::getBdmsMinifed(),
-                'categories' => ProductCategory::getAll(),
+                'productCategories' => ProductCategory::getAll(),
                 'productForms' => ProductForm::getAll(),
                 'mnns' => Mnn::getAll(),
                 'owners' => ProcessOwner::getAll(),
+                'countries' => Country::getAll(),
+                'promoCompanies' => PromoCompany::getAll(),
+                'manufacturerCategories' => ManufacturerCategory::getAll(),
             ]);
         });
 

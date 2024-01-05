@@ -172,13 +172,39 @@ class Process extends Model
             'id',
             'country_code_id',
             'status_id',
+            'promo_company_id',
         ];
 
         $whereDateColumns = [
             'date',
         ];
 
+        $whereDateRangeColumns = [
+            'created_at',
+            'updated_at',
+        ];
+
         $whereRelationColumns = [
+            [
+                'relationName' => 'generic',
+                'name' => 'mnn_id',
+            ],
+
+            [
+                'relationName' => 'generic',
+                'name' => 'form_id',
+            ],
+
+            [
+                'relationName' => 'generic',
+                'name' => 'dose',
+            ],
+
+            [
+                'relationName' => 'generic',
+                'name' => 'pack',
+            ],
+
             [
                 'relationName' => 'manufacturer',
                 'name' => 'analyst_user_id',
@@ -190,18 +216,8 @@ class Process extends Model
             ],
 
             [
-                'relationName' => 'generic',
-                'name' => 'mnn_id',
-            ],
-
-            [
-                'relationName' => 'generic',
-                'name' => 'category_id',
-            ],
-
-            [
-                'relationName' => 'generic',
-                'name' => 'form_id',
+                'relationName' => 'manufacturer',
+                'name' => 'country_id',
             ],
         ];
 
@@ -211,17 +227,17 @@ class Process extends Model
                 'name' => 'manufacturer_id',
                 'ambigiousNme' => 'manufacturers.id',
             ],
-        ];
 
-        $whereRelationLikeColumns = [
             [
                 'relationName' => 'generic',
-                'name' => 'dose',
+                'name' => 'generic_category_id',
+                'ambigiousNme' => 'generics.category_id',
             ],
 
             [
-                'relationName' => 'generic',
-                'name' => 'pack',
+                'relationName' => 'manufacturer',
+                'name' => 'manufacturer_category_id',
+                'ambigiousNme' => 'manufacturers.category_id',
             ],
         ];
 
@@ -233,8 +249,8 @@ class Process extends Model
         $items = Helper::filterWhereDateColumns($items, $whereDateColumns);
         $items = Helper::filterWhereRelationColumns($items, $whereRelationColumns);
         $items = Helper::filterWhereRelationAmbigiousColumns($items, $whereRelationAmbigiousColumns);
-        $items = Helper::filterWhereRelationLikeColumns($items, $whereRelationLikeColumns);
         $items = Helper::filterBelongsToManyRelations($items, $belongsToManyRelations);
+        $items = Helper::filterWhereDateRangeColumns($items, $whereDateRangeColumns);
 
         return $items;
     }
@@ -458,22 +474,25 @@ class Process extends Model
                 $worksheet->setCellValue('F' . $row, $item->manufacturer->country->name);
                 $worksheet->setCellValue('G' . $row, $item->manufacturer->bdm->name);
                 $worksheet->setCellValue('H' . $row, $item->manufacturer->analyst->name);
-                $worksheet->setCellValue('I' . $row, $item->generic->category->name);
-                $worksheet->setCellValue('J' . $row, $item->generic->mnn->name);
-                $worksheet->setCellValue('K' . $row, $item->generic->form->name);
-                $worksheet->setCellValue('L' . $row, $item->generic->dose);
-                $worksheet->setCellValue('M' . $row, $item->generic->expirationDate->limit);
-                $worksheet->setCellValue('N' . $row, $item->generic->pack);
+                $worksheet->setCellValue('I' . $row, $item->generic->mnn->name);
+                $worksheet->setCellValue('J' . $row, $item->generic->form->name);
+                $worksheet->setCellValue('K' . $row, $item->generic->dose);
+                $worksheet->setCellValue('L' . $row, $item->generic->pack);
 
-                $worksheet->setCellValue('O' . $row, $item->promoCompany->name);
-                $worksheet->setCellValue('P' . $row, $item->trademark_en);
-                $worksheet->setCellValue('Q' . $row, $item->trademark_ru);
+                $worksheet->setCellValue('M' . $row, $item->promoCompany->name);
+                $worksheet->setCellValue('N' . $row, $item->status->parent->name);
+                $worksheet->setCellValue('O' . $row, $item->status->name);
+
+                $comments = $item->comments->pluck('body')->implode(' / ');
+                $worksheet->setCellValue('P' . $row, $comments);
+                $worksheet->setCellValue('Q' . $row, $item->lastComment?->created_at);
+
 
                 $worksheet->setCellValue('R' . $row, $item->manufacturer_first_offered_price);
                 $worksheet->setCellValue('S' . $row, $item->manufacturer_followed_offered_price);
                 $worksheet->setCellValue('T' . $row, $item->currency?->name);
-                $worksheet->setCellValue('U' . $row, $item->manufacturer_followed_offered_price_in_usd);
-                $worksheet->setCellValue('V' . $row, $item->agreed_price);
+                $worksheet->setCellValue('U' . $row, $item->agreed_price);
+                $worksheet->setCellValue('V' . $row, $item->manufacturer_followed_offered_price_in_usd);
                 $worksheet->setCellValue('W' . $row, $item->our_followed_offered_price);
                 $worksheet->setCellValue('X' . $row, $item->our_first_offered_price);
                 $worksheet->setCellValue('Y' . $row, $item->increased_price);
@@ -482,29 +501,31 @@ class Process extends Model
                 $worksheet->setCellValue('AB' . $row, $item->generic->expirationDate->limit);
                 $worksheet->setCellValue('AC' . $row, $item->generic->minimum_volume);
 
-                $worksheet->setCellValue('AD' . $row, $item->product_link);
-                $worksheet->setCellValue('AE' . $row, $item->dossier_status);
-                $worksheet->setCellValue('AF' . $row, $item->clinical_trial_year);
-                $worksheet->setCellValue('AG' . $row, $item->clinical_trial_countries);
-                $worksheet->setCellValue('AH' . $row, $item->clinical_trial_ich_country);
+                $worksheet->setCellValue('AD' . $row, $item->dossier_status);
+                $worksheet->setCellValue('AE' . $row, $item->clinical_trial_year);
+                $worksheet->setCellValue('AF' . $row, $item->clinical_trial_countries);
+                $worksheet->setCellValue('AG' . $row, $item->clinical_trial_ich_country);
 
                 $zones = $item->generic->zones->pluck('name')->implode(' ');
-                $worksheet->setCellValue('AI' . $row, $zones);
+                $worksheet->setCellValue('AH' . $row, $zones);
 
-                $worksheet->setCellValue('AJ' . $row, $item->additional_1);
-                $worksheet->setCellValue('AK' . $row, $item->additional_2);
-                $worksheet->setCellValue('AL' . $row, $item->status->name);
-                $worksheet->setCellValue('AM' . $row, $item->status->parent->name);
-                $worksheet->setCellValue('AN' . $row, $item->stage_2_start_date);
-                $worksheet->setCellValue('AO' . $row, $item->year_1);
-                $worksheet->setCellValue('AP' . $row, $item->year_2);
-                $worksheet->setCellValue('AQ' . $row, $item->year_3);
+                $worksheet->setCellValue('AI' . $row, $item->additional_1);
+                $worksheet->setCellValue('AJ' . $row, $item->additional_2);
+                $worksheet->setCellValue('AK' . $row, $item->stage_2_start_date);
+                $worksheet->setCellValue('AL' . $row, $item->year_1);
+                $worksheet->setCellValue('AM' . $row, $item->year_2);
+                $worksheet->setCellValue('AN' . $row, $item->year_3);
 
                 $owners = $item->owners->pluck('name')->implode(' ');
-                $worksheet->setCellValue('AR' . $row, $owners);
+                $worksheet->setCellValue('AO' . $row, $owners);
 
-                $worksheet->setCellValue('AS' . $row, $item->date);
-                $worksheet->setCellValue('AT' . $row, $item->days_past);
+                $worksheet->setCellValue('AP' . $row, $item->date);
+                $worksheet->setCellValue('AQ' . $row, $item->days_past);
+                $worksheet->setCellValue('AR' . $row, $item->trademark_en);
+                $worksheet->setCellValue('AS' . $row, $item->trademark_ru);
+                $worksheet->setCellValue('AT' . $row, $item->created_at);
+                $worksheet->setCellValue('AU' . $row, $item->updated_at);
+                $worksheet->setCellValue('AV' . $row, $item->generic->category->name);
                 $row++;
             }
         });
