@@ -3,7 +3,7 @@
 @section('main')
     <div class="prehead prehead--intended styled-box">
         @include('layouts.breadcrumbs', [
-            'crumbs' => [$item->brand, __('All comments')],
+            'crumbs' => [__('IVP') . ' #' . $item->id, __('All comments')],
             'fullScreen' => false,
         ])
     </div>

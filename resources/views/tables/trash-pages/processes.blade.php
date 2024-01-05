@@ -14,7 +14,7 @@
                 @include('tables.components.th-static-link', ['text' => 'Date', 'orderBy' => 'date'])
             </th>
 
-            <th width="144">{{ __('Country') }}</th>
+            <th width="144">{{ __('Search country') }}</th>
 
             <th width="140">{{ __('Manufacturer') }}</th>
 
@@ -26,15 +26,15 @@
 
             <th width="140">{{ __('Form') }}</th>
 
-            <th width="160">{{ __('Dose') }}</th>
+            <th width="160">{{ __('Dosage') }}</th>
 
             <th width="180">{{ __('Pack') }}</th>
 
-            <th width="80">{{ __('Status') }}</th>
+            <th width="116">{{ __('General STATUS') }}</th>
 
-            <th width="116">{{ __('General status') }}</th>
+            <th width="80">{{ __('Product STATUS') }}</th>
 
-            <th width="120">{{ __('Days past') }}</th>
+            <th width="120">{{ __('Days have passed!') }}</th>
 
             <th width="90">
                 @include('tables.components.th-static-link', ['text' => 'ID', 'orderBy' => 'id'])
@@ -87,7 +87,7 @@
                 <td>{{ $item->status->parent->name }}</td>
 
                 <td>{{ $item->days_past }}</td>
-                
+
                 <td>{{ $item->id }}</td>
             </tr>
         @endforeach

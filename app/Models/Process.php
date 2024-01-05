@@ -20,7 +20,6 @@ class Process extends Model
     const STORAGE_EXCEL_TEMPLATE_PATH = 'app/excel/templates/vps.xlsx';
     const STORAGE_EXCEL_EXPORT_PATH = 'app/excel/exports/vps';
 
-    public $timestamps = false;
     protected $guarded = ['id'];
 
     protected $with = [
@@ -28,6 +27,8 @@ class Process extends Model
         'status',
         'owners',
         'currency',
+        'promoCompany',
+        'lastComment',
     ];
 
     // ********** Events **********
@@ -69,6 +70,10 @@ class Process extends Model
 
         static::forceDeleting(function ($item) {
             $item->owners()->detach();
+
+            foreach ($item->comments as $comment) {
+                $comment->delete();
+            }
         });
     }
 
@@ -108,6 +113,21 @@ class Process extends Model
     public function currency()
     {
         return $this->belongsTo(Currency::class);
+    }
+
+    public function promoCompany()
+    {
+        return $this->belongsTo(PromoCompany::class);
+    }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    public function lastComment()
+    {
+        return $this->morphOne(Comment::class, 'commentable')->latestOfMany();
     }
 
     // ********** Querying **********
@@ -242,6 +262,27 @@ class Process extends Model
     }
 
     // ********** Miscellaneous **********
+    public function getAllComments()
+    {
+        return $this->comments()->latest()->get();
+    }
+
+    public function loadComments()
+    {
+        return $this->load(['comments' => function ($query) {
+            $query->orderBy('id', 'desc');
+        }]);
+    }
+
+    private function storeComment($comment)
+    {
+        if (!$comment) return;
+
+        $this->comments()->save(
+            new Comment(['body' => $comment, 'user_id' => request()->user()->id, 'created_at' => now()]),
+        );
+    }
+
     public static function createFromRequest($request)
     {
         $countryCodeIDs = $request->input('country_code_ids');
@@ -262,6 +303,9 @@ class Process extends Model
             // BelongsToMany relations
             $item->owners()->attach($request->input('owners'));
 
+            // HasMany relations
+            $item->storeComment($request->comment);
+
             // increment country code usage count for prioritizing
             $countryCode->usage_count = $countryCode->usage_count + 1;
             $countryCode->save();
@@ -274,6 +318,9 @@ class Process extends Model
 
         // BelongsToMany relations
         $this->owners()->sync($request->input('owners'));
+
+        // HasMany relations
+        $this->storeComment($request->comment);
     }
 
     /**
@@ -418,7 +465,7 @@ class Process extends Model
                 $worksheet->setCellValue('M' . $row, $item->generic->expirationDate->limit);
                 $worksheet->setCellValue('N' . $row, $item->generic->pack);
 
-                $worksheet->setCellValue('O' . $row, $item->marketing_authorization_holder);
+                $worksheet->setCellValue('O' . $row, $item->promoCompany->name);
                 $worksheet->setCellValue('P' . $row, $item->trademark_en);
                 $worksheet->setCellValue('Q' . $row, $item->trademark_ru);
 

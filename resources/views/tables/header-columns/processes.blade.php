@@ -9,15 +9,15 @@
         @include('tables.components.th-link', ['orderBy' => 'status_update_date'])
     @break
 
-    @case('Country')
+    @case('Search country')
         @include('tables.components.th-link', ['orderBy' => 'country_code_id'])
     @break
 
-    @case('Status')
+    @case('Product STATUS')
         @include('tables.components.th-link', ['orderBy' => 'status_id'])
     @break
 
-    @case('ПО date')
+    @case('Date of forecast')
         @include('tables.components.th-link', ['orderBy' => 'stage_2_start_date'])
     @break
 

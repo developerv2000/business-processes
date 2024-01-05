@@ -40,7 +40,7 @@ return new class extends Migration
             $table->unsignedDecimal('agreed_price', 8, 2)->nullable();
 
             // Stage 5 (КК)
-            $table->string('marketing_authorization_holder')->nullable();
+            $table->string('promo_company_id')->nullable();
             $table->string('trademark_en')->nullable();
             $table->string('trademark_ru')->nullable();
 
@@ -48,7 +48,6 @@ return new class extends Migration
             $table->unsignedDecimal('increased_price', 8, 2)->nullable();
             $table->unsignedDecimal('increased_price_percentage', 8, 2)->nullable();
             $table->date('increased_price_date')->nullable();
-            $table->string('product_link')->nullable();
             $table->string('dossier_status')->nullable();
             $table->string('clinical_trial_year')->nullable();
             $table->string('clinical_trial_countries')->nullable();
@@ -56,6 +55,7 @@ return new class extends Migration
             $table->string('additional_1')->nullable();
             $table->string('additional_2')->nullable();
 
+            $table->timestamps();
             $table->softDeletes();
         });
     }

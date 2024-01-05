@@ -1,8 +1,4 @@
 @switch($column['name'])
-    @case('ID')
-        {{ $item->id }}
-    @break
-
     @case('Edit')
         @include('tables.components.td-edit', ['href' => route('processes.edit', $item->id)])
     @break
@@ -11,11 +7,11 @@
         @include('tables.components.td-date', ['attribute' => 'status_update_date'])
     @break
 
-    @case('Country')
+    @case('Search country')
         {{ $item->countryCode->name }}
     @break
 
-    @case('НПП/УДС')
+    @case('Category')
         <span @class([
             'badge',
             'badge--yellow' => $item->manufacturer->category->name == 'УДС',
@@ -29,7 +25,7 @@
         {{ $item->manufacturer->name }}
     @break
 
-    @case('Manuf/country')
+    @case('Country of Manufacturer')
         {{ $item->manufacturer->country->name }}
     @break
 
@@ -41,10 +37,6 @@
         <x-other.ava image="{{ $item->manufacturer->analyst->photo }}" name="{{ $item->manufacturer->analyst->name }}"></x-other.ava>
     @break
 
-    @case('Prod/categ')
-        <span class="badge badge--green">{{ $item->generic->category->name }}</span>
-    @break
-
     @case('Generic')
         @include('tables.components.td-limited-text', ['text' => $item->generic->mnn->name])
     @break
@@ -53,7 +45,7 @@
         {{ $item->generic->form->name }}
     @break
 
-    @case('Dose')
+    @case('Dosage')
         @include('tables.components.td-limited-text', ['text' => $item->generic->dose])
     @break
 
@@ -62,22 +54,41 @@
     @break
 
     @case('MAH')
-        {{ $item->marketing_authorization_holder }}
+        {{ $item->promoCompany->name }}
     @break
 
-    @case('TM ENG')
-        {{ $item->trademark_en }}
+    @case('General STATUS')
+        {{ $item->status->parent->name }}
     @break
 
-    @case('TM RUS')
-        {{ $item->trademark_ru }}
+    @case('Product STATUS')
+        {{ $item->status->name }}
     @break
 
-    @case('Price 1')
+    @case('Comments')
+        @include('tables.components.td-view-link', [
+            'href' => route('comments.process', $item->id),
+            'text' => __('View'),
+        ])
+    @break
+
+    @case('Last comment')
+        @include('tables.components.td-limited-text', ['text' => $item->lastComment?->body])
+    @break
+
+    @case('Comments Date')
+        @if ($item->lastComment)
+            <div class="capitalized">
+                {{ Carbon\Carbon::parse($item->lastComment->created_at)->isoformat('DD MMM Y') }}
+            </div>
+        @endif
+    @break
+
+    @case('PRICE 1')
         {{ $item->manufacturer_first_offered_price }}
     @break
 
-    @case('Price 2')
+    @case('PRICE 2')
         {{ $item->manufacturer_followed_offered_price }}
     @break
 
@@ -89,57 +100,53 @@
         {{ $item->manufacturer_followed_offered_price_in_usd }}
     @break
 
-    @case('Agreed')
+    @case('AGREED')
         {{ $item->agreed_price }}
     @break
 
-    @case('Our price 2')
+    @case('OUR PRICE 2')
         {{ $item->our_followed_offered_price }}
     @break
 
-    @case('Our price 1')
+    @case('OUR PRICE 1')
         {{ $item->our_first_offered_price }}
     @break
 
-    @case('Price increased (new price)')
+    @case('Price increased NEW PRICE')
         {{ $item->increased_price }}
     @break
 
-    @case('Price increased %')
-        {{ $item->increased_price_percentage }}
+    @case('Price increased by%')
+        {{ $item->increased_price_percentage }} @if ($item->increased_price_percentage) % @endif
     @break
 
-    @case('Price increased date')
+    @case('Price increased THE DATE')
         @if ($item->increased_price_date)
             @include('tables.components.td-date', ['attribute' => 'increased_price_date'])
         @endif
     @break
 
-    @case('Expiration date')
+    @case('Shelf Life')
         {{ $item->generic->expirationDate->limit }}
     @break
 
-    @case('Minimum volume')
+    @case('MOQ')
         {{ $item->generic->minimum_volume }}
     @break
 
-    @case('Product link')
-        {{ $item->product_link }}
-    @break
-
-    @case('Dossier status')
+    @case('DOSSIER STATUS')
         {{ $item->dossier_status }}
     @break
 
-    @case('Year КИ/БЭ')
+    @case('Year CR/BE')
         {{ $item->clinical_trial_year }}
     @break
 
-    @case('Countries КИ/БЭ')
+    @case('Countries CR/BE')
         {{ $item->clinical_trial_countries }}
     @break
 
-    @case('ICH country КИ/БЭ')
+    @case('Country ICH')
         {{ $item->clinical_trial_ich_country }}
     @break
 
@@ -149,41 +156,33 @@
         @endforeach
     @break
 
-    @case('Additional 1')
+    @case('Down payment 1')
         {{ $item->additional_1 }}
     @break
 
-    @case('Additional 2')
+    @case('Down payment 2')
         {{ $item->additional_2 }}
     @break
 
-    @case('Status')
-        {{ $item->status->name }}
-    @break
-
-    @case('General status')
-        {{ $item->status->parent->name }}
-    @break
-
-    @case('ПО date')
+    @case('Date of forecast')
         @if ($item->stage_2_start_date)
             @include('tables.components.td-date', ['attribute' => 'stage_2_start_date'])
         @endif
     @break
 
-    @case('Year 1')
+    @case('Forecast 1 year')
         {{ $item->year_1 }}
     @break
 
-    @case('Year 2')
+    @case('Forecast 2 year')
         {{ $item->year_2 }}
     @break
 
-    @case('Year 3')
+    @case('Forecast 3 year')
         {{ $item->year_3 }}
     @break
 
-    @case('Owners')
+    @case('Responsible')
         @foreach ($item->owners as $owner)
             {{ $owner->name }}<br>
         @endforeach
@@ -193,12 +192,32 @@
         @include('tables.components.td-date', ['attribute' => 'date'])
     @break
 
-    @case('Days past')
+    @case('Days have passed!')
         {{ $item->days_past }}
     @break
 
-    @default
-        <h3>Undefined!</h3>
+    @case('Brand ENG')
+        {{ $item->trademark_en }}
+    @break
+
+    @case('Brand RUS')
+        {{ $item->trademark_ru }}
+    @break
+
+    @case('Date of creation')
+        @include('tables.components.td-date', ['attribute' => 'created_at'])
+    @break
+
+    @case('Update Date')
+        @include('tables.components.td-date', ['attribute' => 'updated_at'])
+    @break
+
+    @case('Product category')
+        <span class="badge badge--green">{{ $item->generic->category->name }}</span>
+    @break
+
+    @case('ID')
+        {{ $item->id }}
     @break
 
 @endswitch

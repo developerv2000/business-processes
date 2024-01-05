@@ -18,7 +18,7 @@
         <input type="hidden" name="id" value="{{ $item->id }}">
 
         <div class="form__divider">
-            <x-form.group-validateable label="{{ __('Status') }}" error-name="status_id" required="1">
+            <x-form.group-validateable label="{{ __('Product STATUS') }}" error-name="status_id" required="1">
                 <select class="selectize-singular statusses-selectize selectize--manually-initializable" name="status_id" required>
                     @foreach ($statuses as $status)
                         <option value="{{ $status->id }}" @selected($item->status->id == $status->id)>{{ $status->name }}</option>
@@ -29,7 +29,7 @@
 
         <div class="form__divider">
             @include('form-components.edit.belongs-to-select', [
-                'label' => 'Country',
+                'label' => 'Search country',
                 'required' => true,
                 'attribute' => 'country_code_id',
                 'options' => $countryCodes,
@@ -37,7 +37,7 @@
             ])
 
             @include('form-components.edit.multiple-select', [
-                'label' => 'Owners',
+                'label' => 'Responsible',
                 'required' => true,
                 'attribute' => 'owners[]',
                 'relationName' => 'owners',
@@ -55,6 +55,20 @@
 
         <div class="processes-edit__stage-inputs-container">@include('processes.edit.stage-inputs', ['processStage' => $item->status->parent->stage])</div>
 
-        <x-form.submit class="main-form__submit">{{ __('Update') }}</x-form.submit>
+        <div class="form__divider">
+            @if ($item->lastComment)
+                @include('form-components.edit.readonly-textarea', [
+                    'label' => 'Last comment',
+                    'value' => $item->lastComment->body,
+                ])
+            @endif
+
+            @include('form-components.edit.textarea', [
+                'label' => 'Add new comment',
+                'required' => false,
+                'attribute' => 'comment',
+            ])
+            <x-form.submit class="main-form__submit">{{ __('Update') }}</x-form.submit>
+        </div>
     </form>
 @endsection

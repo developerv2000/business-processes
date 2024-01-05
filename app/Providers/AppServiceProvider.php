@@ -100,6 +100,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with([
                 'expirationDates' => ExpirationDate::getAll(),
                 'currencies' => Currency::getAll(),
+                'promoCompanies' => PromoCompany::getAll(),
             ]);
         });
 

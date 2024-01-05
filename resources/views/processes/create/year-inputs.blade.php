@@ -4,19 +4,19 @@
         @foreach ($selectedCountryCodes as $country)
             <div class="form__divider">
                 @include('form-components.create.text-input', [
-                    'label' => 'Year 1 ' . $country->name,
+                    'label' => __('Forecast 1 year') . ' ' . $country->name,
                     'required' => true,
                     'attribute' => 'year_1_' . $country->name,
                 ])
 
                 @include('form-components.create.text-input', [
-                    'label' => 'Year 2 ' . $country->name,
+                    'label' => __('Forecast 2 year') . ' ' . $country->name,
                     'required' => true,
                     'attribute' => 'year_2_' . $country->name,
                 ])
 
                 @include('form-components.create.text-input', [
-                    'label' => 'Year 3 ' . $country->name,
+                    'label' => __('Forecast 3 year') . ' ' . $country->name,
                     'required' => true,
                     'attribute' => 'year_3_' . $country->name,
                 ])

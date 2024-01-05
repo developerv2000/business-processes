@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateCommentRequest;
 use App\Models\Generic;
 use App\Models\Kvpp;
 use App\Models\Manufacturer;
+use App\Models\Process;
 use App\Support\Traits\Destroyable;
 use Illuminate\Http\Request;
 
@@ -31,6 +32,14 @@ class CommentController extends Controller
         $item->loadComments();
 
         return view('comments.generic', compact('item'));
+    }
+
+    public function process(Request $request, Process $process)
+    {
+        $item = $process;
+        $item->loadComments();
+
+        return view('comments.process', compact('item'));
     }
 
     public function kvpp(Request $request, Kvpp $kvpp)
