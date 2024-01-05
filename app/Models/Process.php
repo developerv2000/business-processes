@@ -299,6 +299,19 @@ class Process extends Model
         );
     }
 
+    /**
+     * Used in Kernel for updating
+     * days_past and manufacturer_followed_offered_price_in_usd
+     * via chron every day.
+     */
+    public static function updateDailyAttributes()
+    {
+        self::all()->each(function ($item) {
+            $item->validateDaysPast();
+            $item->validatePriceInUSD();
+        });
+    }
+
     public static function createFromRequest($request)
     {
         $countryCodeIDs = $request->input('country_code_ids');

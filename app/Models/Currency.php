@@ -14,6 +14,9 @@ class Currency extends Model
 
     const EXCHANGE_RATE_URL = 'https://v6.exchangerate-api.com/v6/2b3965359716e1bb35e7a237/latest/';
 
+    /**
+     * Used in Kernel for updating currencies via chron every day.
+     */
     public static function updateAll()
     {
         self::where('name', '!=', 'USD')->each(function ($item) {

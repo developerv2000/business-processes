@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Models\Currency;
+use App\Models\Process;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -15,6 +16,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->call(function () {
             Currency::updateAll();
+            Process::updateDailyAttributes();
         })->daily();
     }
 
