@@ -40,7 +40,7 @@ return new class extends Migration
             $table->unsignedDecimal('agreed_price', 8, 2)->nullable();
 
             // Stage 5 (КК)
-            $table->string('promo_company_id')->nullable();
+            $table->unsignedSmallInteger('promo_company_id')->nullable();
             $table->string('trademark_en')->nullable();
             $table->string('trademark_ru')->nullable();
 
