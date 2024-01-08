@@ -498,7 +498,7 @@ class Process extends Model
                 $worksheet->setCellValue('K' . $row, $item->generic->dose);
                 $worksheet->setCellValue('L' . $row, $item->generic->pack);
 
-                $worksheet->setCellValue('M' . $row, $item->promoCompany->name);
+                $worksheet->setCellValue('M' . $row, $item->promoCompany?->name);
                 $worksheet->setCellValue('N' . $row, $item->status->parent->name);
                 $worksheet->setCellValue('O' . $row, $item->status->name);
 
