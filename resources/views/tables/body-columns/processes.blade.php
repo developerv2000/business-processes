@@ -54,7 +54,7 @@
     @break
 
     @case('MAH')
-        {{ $item->promoCompany->name }}
+        {{ $item->promoCompany?->name }}
     @break
 
     @case('General STATUS')
@@ -117,7 +117,9 @@
     @break
 
     @case('Price increased by%')
-        {{ $item->increased_price_percentage }} @if ($item->increased_price_percentage) % @endif
+        {{ $item->increased_price_percentage }} @if ($item->increased_price_percentage)
+            %
+        @endif
     @break
 
     @case('Price increased THE DATE')
@@ -171,15 +173,15 @@
     @break
 
     @case('Forecast 1 year')
-        {{ $item->year_1 }}
+        @include('tables.components.td-formatted-price', ['attribute' => 'year_1'])
     @break
 
     @case('Forecast 2 year')
-        {{ $item->year_2 }}
+        @include('tables.components.td-formatted-price', ['attribute' => 'year_2'])
     @break
 
     @case('Forecast 3 year')
-        {{ $item->year_3 }}
+        @include('tables.components.td-formatted-price', ['attribute' => 'year_3'])
     @break
 
     @case('Responsible')

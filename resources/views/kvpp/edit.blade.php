@@ -119,18 +119,21 @@
 
             @include('form-components.edit.text-input', [
                 'label' => 'Forecast 1 year',
+                'type' => 'number',
                 'required' => true,
                 'attribute' => 'forecast_year_1',
             ])
 
             @include('form-components.edit.text-input', [
                 'label' => 'Forecast 2 year',
+                'type' => 'number',
                 'required' => true,
                 'attribute' => 'forecast_year_2',
             ])
 
             @include('form-components.edit.text-input', [
                 'label' => 'Forecast 3 year',
+                'type' => 'number',
                 'required' => true,
                 'attribute' => 'forecast_year_3',
             ])

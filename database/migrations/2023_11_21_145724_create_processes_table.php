@@ -24,9 +24,9 @@ return new class extends Migration
 
             // stage 2 (ПО)
             $table->date('stage_2_start_date')->nullable();
-            $table->string('year_1')->nullable();
-            $table->string('year_2')->nullable();
-            $table->string('year_3')->nullable();
+            $table->unsignedInteger('year_1')->nullable();
+            $table->unsignedInteger('year_2')->nullable();
+            $table->unsignedInteger('year_3')->nullable();
 
             // Stage 3 (АЦ)
             $table->unsignedDecimal('manufacturer_first_offered_price', 8, 2)->nullable(); // unchangeable

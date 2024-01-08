@@ -5,18 +5,21 @@
             <div class="form__divider">
                 @include('form-components.create.text-input', [
                     'label' => __('Forecast 1 year') . ' ' . $country->name,
+                    'type' => 'number',
                     'required' => true,
                     'attribute' => 'year_1_' . $country->name,
                 ])
 
                 @include('form-components.create.text-input', [
                     'label' => __('Forecast 2 year') . ' ' . $country->name,
+                    'type' => 'number',
                     'required' => true,
                     'attribute' => 'year_2_' . $country->name,
                 ])
 
                 @include('form-components.create.text-input', [
                     'label' => __('Forecast 3 year') . ' ' . $country->name,
+                    'type' => 'number',
                     'required' => true,
                     'attribute' => 'year_3_' . $country->name,
                 ])

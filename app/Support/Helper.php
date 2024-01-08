@@ -307,6 +307,11 @@ class Helper
         return $filename;
     }
 
+    public static function formatPriceNumber($price)
+    {
+        return number_format(intval($price), 0, ',', ' ');
+    }
+
     private static function reverseOrderType($orderType): string
     {
         return $orderType == 'asc' ? 'desc' : 'asc';

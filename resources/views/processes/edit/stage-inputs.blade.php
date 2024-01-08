@@ -19,18 +19,21 @@
             <div class="form__divider">
                 @include('form-components.edit.text-input', [
                     'label' => 'Forecast 1 year',
+                    'type' => 'number',
                     'required' => true,
                     'attribute' => 'year_1',
                 ])
 
                 @include('form-components.edit.text-input', [
                     'label' => 'Forecast 2 year',
+                    'type' => 'number',
                     'required' => true,
                     'attribute' => 'year_2',
                 ])
 
                 @include('form-components.edit.text-input', [
                     'label' => 'Forecast 3 year',
+                    'type' => 'number',
                     'required' => true,
                     'attribute' => 'year_3',
                 ])
@@ -43,6 +46,7 @@
                 @unless ($item->manufacturer_first_offered_price)
                     @include('form-components.edit.float-input', [
                         'label' => 'PRICE 1',
+                        'defaultValue' => 0.01,
                         'step' => 0.01,
                         'required' => true,
                         'attribute' => 'manufacturer_first_offered_price',
@@ -51,6 +55,7 @@
 
                 @include('form-components.edit.float-input', [
                     'label' => 'PRICE 2',
+                    'defaultValue' => 0.01,
                     'step' => 0.01,
                     'required' => true,
                     'attribute' => 'manufacturer_followed_offered_price',
@@ -67,6 +72,7 @@
                 @unless ($item->our_first_offered_price)
                     @include('form-components.edit.float-input', [
                         'label' => 'OUR PRICE 1',
+                        'defaultValue' => 0.01,
                         'step' => 0.01,
                         'required' => true,
                         'attribute' => 'our_first_offered_price',
@@ -75,6 +81,7 @@
 
                 @include('form-components.edit.float-input', [
                     'label' => 'OUR PRICE 2',
+                    'defaultValue' => 0.01,
                     'step' => 0.01,
                     'required' => true,
                     'attribute' => 'our_followed_offered_price',
@@ -87,6 +94,7 @@
             <div class="form__divider">
                 @include('form-components.edit.float-input', [
                     'label' => 'AGREED',
+                    'defaultValue' => 0.01,
                     'step' => 0.01,
                     'required' => true,
                     'attribute' => 'agreed_price',
@@ -124,6 +132,7 @@
             <div class="form__divider">
                 @include('form-components.edit.float-input', [
                     'label' => 'Price increased NEW PRICE',
+                    'defaultValue' => 0.01,
                     'step' => 0.01,
                     'required' => false,
                     'attribute' => 'increased_price',

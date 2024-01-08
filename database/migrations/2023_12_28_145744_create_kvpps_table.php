@@ -24,9 +24,9 @@ return new class extends Migration
             $table->unsignedSmallInteger('promo_company_id');
             $table->string('info', 1000)->nullable();
             $table->date('date_of_forecast');
-            $table->string('forecast_year_1');
-            $table->string('forecast_year_2');
-            $table->string('forecast_year_3');
+            $table->unsignedInteger('forecast_year_1');
+            $table->unsignedInteger('forecast_year_2');
+            $table->unsignedInteger('forecast_year_3');
             $table->unsignedSmallInteger('portfolio_manager_id');
             $table->timestamps();
             $table->softDeletes();

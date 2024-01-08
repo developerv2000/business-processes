@@ -86,15 +86,15 @@
     @break
 
     @case('Forecast 1 year')
-        {{ $item->forecast_year_1 }}
+        @include('tables.components.td-formatted-price', ['attribute' => 'forecast_year_1'])
     @break
 
     @case('Forecast 2 year')
-        {{ $item->forecast_year_2 }}
+        @include('tables.components.td-formatted-price', ['attribute' => 'forecast_year_2'])
     @break
 
     @case('Forecast 3 year')
-        {{ $item->forecast_year_3 }}
+        @include('tables.components.td-formatted-price', ['attribute' => 'forecast_year_3'])
     @break
 
     @case('Portfolio manager')
