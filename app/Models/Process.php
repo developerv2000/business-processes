@@ -35,7 +35,10 @@ class Process extends Model
     protected static function booted(): void
     {
         static::creating(function ($item) {
-            $item->status_update_date = now();
+            // disabled because old data is being added
+            // uncomment after all old data add finished
+            // $item->status_update_date = now();
+            $item->status_update_date = $item->date;  // remove after old data add finished
             $item->synchronizeGenericColumnsUpdate();
         });
 
@@ -47,7 +50,10 @@ class Process extends Model
         });
 
         static::updating(function ($item) {
-            $item->validateStatusUpdateDate();
+            // disabled because old data is being added
+            // uncomment after all old data add finished
+            // $item->validateStatusUpdateDate();
+            $item->status_update_date = $item->date;  // remove after old data add finished
             $item->synchronizeGenericColumnsUpdate();
             $item->validateIncreasedPriceOnUpdating();
         });

@@ -11,6 +11,10 @@
         {{ $item->countryCode->name }}
     @break
 
+    @case('Product STATUS')
+        {{ $item->status->name }}
+    @break
+
     @case('Category')
         <span @class([
             'badge',
@@ -59,10 +63,6 @@
 
     @case('General STATUS')
         {{ $item->status->parent->name }}
-    @break
-
-    @case('Product STATUS')
-        {{ $item->status->name }}
     @break
 
     @case('Comments')
