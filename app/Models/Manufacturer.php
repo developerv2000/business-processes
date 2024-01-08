@@ -222,6 +222,7 @@ class Manufacturer extends Model
         switch ($finaly) {
             case 'paginate':
                 $items = $items
+                    ->withCount('generics')
                     ->paginate($params['paginationLimit'], ['*'], 'page', $params['currentPage'])
                     ->appends(request()->except('page'));
                 break;

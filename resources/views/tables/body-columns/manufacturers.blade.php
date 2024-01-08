@@ -15,6 +15,12 @@
         {{ $item->country->name }}
     @break
 
+    @case('IVP')
+        <a class="td__link" href="{{ route('generics.index') }}?manufacturer_id={{ $item->id }}" target="_blank">
+            {{ $item->generics_count }} {{ __('products') }}
+        </a>
+    @break
+
     @case('Manufacturer')
         {{ $item->name }}
     @break

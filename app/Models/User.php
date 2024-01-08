@@ -308,6 +308,7 @@ class User extends Authenticatable
             ['name' => 'BDM', 'order' => $order++, 'width' => 142, 'visible' => 1],
             ['name' => 'Analyst', 'order' => $order++, 'width' => 142, 'visible' => 1],
             ['name' => 'Country', 'order' => $order++, 'width' => 144, 'visible' => 1],
+            ['name' => 'IVP', 'order' => $order++, 'width' => 120, 'visible' => 1],
             ['name' => 'Manufacturer', 'order' => $order++, 'width' => 140, 'visible' => 1],
             ['name' => 'Category', 'order' => $order++, 'width' => 104, 'visible' => 1],
             ['name' => 'Status', 'order' => $order++, 'width' => 106, 'visible' => 1],
