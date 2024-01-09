@@ -13,7 +13,7 @@ class PromoCompanySeeder extends Seeder
      */
     public function run(): void
     {
-        $name = ['S', 'B', 'V', 'T', 'L', 'BO', 'G', 'N'];
+        $name = ['S', 'B', 'V', 'T', 'L', 'BO', 'G', 'N', 'Обсуждается'];
 
         for ($i = 0; $i < count($name); $i++) {
             $item = new PromoCompany();

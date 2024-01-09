@@ -406,7 +406,7 @@ class User extends Authenticatable
             ['name' => 'Dosage', 'order' => $order++, 'width' => 160, 'visible' => 1],
             ['name' => 'Pack', 'order' => $order++, 'width' => 110, 'visible' => 1],
 
-            ['name' => 'MAH', 'order' => $order++, 'width' => 50, 'visible' => 1],
+            ['name' => 'MAH', 'order' => $order++, 'width' => 102, 'visible' => 1],
             ['name' => 'General STATUS', 'order' => $order++, 'width' => 134, 'visible' => 1],
             ['name' => 'Comments', 'order' => $order++, 'width' => 110, 'visible' => 1],
             ['name' => 'Last comment', 'order' => $order++, 'width' => 240, 'visible' => 1],
@@ -467,7 +467,7 @@ class User extends Authenticatable
             ['name' => 'Basic form', 'order' => $order++, 'width' => 140, 'visible' => 1],
             ['name' => 'Dosage', 'order' => $order++, 'width' => 160, 'visible' => 1],
             ['name' => 'Pack', 'order' => $order++, 'width' => 110, 'visible' => 1],
-            ['name' => 'MAH', 'order' => $order++, 'width' => 64, 'visible' => 1],
+            ['name' => 'MAH', 'order' => $order++, 'width' => 102, 'visible' => 1],
             ['name' => 'Information', 'order' => $order++, 'width' => 140, 'visible' => 1],
             ['name' => 'Comments', 'order' => $order++, 'width' => 110, 'visible' => 1],
             ['name' => 'Last comment', 'order' => $order++, 'width' => 240, 'visible' => 1],
