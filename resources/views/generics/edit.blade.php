@@ -115,7 +115,7 @@
             ])
 
             @include('form-components.edit.text-input', [
-                'label' => 'Validity period patent',
+                'label' => 'Validity period',
                 'required' => false,
                 'attribute' => 'patent_expiry',
             ])

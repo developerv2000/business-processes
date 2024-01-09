@@ -92,6 +92,7 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer(['processes.create.index', 'processes.edit.index'], function ($view) {
             $view->with([
+                'countries' => Country::getAll(),
                 'countryCodes' => CountryCode::getAll(),
                 'statuses' => ProcessStatus::getAllChilds(),
                 'owners' => ProcessOwner::getAll(),
@@ -101,6 +102,7 @@ class AppServiceProvider extends ServiceProvider
         // Shared via ViewComposer because views are also returned via ajax
         View::composer(['processes.create.stage-inputs', 'processes.edit.stage-inputs'], function ($view) {
             $view->with([
+                'countries' => Country::getAll(),
                 'expirationDates' => ExpirationDate::getAll(),
                 'currencies' => Currency::getAll(),
                 'promoCompanies' => PromoCompany::getAll(),

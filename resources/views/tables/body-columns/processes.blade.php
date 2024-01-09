@@ -145,7 +145,9 @@
     @break
 
     @case('Countries CR/BE')
-        {{ $item->clinical_trial_countries }}
+        @foreach ($item->crbeCountries as $country)
+            {{ $country->name }}<br>
+        @endforeach
     @break
 
     @case('Country ICH')

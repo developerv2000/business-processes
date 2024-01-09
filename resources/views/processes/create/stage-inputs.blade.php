@@ -22,7 +22,7 @@
             <div class="form__divider">
                 @include('form-components.create.float-input', [
                     'label' => 'PRICE 1',
-                    'defaultValue' => 0.00,
+                    'defaultValue' => 0.0,
                     'step' => 0.01,
                     'required' => true,
                     'attribute' => 'manufacturer_first_offered_price',
@@ -30,7 +30,7 @@
 
                 @include('form-components.create.float-input', [
                     'label' => 'PRICE 2',
-                    'defaultValue' => 0.00,
+                    'defaultValue' => 0.0,
                     'step' => 0.01,
                     'required' => true,
                     'attribute' => 'manufacturer_followed_offered_price',
@@ -46,7 +46,7 @@
 
                 @include('form-components.create.float-input', [
                     'label' => 'OUR PRICE 1',
-                    'defaultValue' => 0.00,
+                    'defaultValue' => 0.0,
                     'step' => 0.01,
                     'required' => true,
                     'attribute' => 'our_first_offered_price',
@@ -54,7 +54,7 @@
 
                 @include('form-components.create.float-input', [
                     'label' => 'OUR PRICE 2',
-                    'defaultValue' => 0.00,
+                    'defaultValue' => 0.0,
                     'step' => 0.01,
                     'required' => true,
                     'attribute' => 'our_followed_offered_price',
@@ -67,7 +67,7 @@
             <div class="form__divider">
                 @include('form-components.create.float-input', [
                     'label' => 'AGREED',
-                    'defaultValue' => 0.00,
+                    'defaultValue' => 0.0,
                     'step' => 0.01,
                     'required' => true,
                     'attribute' => 'agreed_price',
@@ -105,7 +105,7 @@
             <div class="form__divider">
                 @include('form-components.create.float-input', [
                     'label' => 'Price increased NEW PRICE',
-                    'defaultValue' => 0.00,
+                    'defaultValue' => null,
                     'step' => 0.01,
                     'required' => false,
                     'attribute' => 'increased_price',
@@ -123,10 +123,12 @@
                     'attribute' => 'clinical_trial_year',
                 ])
 
-                @include('form-components.create.text-input', [
+                @include('form-components.create.multiple-select', [
                     'label' => 'Countries CR/BE',
                     'required' => false,
-                    'attribute' => 'clinical_trial_countries',
+                    'attribute' => 'crbeCountries[]',
+                    'options' => $countries,
+                    'optionsCaptionAttribute' => 'name',
                 ])
 
                 @include('form-components.create.text-input', [

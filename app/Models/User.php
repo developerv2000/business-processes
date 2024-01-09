@@ -372,7 +372,7 @@ class User extends Authenticatable
             ['name' => 'Zones', 'order' => $order++, 'width' => 60, 'visible' => 1],
             ['name' => 'Manufacturer Brand', 'order' => $order++, 'width' => 182, 'visible' => 1],
             ['name' => 'Bioequivalence', 'order' => $order++, 'width' => 124, 'visible' => 1],
-            ['name' => 'Validity period patent', 'order' => $order++, 'width' => 160, 'visible' => 1],
+            ['name' => 'Validity period', 'order' => $order++, 'width' => 110, 'visible' => 1],
             ['name' => 'Registered in EU', 'order' => $order++, 'width' => 138, 'visible' => 1],
             ['name' => 'Sold in EU', 'order' => $order++, 'width' => 106, 'visible' => 1],
             ['name' => 'Down payment', 'order' => $order++, 'width' => 132, 'visible' => 1],

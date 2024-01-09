@@ -464,4 +464,8 @@ function initializeNewComponents() {
     $('select.selectize-singular:not(.selectized)').selectize({
         plugins: ["auto_position"],
     });
+
+    $('select.selectize-multiple:not(.selectize--manually-initializable):not(.selectized)').selectize({
+        plugins: ["auto_position"],
+    });
 }

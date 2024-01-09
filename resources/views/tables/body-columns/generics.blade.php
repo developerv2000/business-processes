@@ -80,7 +80,7 @@
         @include('tables.components.td-limited-text', ['text' => $item->bioequivalence])
     @break
 
-    @case('Validity period patent')
+    @case('Validity period')
         @include('tables.components.td-limited-text', ['text' => $item->patent_expiry])
     @break
 

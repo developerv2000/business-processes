@@ -50,7 +50,6 @@ return new class extends Migration
             $table->date('increased_price_date')->nullable();
             $table->string('dossier_status')->nullable();
             $table->string('clinical_trial_year')->nullable();
-            $table->string('clinical_trial_countries')->nullable();
             $table->string('clinical_trial_ich_country')->nullable();
             $table->string('additional_1')->nullable();
             $table->string('additional_2')->nullable();

@@ -26,6 +26,7 @@ class Process extends Model
         'countryCode',
         'status',
         'owners',
+        'crbeCountries',
         'currency',
         'promoCompany',
         'lastComment',
@@ -76,6 +77,7 @@ class Process extends Model
 
         static::forceDeleting(function ($item) {
             $item->owners()->detach();
+            $item->crbeCountries()->detach();
 
             foreach ($item->comments as $comment) {
                 $comment->delete();
@@ -114,6 +116,11 @@ class Process extends Model
     public function owners()
     {
         return $this->belongsToMany(ProcessOwner::class, 'process_processowners', 'process_id', 'owner_id');
+    }
+
+    public function crbeCountries()
+    {
+        return $this->belongsToMany(Country::class, 'process_crbecountry', 'process_id', 'country_id');
     }
 
     public function currency()
@@ -337,6 +344,7 @@ class Process extends Model
 
             // BelongsToMany relations
             $item->owners()->attach($request->input('owners'));
+            $item->crbeCountries()->attach($request->input('crbeCountries'));
 
             // HasMany relations
             $item->storeComment($request->comment);
@@ -353,6 +361,7 @@ class Process extends Model
 
         // BelongsToMany relations
         $this->owners()->sync($request->input('owners'));
+        $this->crbeCountries()->sync($request->input('crbeCountries'));
 
         // HasMany relations
         $this->storeComment($request->comment);
@@ -506,7 +515,6 @@ class Process extends Model
                 $worksheet->setCellValue('P' . $row, $comments);
                 $worksheet->setCellValue('Q' . $row, $item->lastComment?->created_at);
 
-
                 $worksheet->setCellValue('R' . $row, $item->manufacturer_first_offered_price);
                 $worksheet->setCellValue('S' . $row, $item->manufacturer_followed_offered_price);
                 $worksheet->setCellValue('T' . $row, $item->currency?->name);
@@ -522,7 +530,10 @@ class Process extends Model
 
                 $worksheet->setCellValue('AD' . $row, $item->dossier_status);
                 $worksheet->setCellValue('AE' . $row, $item->clinical_trial_year);
-                $worksheet->setCellValue('AF' . $row, $item->clinical_trial_countries);
+
+                $countries = $item->crbeCountries->pluck('name')->implode(' ');
+                $worksheet->setCellValue('AF' . $row, $countries);
+
                 $worksheet->setCellValue('AG' . $row, $item->clinical_trial_ich_country);
 
                 $zones = $item->generic->zones->pluck('name')->implode(' ');
