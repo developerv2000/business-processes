@@ -21,7 +21,7 @@
         @include('tables.components.th-link', ['orderBy' => 'form_id'])
     @break
 
-    @case('Shelf Life')
+    @case('Shelf life')
         @include('tables.components.th-link', ['orderBy' => 'expiration_date_id'])
     @break
 
@@ -41,7 +41,7 @@
         @include('tables.components.th-link', ['orderBy' => 'created_at'])
     @break
 
-    @case('Update Date')
+    @case('Update date')
         @include('tables.components.th-link', ['orderBy' => 'updated_at'])
     @break
 

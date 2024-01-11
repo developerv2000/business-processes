@@ -62,7 +62,7 @@
             ])
 
             @include('filters.components.date-range-input', [
-                'label' => 'Update Date',
+                'label' => 'Update date',
                 'attribute' => 'updated_at',
             ])
 

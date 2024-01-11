@@ -10,7 +10,7 @@
                 @include('tables.components.th-static-link', ['text' => 'Deleted at', 'orderBy' => 'deleted_at'])
             </th>
 
-            <th width="112">
+            <th width="98">
                 @include('tables.components.th-static-link', ['text' => 'Date', 'orderBy' => 'date'])
             </th>
 
@@ -30,9 +30,9 @@
 
             <th width="110">{{ __('Pack') }}</th>
 
-            <th width="134">{{ __('General STATUS') }}</th>
+            <th width="134">{{ __('General status') }}</th>
 
-            <th width="134">{{ __('Product STATUS') }}</th>
+            <th width="134">{{ __('Product status') }}</th>
 
             <th width="134">{{ __('Days have passed!') }}</th>
 

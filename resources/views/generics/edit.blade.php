@@ -78,7 +78,7 @@
             ])
 
             @include('form-components.edit.belongs-to-select', [
-                'label' => 'Shelf Life',
+                'label' => 'Shelf life',
                 'required' => true,
                 'attribute' => 'expiration_date_id',
                 'options' => $expirationDates,

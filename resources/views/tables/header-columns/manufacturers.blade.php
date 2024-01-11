@@ -37,7 +37,7 @@
         @include('tables.components.th-link', ['orderBy' => 'created_at'])
     @break
 
-    @case('Update Date')
+    @case('Update date')
         @include('tables.components.th-link', ['orderBy' => 'updated_at'])
     @break
 

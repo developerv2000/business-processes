@@ -73,7 +73,7 @@
         @include('tables.components.td-limited-text', ['text' => $item->lastComment?->body])
     @break
 
-    @case('Comments Date')
+    @case('Comments date')
         @if ($item->lastComment)
             <div class="capitalized">
                 {{ Carbon\Carbon::parse($item->lastComment->created_at)->isoformat('DD MMM Y') }}
@@ -105,7 +105,7 @@
         @include('tables.components.td-date', ['attribute' => 'created_at'])
     @break
 
-    @case('Update Date')
+    @case('Update date')
         @include('tables.components.td-date', ['attribute' => 'updated_at'])
     @break
 

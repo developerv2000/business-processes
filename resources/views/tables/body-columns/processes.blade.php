@@ -11,7 +11,7 @@
         {{ $item->countryCode->name }}
     @break
 
-    @case('Product STATUS')
+    @case('Product status')
         {{ $item->status->name }}
     @break
 
@@ -29,7 +29,7 @@
         {{ $item->manufacturer->name }}
     @break
 
-    @case('Country of Manufacturer')
+    @case('Country of manufacturer')
         {{ $item->manufacturer->country->name }}
     @break
 
@@ -61,7 +61,7 @@
         {{ $item->promoCompany?->name }}
     @break
 
-    @case('General STATUS')
+    @case('General status')
         {{ $item->status->parent->name }}
     @break
 
@@ -76,7 +76,7 @@
         @include('tables.components.td-limited-text', ['text' => $item->lastComment?->body])
     @break
 
-    @case('Comments Date')
+    @case('Comments date')
         @if ($item->lastComment)
             <div class="capitalized">
                 {{ Carbon\Carbon::parse($item->lastComment->created_at)->isoformat('DD MMM Y') }}
@@ -84,11 +84,11 @@
         @endif
     @break
 
-    @case('PRICE 1')
+    @case('Manufacturer price 1')
         {{ $item->manufacturer_first_offered_price }}
     @break
 
-    @case('PRICE 2')
+    @case('Manufacturer price 2')
         {{ $item->manufacturer_followed_offered_price }}
     @break
 
@@ -100,19 +100,19 @@
         {{ $item->manufacturer_followed_offered_price_in_usd }}
     @break
 
-    @case('AGREED')
+    @case('Agreed')
         {{ $item->agreed_price }}
     @break
 
-    @case('OUR PRICE 2')
+    @case('Our price 2')
         {{ $item->our_followed_offered_price }}
     @break
 
-    @case('OUR PRICE 1')
+    @case('Our price 1')
         {{ $item->our_first_offered_price }}
     @break
 
-    @case('Price increased NEW PRICE')
+    @case('Price increased new price')
         {{ $item->increased_price }}
     @break
 
@@ -122,13 +122,13 @@
         @endif
     @break
 
-    @case('Price increased THE DATE')
+    @case('Date of price increased')
         @if ($item->increased_price_date)
             @include('tables.components.td-date', ['attribute' => 'increased_price_date'])
         @endif
     @break
 
-    @case('Shelf Life')
+    @case('Shelf life')
         {{ $item->generic->expirationDate->limit }}
     @break
 
@@ -136,21 +136,21 @@
         {{ $item->generic->minimum_volume }}
     @break
 
-    @case('DOSSIER STATUS')
+    @case('Dossier status')
         {{ $item->dossier_status }}
     @break
 
-    @case('Year CR/BE')
+    @case('Year Cr/Be')
         {{ $item->clinical_trial_year }}
     @break
 
-    @case('Countries CR/BE')
+    @case('Countries Cr/Be')
         @foreach ($item->crbeCountries as $country)
             {{ $country->name }}<br>
         @endforeach
     @break
 
-    @case('Country ICH')
+    @case('Country ich')
         {{ $item->clinical_trial_ich_country }}
     @break
 
@@ -200,11 +200,11 @@
         {{ $item->days_past }}
     @break
 
-    @case('Brand ENG')
+    @case('Brand Eng')
         {{ $item->trademark_en }}
     @break
 
-    @case('Brand RUS')
+    @case('Brand Rus')
         {{ $item->trademark_ru }}
     @break
 
@@ -212,7 +212,7 @@
         @include('tables.components.td-date', ['attribute' => 'created_at'])
     @break
 
-    @case('Update Date')
+    @case('Update date')
         @include('tables.components.td-date', ['attribute' => 'updated_at'])
     @break
 

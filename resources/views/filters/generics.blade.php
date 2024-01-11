@@ -72,7 +72,7 @@
             ])
 
             @include('filters.components.belongs-to-select', [
-                'label' => 'Shelf Life',
+                'label' => 'Shelf life',
                 'attribute' => 'expiration_date_id',
                 'options' => $expirationDates,
                 'optionsCaptionAttribute' => 'limit',
@@ -92,7 +92,7 @@
             ])
 
             @include('filters.components.date-range-input', [
-                'label' => 'Update Date',
+                'label' => 'Update date',
                 'attribute' => 'updated_at',
             ])
 

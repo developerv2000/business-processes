@@ -45,7 +45,7 @@
         </div>
 
         <div class="form__divider">
-            <x-form.group-validateable label="{{ __('Product STATUS') }}" error-name="status_id" required="1">
+            <x-form.group-validateable label="{{ __('Product status') }}" error-name="status_id" required="1">
                 <select class="selectize-singular statusses-selectize selectize--manually-initializable" name="status_id" required>
                     @foreach ($statuses as $status)
                         <option value="{{ $status->id }}" @selected($proposedChildStatus->id == $status->id)>{{ $status->name }}</option>
@@ -88,7 +88,7 @@
                 'required' => false,
                 'attribute' => 'comment',
             ])
-            
+
             <x-form.submit class="main-form__submit">{{ __('Store') }}</x-form.submit>
         </div>
     </form>

@@ -13,7 +13,7 @@ class Process extends Model
 {
     use HasFactory, SoftDeletes;
 
-    const DEFAULT_ORDER_BY = 'id';
+    const DEFAULT_ORDER_BY = 'created_at';
     const DEFAULT_ORDER_TYPE = 'desc';
     const DEFAULT_PAGINATION_LIMIT = 50;
 
@@ -428,7 +428,7 @@ class Process extends Model
             $item->stage_2_start_date = null;
             $item->saveQuietly();
         }
-        // Else update date if already not set
+        // Else Update date if already not set
         else if (!$item->stage_2_start_date) {
             $item->stage_2_start_date = date('Y-m-d');
             $item->saveQuietly();

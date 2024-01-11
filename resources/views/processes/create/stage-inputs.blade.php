@@ -3,7 +3,7 @@
         {{-- Stage 2 (ПО) --}}
         @if ($processStage > 1)
             <div class="form__divider">
-                <x-form.group label="{{ __('Shelf Life') }}" required="1">
+                <x-form.group label="{{ __('Shelf life') }}" required="1">
                     <select class="selectize-singular" name="expiration_date_id" required>
                         @foreach ($expirationDates as $date)
                             <option value="{{ $date->id }}" @selected($generic->expiration_date_id == $date->id)>{{ $date->limit }}</option>
@@ -21,7 +21,7 @@
         @if ($processStage > 2)
             <div class="form__divider">
                 @include('form-components.create.float-input', [
-                    'label' => 'PRICE 1',
+                    'label' => 'Manufacturer price 1',
                     'defaultValue' => 0.0,
                     'step' => 0.01,
                     'required' => true,
@@ -29,7 +29,7 @@
                 ])
 
                 @include('form-components.create.float-input', [
-                    'label' => 'PRICE 2',
+                    'label' => 'Manufacturer price 2',
                     'defaultValue' => 0.0,
                     'step' => 0.01,
                     'required' => true,
@@ -45,7 +45,7 @@
                 ])
 
                 @include('form-components.create.float-input', [
-                    'label' => 'OUR PRICE 1',
+                    'label' => 'Our price 1',
                     'defaultValue' => 0.0,
                     'step' => 0.01,
                     'required' => true,
@@ -53,7 +53,7 @@
                 ])
 
                 @include('form-components.create.float-input', [
-                    'label' => 'OUR PRICE 2',
+                    'label' => 'Our price 2',
                     'defaultValue' => 0.0,
                     'step' => 0.01,
                     'required' => true,
@@ -66,7 +66,7 @@
         @if ($processStage > 3)
             <div class="form__divider">
                 @include('form-components.create.float-input', [
-                    'label' => 'AGREED',
+                    'label' => 'Agreed',
                     'defaultValue' => 0.0,
                     'step' => 0.01,
                     'required' => true,
@@ -87,13 +87,13 @@
                 ])
 
                 @include('form-components.create.text-input', [
-                    'label' => 'Brand ENG',
+                    'label' => 'Brand Eng',
                     'required' => true,
                     'attribute' => 'trademark_en',
                 ])
 
                 @include('form-components.create.text-input', [
-                    'label' => 'Brand RUS',
+                    'label' => 'Brand Rus',
                     'required' => true,
                     'attribute' => 'trademark_ru',
                 ])
@@ -104,7 +104,7 @@
         @if ($processStage > 3)
             <div class="form__divider">
                 @include('form-components.create.float-input', [
-                    'label' => 'Price increased NEW PRICE',
+                    'label' => 'Price increased new price',
                     'defaultValue' => null,
                     'step' => 0.01,
                     'required' => false,
@@ -112,19 +112,19 @@
                 ])
 
                 @include('form-components.create.text-input', [
-                    'label' => 'DOSSIER STATUS',
+                    'label' => 'Dossier status',
                     'required' => false,
                     'attribute' => 'dossier_status',
                 ])
 
                 @include('form-components.create.text-input', [
-                    'label' => 'Year CR/BE',
+                    'label' => 'Year Cr/Be',
                     'required' => false,
                     'attribute' => 'clinical_trial_year',
                 ])
 
                 @include('form-components.create.multiple-select', [
-                    'label' => 'Countries CR/BE',
+                    'label' => 'Countries Cr/Be',
                     'required' => false,
                     'attribute' => 'crbeCountries[]',
                     'options' => $countries,
@@ -132,7 +132,7 @@
                 ])
 
                 @include('form-components.create.text-input', [
-                    'label' => 'Country ICH',
+                    'label' => 'Country ich',
                     'required' => false,
                     'attribute' => 'clinical_trial_ich_country',
                 ])

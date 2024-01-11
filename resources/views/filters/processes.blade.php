@@ -25,7 +25,7 @@
             ])
 
             @include('filters.components.belongs-to-select', [
-                'label' => 'Product STATUS',
+                'label' => 'Product status',
                 'attribute' => 'status_id',
                 'options' => $statuses,
                 'optionsCaptionAttribute' => 'name',
@@ -78,7 +78,7 @@
             ])
 
             @include('filters.components.belongs-to-select', [
-                'label' => 'Country of Manufacturer',
+                'label' => 'Country of manufacturer',
                 'attribute' => 'country_id',
                 'options' => $countries,
                 'optionsCaptionAttribute' => 'name',
@@ -111,7 +111,7 @@
             ])
 
             @include('filters.components.date-range-input', [
-                'label' => 'Update Date',
+                'label' => 'Update date',
                 'attribute' => 'updated_at',
             ])
 

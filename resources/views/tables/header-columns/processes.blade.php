@@ -13,7 +13,7 @@
         @include('tables.components.th-link', ['orderBy' => 'country_code_id'])
     @break
 
-    @case('Product STATUS')
+    @case('Product status')
         @include('tables.components.th-link', ['orderBy' => 'status_id'])
     @break
 
@@ -25,8 +25,12 @@
         @include('tables.components.th-link', ['orderBy' => 'date'])
     @break
 
-    @case('ID')
-        @include('tables.components.th-link', ['orderBy' => 'id'])
+    @case('Date of creation')
+        @include('tables.components.th-link', ['orderBy' => 'created_at'])
+    @break
+
+    @case('Update date')
+        @include('tables.components.th-link', ['orderBy' => 'updated_at'])
     @break
 
     @default

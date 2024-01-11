@@ -14,7 +14,7 @@
                 @include('tables.components.th-static-link', ['text' => 'Manufacturer', 'orderBy' => 'name'])
             </th>
 
-            <th width="140">
+            <th width="144">
                 @include('tables.components.th-static-link', ['text' => 'Country', 'orderBy' => 'country_id'])
             </th>
 
