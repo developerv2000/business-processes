@@ -372,6 +372,8 @@ class Process extends Model
      *
      * Default $now variable is used, because thousand of items
      * can be upated through loop
+     *
+     * Timestamps disabled because days past updated via Chron everyday
 
      * Used on models created & updated events
      */
@@ -381,7 +383,9 @@ class Process extends Model
         if (!$now) $now = Carbon::createFromFormat('Y-m-d', date('Y-m-d'));
         $date = Carbon::createFromFormat('Y-m-d', $item->date);
         $item->days_past = $date->diffInDays($now, false);
+        $item->timestamps = false;
         $item->saveQuietly();
+        $item->timestamps = true;
     }
 
     /**
@@ -437,6 +441,7 @@ class Process extends Model
 
     /**
      * Validate manufacturer_followed_offered_price_in_usd field
+     * Timestamps disabled because days price updated via Chron everyday
      *
      * Used on models created & updated events
      */
@@ -451,7 +456,9 @@ class Process extends Model
         if ($price & $currencyName) {
             $converted = Currency::convertToUSD($price, $currencyName);
             $item->manufacturer_followed_offered_price_in_usd = $converted;
+            $item->timestamps = false;
             $item->saveQuietly();
+            $item->timestamps = true;
         }
     }
 
