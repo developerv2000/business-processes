@@ -172,6 +172,8 @@ class AppServiceProvider extends ServiceProvider
                 $analyst->statistics_epp_link = route('manufacturers.index') . $urlFilterParams;
                 $analyst->statistics_ivp_link = route('generics.index') . $urlFilterParams;
                 $analyst->statistics_vps_link = route('processes.index') . $urlFilterParams;
+
+                $analyst->created_total = $analyst->today_created_epps + $analyst->today_created_ivps + $analyst->today_created_vpses;
             });
 
             $view->with([

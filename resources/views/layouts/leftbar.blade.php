@@ -56,6 +56,7 @@
                             <a class="statistics__analyst-link" href="{{ $analyst->statistics_epp_link }}">{{ __('EPP') }} - {{ $analyst->today_created_epps }}</a>
                             <a class="statistics__analyst-link" href="{{ $analyst->statistics_ivp_link }}">{{ __('IVP') }} - {{ $analyst->today_created_ivps }}</a>
                             <a class="statistics__analyst-link" href="{{ $analyst->statistics_vps_link }}">{{ __('VPS') }} - {{ $analyst->today_created_vpses }}</a>
+                            <a class="statistics__analyst-link">TOTAL - {{ $analyst->created_total }}</a>
                         </div>
                     @endforeach
                 </div>
