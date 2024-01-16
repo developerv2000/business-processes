@@ -25,6 +25,7 @@ use App\Models\PromoCompany;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Zone;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -165,7 +166,10 @@ class AppServiceProvider extends ServiceProvider
                     })
                     ->count();
 
-                $urlFilterParams = '?created_at=' . date('d/m/Y - d/m/Y') . '&analyst_user_id=' . $analyst->id;
+                $tomorrow = Carbon::tomorrow();
+                $formattedTomorrow = $tomorrow->format('d/m/Y');
+                $urlFilterParams = '?created_at=' . date('d/m/Y - ') . $formattedTomorrow . '&analyst_user_id=' . $analyst->id;
+
                 $analyst->statistics_epp_link = route('manufacturers.index') . $urlFilterParams;
                 $analyst->statistics_ivp_link = route('generics.index') . $urlFilterParams;
                 $analyst->statistics_vps_link = route('processes.index') . $urlFilterParams;
