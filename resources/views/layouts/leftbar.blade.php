@@ -23,8 +23,7 @@
 
             <x-navbar.link icon="content_paste_search" href="{{ route('kvpp.index') }}" @class([
                 'navbar-link--active' =>
-                    request()->routeIs('kvpp.*') ||
-                    request()->routeIs('comments.kvpp'),
+                    request()->routeIs('kvpp.*') || request()->routeIs('comments.kvpp'),
             ])>{{ __('KVPP') }}</x-navbar.link>
 
             <x-navbar.link icon="calendar_month" href="{{ route('meetings.index') }}" @class(['navbar-link--active' => request()->routeIs('meetings.*')])>
@@ -43,6 +42,23 @@
                         {{ __('Users') }}
                     </x-navbar.link>
                 @endif
+            @endif
+
+            {{-- Temporary statistics --}}
+            @if (request()->user()->id == 1)
+                <x-navbar.title>{{ __('Статистика') }}</x-navbar.title>
+
+                <div class="statistics">
+                    @foreach ($analysts as $analyst)
+                        <p class="statistics__analyst-name">{{ $analyst->name }}</p>
+
+                        <div class="statistics__links-container">
+                            <a class="statistics__analyst-link" href="{{ $analyst->statistics_epp_link }}">{{ __('EPP') }} - {{ $analyst->today_created_epps }}</a>
+                            <a class="statistics__analyst-link" href="{{ $analyst->statistics_ivp_link }}">{{ __('IVP') }} - {{ $analyst->today_created_ivps }}</a>
+                            <a class="statistics__analyst-link" href="{{ $analyst->statistics_vps_link }}">{{ __('VPS') }} - {{ $analyst->today_created_vpses }}</a>
+                        </div>
+                    @endforeach
+                </div>
             @endif
         </nav>
     </div>

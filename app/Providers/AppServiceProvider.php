@@ -7,6 +7,7 @@ use App\Models\Country;
 use App\Models\CountryCode;
 use App\Models\Currency;
 use App\Models\ExpirationDate;
+use App\Models\Generic;
 use App\Models\KvppPriority;
 use App\Models\KvppSource;
 use App\Models\KvppStatus;
@@ -15,6 +16,7 @@ use App\Models\ManufacturerCategory;
 use App\Models\Meeting;
 use App\Models\Mnn;
 use App\Models\PortfolioManager;
+use App\Models\Process;
 use App\Models\ProcessOwner;
 use App\Models\ProcessStatus;
 use App\Models\ProductCategory;
@@ -138,6 +140,39 @@ class AppServiceProvider extends ServiceProvider
         View::composer(['users.create', 'users.edit'], function ($view) {
             $view->with([
                 'roles' => Role::getAll(),
+            ]);
+        });
+
+        // Temporary statistics
+        View::composer('layouts.leftbar', function ($view) {
+            $today = today();
+            $analysts = User::getAnalystsMinified();
+
+            $analysts->each(function ($analyst) use ($today) {
+                $analyst->today_created_epps = Manufacturer::whereDate('created_at', $today)
+                    ->where('analyst_user_id', $analyst->id)
+                    ->count();
+
+                $analyst->today_created_ivps = Generic::whereDate('created_at', $today)
+                    ->whereHas('manufacturer', function ($manufacturer) use ($analyst) {
+                        $manufacturer->where('analyst_user_id', $analyst->id);
+                    })
+                    ->count();
+
+                $analyst->today_created_vpses = Process::whereDate('created_at', $today)
+                    ->whereHas('manufacturer', function ($manufacturer) use ($analyst) {
+                        $manufacturer->where('analyst_user_id', $analyst->id);
+                    })
+                    ->count();
+
+                $urlFilterParams = '?created_at=' . date('d/m/Y - d/m/Y') . '&analyst_user_id=' . $analyst->id;
+                $analyst->statistics_epp_link = route('manufacturers.index') . $urlFilterParams;
+                $analyst->statistics_ivp_link = route('generics.index') . $urlFilterParams;
+                $analyst->statistics_vps_link = route('processes.index') . $urlFilterParams;
+            });
+
+            $view->with([
+                'analysts' => $analysts,
             ]);
         });
     }

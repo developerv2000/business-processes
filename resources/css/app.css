@@ -1519,3 +1519,27 @@ a {
     display: none;
 }
 /* ------------ /END Processes pages ------------ */
+
+
+/* ------------ Temporary statistics ------------ */
+.statistics {
+    font-size: 13px;
+    color: #5e6e82;
+}
+
+.statistics__analyst-name {
+    margin-bottom: 2px;
+    font-weight: 500;
+}
+
+.statistics__links-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 8px;
+    align-items: flex-start;
+}
+
+.statistics__analyst-link {
+    text-decoration: none;
+}
+/* ------------ /END Temporary statistics ------------ */
