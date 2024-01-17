@@ -72,7 +72,7 @@
 
                 <td>@include('tables.components.td-date', ['attribute' => 'date_of_forecast'])</td>
 
-                <td>{{ $item->portfolioManager->name }}</td>
+                <td>{{ $item->portfolioManager?->name }}</td>
 
                 <td>@include('tables.components.td-date', ['attribute' => 'created_at'])</td>
 

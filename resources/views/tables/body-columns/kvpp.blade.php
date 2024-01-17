@@ -98,7 +98,7 @@
     @break
 
     @case('Portfolio manager')
-        {{ $item->portfolioManager->name }}
+        {{ $item->portfolioManager?->name }}
     @break
 
     @case('Date of creation')

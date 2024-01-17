@@ -166,14 +166,14 @@ class AppServiceProvider extends ServiceProvider
                     })
                     ->count();
 
+                $analyst->created_total = $analyst->today_created_epps + $analyst->today_created_ivps + $analyst->today_created_vpses;
+
                 $tomorrow = Carbon::tomorrow()->format('d/m/Y');
                 $urlFilterParams = '?created_at=' . date('d/m/Y - ') . $tomorrow . '&analyst_user_id=' . $analyst->id;
 
                 $analyst->statistics_epp_link = route('manufacturers.index') . $urlFilterParams;
                 $analyst->statistics_ivp_link = route('generics.index') . $urlFilterParams;
                 $analyst->statistics_vps_link = route('processes.index') . $urlFilterParams;
-
-                $analyst->created_total = $analyst->today_created_epps + $analyst->today_created_ivps + $analyst->today_created_vpses;
             });
 
             $view->with([

@@ -113,34 +113,34 @@
             @include('form-components.edit.text-input', [
                 'type' => 'date',
                 'label' => 'Date of forecast',
-                'required' => true,
+                'required' => false,
                 'attribute' => 'date_of_forecast',
             ])
 
             @include('form-components.edit.text-input', [
                 'label' => 'Forecast 1 year',
                 'type' => 'number',
-                'required' => true,
+                'required' => false,
                 'attribute' => 'forecast_year_1',
             ])
 
             @include('form-components.edit.text-input', [
                 'label' => 'Forecast 2 year',
                 'type' => 'number',
-                'required' => true,
+                'required' => false,
                 'attribute' => 'forecast_year_2',
             ])
 
             @include('form-components.edit.text-input', [
                 'label' => 'Forecast 3 year',
                 'type' => 'number',
-                'required' => true,
+                'required' => false,
                 'attribute' => 'forecast_year_3',
             ])
 
             @include('form-components.edit.belongs-to-select', [
                 'label' => 'Portfolio manager',
-                'required' => true,
+                'required' => false,
                 'attribute' => 'portfolio_manager_id',
                 'options' => $portfolioManagers,
                 'optionsCaptionAttribute' => 'name',
