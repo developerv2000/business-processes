@@ -477,6 +477,7 @@ class User extends Authenticatable
             ['name' => 'Forecast 2 year', 'order' => $order++, 'width' => 112, 'visible' => 1],
             ['name' => 'Forecast 3 year', 'order' => $order++, 'width' => 112, 'visible' => 1],
             ['name' => 'Portfolio manager', 'order' => $order++, 'width' => 150, 'visible' => 1],
+            ['name' => 'IVP coincidents', 'order' => $order++, 'width' => 150, 'visible' => 1],
             ['name' => 'Date of creation', 'order' => $order++, 'width' => 138, 'visible' => 1],
             ['name' => 'Update date', 'order' => $order++, 'width' => 150, 'visible' => 1],
             ['name' => 'ID', 'order' => $order++, 'width' => 70, 'visible' => 1],

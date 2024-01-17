@@ -189,4 +189,12 @@ class Kvpp extends Model
             ->withOnly('status')
             ->get();
     }
+
+    public function getCoincidentGenericsCount()
+    {
+        return Generic::where([
+            'mnn_id' => $this->mnn_id,
+            'form_id' => $this->form_id,
+        ])->count();
+    }
 }

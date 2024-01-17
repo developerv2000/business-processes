@@ -24,7 +24,7 @@
 
     @case('Coincident')
         @foreach ($item->getCoincidentProcesses() as $coincidentProcess)
-            <a class="td__link " href="{{ route('processes.index') }}?id={{ $coincidentProcess->id }}" target="_blank">
+            <a class="td__link" href="{{ route('processes.index') }}?id={{ $coincidentProcess->id }}" target="_blank">
                 # {{ $coincidentProcess->id }} - {{ $coincidentProcess->status->parent->name }}
             </a><br>
         @endforeach
@@ -99,6 +99,12 @@
 
     @case('Portfolio manager')
         {{ $item->portfolioManager?->name }}
+    @break
+
+    @case('IVP coincidents')
+        <a class="td__link" href="{{ route('generics.index') }}?mnn_id={{ $item->mnn_id }}&form_id={{ $item->form_id }}" target="_blank">
+            {{ $item->getCoincidentGenericsCount() }}
+        </a><br>
     @break
 
     @case('Date of creation')
