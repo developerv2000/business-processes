@@ -21,7 +21,6 @@ return new class extends Migration
             $table->unsignedSmallInteger('form_id');
             $table->string('dose', 300);
             $table->string('pack');
-            $table->unsignedSmallInteger('promo_company_id');
             $table->string('info', 1000)->nullable();
             $table->date('date_of_forecast')->nullable();
             $table->unsignedInteger('forecast_year_1')->nullable();

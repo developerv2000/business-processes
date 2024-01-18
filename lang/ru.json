@@ -139,13 +139,13 @@
 
     "Stop": "СТОП",
     "Priority": "Приоритет",
-    "Coincident": "Совпадение",
+    "VPS coincidents": "Совпадение с ВПЦ",
+    "IVP coincidents": "Совпадение с ИВП",
     "Source": "Источник",
     "Information": "Инофрмация",
     "Date of forecast": "Дата ПО",
     "Forecast 1 year": "Прогноз 1 год",
     "Forecast 2 year": "Прогноз 2 год",
     "Forecast 3 year": "Прогноз 3 год",
-    "Portfolio manager": "Менеджер",
-    "IVP coincidents": "Совпадение с ИВП"
+    "Portfolio manager": "Менеджер"
 }

@@ -26,7 +26,7 @@ class Kvpp extends Model
         'source',
         'mnn',
         'form',
-        'promoCompany',
+        'promoCompanies',
         'portfolioManager',
         'lastComment',
     ];
@@ -35,6 +35,8 @@ class Kvpp extends Model
     protected static function booted(): void
     {
         static::forceDeleting(function ($item) {
+            $item->promoCompanies()->detach();
+
             foreach ($item->comments as $comment) {
                 $comment->delete();
             }
@@ -72,11 +74,6 @@ class Kvpp extends Model
         return $this->belongsTo(ProductForm::class, 'form_id');
     }
 
-    public function promoCompany()
-    {
-        return $this->belongsTo(PromoCompany::class);
-    }
-
     public function portfolioManager()
     {
         return $this->belongsTo(PortfolioManager::class);
@@ -90,6 +87,11 @@ class Kvpp extends Model
     public function lastComment()
     {
         return $this->morphOne(Comment::class, 'commentable')->latestOfMany();
+    }
+
+    public function promoCompanies()
+    {
+        return $this->belongsToMany(PromoCompany::class, 'kvpp_promocompany');
     }
 
     // ********** Querying **********
@@ -145,6 +147,9 @@ class Kvpp extends Model
     {
         $item = self::create($request->all());
 
+        // BelongsToMany relations
+        $item->promoCompanies()->attach($request->input('promoCompanies'));
+
         // HasMany relations
         $item->storeComment($request->comment);
     }
@@ -152,6 +157,9 @@ class Kvpp extends Model
     public function updateFromRequest($request)
     {
         $this->update($request->all());
+
+        // BelongsToMany relations
+        $this->promoCompanies()->sync($request->input('promoCompanies'));
 
         // HasMany relations
         $this->storeComment($request->comment);

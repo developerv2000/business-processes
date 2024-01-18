@@ -19,7 +19,7 @@
             <th width="140">{{ __('Basic form') }}</th>
             <th width="160">{{ __('Dosage') }}</th>
             <th width="110">{{ __('Pack') }}</th>
-            <th width="64">{{ __('MAH') }}</th>
+            <th width="102">{{ __('MAH') }}</th>
             <th width="136">{{ __('Date of forecast') }}</th>
             <th width="150">{{ __('Portfolio manager') }}</th>
             <th width="138">{{ __('Date of creation') }}</th>
@@ -68,7 +68,11 @@
 
                 <td>{{ $item->pack }}</td>
 
-                <td>{{ $item->promoCompany->name }}</td>
+                <td>
+                    @foreach ($item->promoCompanies as $company)
+                        {{ $company->name }}<br>
+                    @endforeach
+                </td>
 
                 <td>@include('tables.components.td-date', ['attribute' => 'date_of_forecast'])</td>
 

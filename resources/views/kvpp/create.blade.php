@@ -80,10 +80,10 @@
         </div>
 
         <div class="form__divider">
-            @include('form-components.create.belongs-to-select', [
+            @include('form-components.create.multiple-select', [
                 'label' => 'MAH',
                 'required' => true,
-                'attribute' => 'promo_company_id',
+                'attribute' => 'promoCompanies[]',
                 'options' => $promoCompanies,
                 'optionsCaptionAttribute' => 'name',
             ])
