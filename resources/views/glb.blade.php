@@ -9,7 +9,8 @@
 </head>
 <body>
   <!-- Use the model-viewer tag to embed the 3D model -->
-  <model-viewer
+  <div style="display: flex; justify-content: center; padding: 80px;">
+    <model-viewer
     src="{{ asset('img/main/3d.glb') }}"
     alt="A 3D model"
     camera-controls
@@ -18,5 +19,6 @@
     ar-modes="webxr scene-viewer quick-look"
     ar-scale="auto"
   ></model-viewer>
+  </div>
 </body>
 </html>
