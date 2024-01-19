@@ -24,8 +24,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/glb', [ManufacturerController::class, 'glb']); // TEST GLB
-
 Route::middleware('guest')->controller(AuthenticatedSessionController::class)->group(function () {
     Route::get('/login', 'create')->name('login');
     Route::post('/login', 'store');
