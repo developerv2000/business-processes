@@ -147,26 +147,52 @@ class AppServiceProvider extends ServiceProvider
         // Temporary statistics
         View::composer('layouts.leftbar', function ($view) {
             $today = today();
+            $createdAtRange = request('created_at');
             $analysts = User::getAnalystsMinified();
 
-            $analysts->each(function ($analyst) use ($today) {
-                $analyst->today_created_epps = Manufacturer::whereDate('created_at', $today)
-                    ->where('analyst_user_id', $analyst->id)
-                    ->count();
+            $analysts->each(function ($analyst) use ($today, $createdAtRange) {
+                if ($createdAtRange) {
+                    $splitted = explode(' - ', $createdAtRange);
+                    $fromDate = Carbon::createFromFormat('d/m/Y', $splitted[0])->format('Y-m-d');
+                    $toDate = Carbon::createFromFormat('d/m/Y', $splitted[1])->format('Y-m-d');
 
-                $analyst->today_created_ivps = Generic::whereDate('created_at', $today)
-                    ->whereHas('manufacturer', function ($manufacturer) use ($analyst) {
-                        $manufacturer->where('analyst_user_id', $analyst->id);
-                    })
-                    ->count();
+                    $analyst->created_epps = Manufacturer::whereDate('created_at', '>=', $fromDate)
+                        ->whereDate('created_at', '<', $toDate)
+                        ->where('analyst_user_id', $analyst->id)
+                        ->count();
 
-                $analyst->today_created_vpses = Process::whereDate('created_at', $today)
-                    ->whereHas('manufacturer', function ($manufacturer) use ($analyst) {
-                        $manufacturer->where('analyst_user_id', $analyst->id);
-                    })
-                    ->count();
+                    $analyst->created_ivps = Generic::whereDate('created_at', '>=', $fromDate)
+                        ->whereDate('created_at', '<', $toDate)
+                        ->whereHas('manufacturer', function ($manufacturer) use ($analyst) {
+                            $manufacturer->where('analyst_user_id', $analyst->id);
+                        })
+                        ->count();
 
-                $analyst->created_total = $analyst->today_created_epps + $analyst->today_created_ivps + $analyst->today_created_vpses;
+                    $analyst->created_vpses = Process::whereDate('created_at', '>=', $fromDate)
+                        ->whereDate('created_at', '<', $toDate)
+                        ->whereHas('manufacturer', function ($manufacturer) use ($analyst) {
+                            $manufacturer->where('analyst_user_id', $analyst->id);
+                        })
+                        ->count();
+                } else {
+                    $analyst->created_epps = Manufacturer::whereDate('created_at', $today)
+                        ->where('analyst_user_id', $analyst->id)
+                        ->count();
+
+                    $analyst->created_ivps = Generic::whereDate('created_at', $today)
+                        ->whereHas('manufacturer', function ($manufacturer) use ($analyst) {
+                            $manufacturer->where('analyst_user_id', $analyst->id);
+                        })
+                        ->count();
+
+                    $analyst->created_vpses = Process::whereDate('created_at', $today)
+                        ->whereHas('manufacturer', function ($manufacturer) use ($analyst) {
+                            $manufacturer->where('analyst_user_id', $analyst->id);
+                        })
+                        ->count();
+                }
+
+                $analyst->created_total = $analyst->created_epps + $analyst->created_ivps + $analyst->created_vpses;
 
                 $tomorrow = Carbon::tomorrow()->format('d/m/Y');
                 $urlFilterParams = '?created_at=' . date('d/m/Y - ') . $tomorrow . '&analyst_user_id=' . $analyst->id;
