@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Helper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -106,6 +107,34 @@ class Kvpp extends Model
 
     private static function filter($items)
     {
+        $whereColumns = [
+            'country_code_id',
+            'priority_id',
+            'source_id',
+            'mnn_id',
+            'form_id',
+            'portfolio_manager_id',
+        ];
+
+        $whereLikeColumns = [
+            'dose',
+            'pack',
+        ];
+
+        $whereDateRangeColumns = [
+            'created_at',
+            'updated_at',
+        ];
+
+        $belongsToManyRelations = [
+            'promoCompanies',
+        ];
+
+        $items = Helper::filterWhereColumns($items, $whereColumns);
+        $items = Helper::filterWhereLikeColumns($items, $whereLikeColumns);
+        $items = Helper::filterWhereDateRangeColumns($items, $whereDateRangeColumns);
+        $items = Helper::filterBelongsToManyRelations($items, $belongsToManyRelations);
+
         return $items;
     }
 
