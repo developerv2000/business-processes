@@ -174,6 +174,7 @@ class Process extends Model
     {
         $items = $items ?: self::query();
         $items = self::filter($items);
+        $items = self::additionalFilterByRoles($items);
         $items = self::finalize($params, $items, $finaly);
 
         return $items;
@@ -264,6 +265,22 @@ class Process extends Model
         $items = Helper::filterWhereRelationAmbigiousColumns($items, $whereRelationAmbigiousColumns);
         $items = Helper::filterBelongsToManyRelations($items, $belongsToManyRelations);
         $items = Helper::filterWhereDateRangeColumns($items, $whereDateRangeColumns);
+
+        return $items;
+    }
+
+    /**
+     * Get only analysts added processes for simple users (not admin & not moderators)
+     */
+    public static function additionalFilterByRoles($items)
+    {
+        $user = request()->user();
+
+        if (!$user->isAdminOrModerator()) {
+            $items = $items->whereHas('manufacturer', function ($query) use ($user) {
+                $query->where('analyst_user_id', $user->id);
+            });
+        }
 
         return $items;
     }

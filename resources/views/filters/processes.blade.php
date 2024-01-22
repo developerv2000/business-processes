@@ -55,12 +55,14 @@
                 'attribute' => 'pack',
             ])
 
-            @include('filters.components.belongs-to-select', [
-                'label' => 'Analyst',
-                'attribute' => 'analyst_user_id',
-                'options' => $analystUsers,
-                'optionsCaptionAttribute' => 'name',
-            ])
+            @if (request()->user()->isAdminOrModerator())
+                @include('filters.components.belongs-to-select', [
+                    'label' => 'Analyst',
+                    'attribute' => 'analyst_user_id',
+                    'options' => $analystUsers,
+                    'optionsCaptionAttribute' => 'name',
+                ])
+            @endif
 
             @include('filters.components.belongs-to-select', [
                 'label' => 'BDM',
