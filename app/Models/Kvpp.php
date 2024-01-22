@@ -30,6 +30,7 @@ class Kvpp extends Model
         'form',
         'promoCompanies',
         'portfolioManager',
+        'analyst',
         'lastComment',
     ];
 
@@ -81,6 +82,11 @@ class Kvpp extends Model
         return $this->belongsTo(PortfolioManager::class);
     }
 
+    public function analyst()
+    {
+        return $this->belongsTo(User::class, 'analyst_user_id');
+    }
+
     public function comments()
     {
         return $this->morphMany(Comment::class, 'commentable');
@@ -115,6 +121,7 @@ class Kvpp extends Model
             'mnn_id',
             'form_id',
             'portfolio_manager_id',
+            'analyst_user_id',
         ];
 
         $whereLikeColumns = [
@@ -238,9 +245,10 @@ class Kvpp extends Model
                 $worksheet->setCellValue('P' . $row, $item->forecast_year_2);
                 $worksheet->setCellValue('Q' . $row, $item->forecast_year_3);
                 $worksheet->setCellValue('R' . $row, $item->portfolioManager?->name);
-                $worksheet->setCellValue('S' . $row, $item->created_at);
-                $worksheet->setCellValue('T' . $row, $item->updated_at);
-                $worksheet->setCellValue('U' . $row, $item->id);
+                $worksheet->setCellValue('S' . $row, $item->analyst?->name);
+                $worksheet->setCellValue('T' . $row, $item->created_at);
+                $worksheet->setCellValue('U' . $row, $item->updated_at);
+                $worksheet->setCellValue('V' . $row, $item->id);
 
                 $row++;
             }

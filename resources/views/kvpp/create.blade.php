@@ -138,6 +138,14 @@
                 'optionsCaptionAttribute' => 'name',
             ])
 
+            @include('form-components.create.current-user-select', [
+                'label' => 'Analyst',
+                'required' => false,
+                'attribute' => 'analyst_user_id',
+                'options' => $analystUsers,
+                'optionsCaptionAttribute' => 'name',
+            ])
+
             <x-form.submit class="main-form__submit">{{ __('Store') }}</x-form.submit>
         </div>
     </form>

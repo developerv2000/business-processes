@@ -8,6 +8,7 @@ use App\Models\CountryCode;
 use App\Models\Currency;
 use App\Models\ExpirationDate;
 use App\Models\Generic;
+use App\Models\Kvpp;
 use App\Models\KvppPriority;
 use App\Models\KvppSource;
 use App\Models\KvppStatus;
@@ -123,6 +124,7 @@ class AppServiceProvider extends ServiceProvider
                 'forms' => ProductForm::getAll(),
                 'promoCompanies' => PromoCompany::getAll(),
                 'portfolioManagers' => PortfolioManager::getAll(),
+                'analystUsers' => User::getAnalystsMinified(),
             ]);
         });
 
@@ -147,59 +149,12 @@ class AppServiceProvider extends ServiceProvider
         // Temporary statistics
         View::composer('layouts.leftbar', function ($view) {
             $today = today();
+            $tomorrow = Carbon::tomorrow()->format('d/m/Y');
             $createdAtRange = request('created_at');
             $analysts = User::getAnalystsMinified();
 
-            $analysts->each(function ($analyst) use ($today, $createdAtRange) {
-                if ($createdAtRange) {
-                    $splitted = explode(' - ', $createdAtRange);
-                    $fromDate = Carbon::createFromFormat('d/m/Y', $splitted[0])->format('Y-m-d');
-                    $toDate = Carbon::createFromFormat('d/m/Y', $splitted[1])->format('Y-m-d');
-
-                    $analyst->created_epps = Manufacturer::whereDate('created_at', '>=', $fromDate)
-                        ->whereDate('created_at', '<', $toDate)
-                        ->where('analyst_user_id', $analyst->id)
-                        ->count();
-
-                    $analyst->created_ivps = Generic::whereDate('created_at', '>=', $fromDate)
-                        ->whereDate('created_at', '<', $toDate)
-                        ->whereHas('manufacturer', function ($manufacturer) use ($analyst) {
-                            $manufacturer->where('analyst_user_id', $analyst->id);
-                        })
-                        ->count();
-
-                    $analyst->created_vpses = Process::whereDate('created_at', '>=', $fromDate)
-                        ->whereDate('created_at', '<', $toDate)
-                        ->whereHas('manufacturer', function ($manufacturer) use ($analyst) {
-                            $manufacturer->where('analyst_user_id', $analyst->id);
-                        })
-                        ->count();
-                } else {
-                    $analyst->created_epps = Manufacturer::whereDate('created_at', $today)
-                        ->where('analyst_user_id', $analyst->id)
-                        ->count();
-
-                    $analyst->created_ivps = Generic::whereDate('created_at', $today)
-                        ->whereHas('manufacturer', function ($manufacturer) use ($analyst) {
-                            $manufacturer->where('analyst_user_id', $analyst->id);
-                        })
-                        ->count();
-
-                    $analyst->created_vpses = Process::whereDate('created_at', $today)
-                        ->whereHas('manufacturer', function ($manufacturer) use ($analyst) {
-                            $manufacturer->where('analyst_user_id', $analyst->id);
-                        })
-                        ->count();
-                }
-
-                $analyst->created_total = $analyst->created_epps + $analyst->created_ivps + $analyst->created_vpses;
-
-                $tomorrow = Carbon::tomorrow()->format('d/m/Y');
-                $urlFilterParams = '?created_at=' . date('d/m/Y - ') . $tomorrow . '&analyst_user_id=' . $analyst->id;
-
-                $analyst->statistics_epp_link = route('manufacturers.index') . $urlFilterParams;
-                $analyst->statistics_ivp_link = route('generics.index') . $urlFilterParams;
-                $analyst->statistics_vps_link = route('processes.index') . $urlFilterParams;
+            $analysts->each(function ($analyst) use ($today, $tomorrow, $createdAtRange) {
+                $analyst->addCreatedItemsCount($today, $tomorrow, $createdAtRange);
             });
 
             $view->with([

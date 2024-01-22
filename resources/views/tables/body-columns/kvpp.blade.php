@@ -109,6 +109,12 @@
         {{ $item->portfolioManager?->name }}
     @break
 
+    @case('Analyst')
+        @if ($item->analyst)
+            <x-other.ava image="{{ $item->analyst->photo }}" name="{{ $item->analyst->name }}"></x-other.ava>
+        @endif
+    @break
+
     @case('Date of creation')
         @include('tables.components.td-date', ['attribute' => 'created_at'])
     @break

@@ -27,6 +27,7 @@ return new class extends Migration
             $table->unsignedInteger('forecast_year_2')->nullable();
             $table->unsignedInteger('forecast_year_3')->nullable();
             $table->unsignedSmallInteger('portfolio_manager_id')->nullable();
+            $table->unsignedSmallInteger('analyst_user_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

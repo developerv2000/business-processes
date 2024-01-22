@@ -40,6 +40,7 @@ class KvppFactory extends Factory
             'forecast_year_2' => fake()->numberBetween(10, 5000),
             'forecast_year_3' => fake()->numberBetween(10, 5000),
             'portfolio_manager_id' => PortfolioManager::inRandomOrder()->first()->id,
+            'analyst_user_id' => User::analysts()->inRandomOrder()->first()->id,
         ];
     }
 

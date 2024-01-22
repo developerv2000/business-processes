@@ -13,7 +13,7 @@ class PortfolioManagerSeeder extends Seeder
      */
     public function run(): void
     {
-        $name = ['Акмал', 'Азиз', 'Джахонгир', 'Нозим', 'Сабрина', 'Мухаммад'];
+        $name = ['Акмал', 'Азиз', 'Фирдавс', 'Нозим', 'Сабрина', 'Абдукарим', 'Мехродж', 'Азим'];
 
         for ($i = 0; $i < count($name); $i++) {
             $item = new PortfolioManager();

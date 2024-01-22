@@ -147,6 +147,14 @@
                 'optionsCaptionAttribute' => 'name',
             ])
 
+            @include('form-components.edit.belongs-to-select', [
+                'label' => 'Analyst',
+                'required' => false,
+                'attribute' => 'analyst_user_id',
+                'options' => $analystUsers,
+                'optionsCaptionAttribute' => 'name',
+            ])
+
             <x-form.submit class="main-form__submit">{{ __('Update') }}</x-form.submit>
         </div>
     </form>

@@ -65,6 +65,13 @@
                 'optionsCaptionAttribute' => 'name',
             ])
 
+            @include('filters.components.belongs-to-select', [
+                'label' => 'Analyst',
+                'attribute' => 'analyst_user_id',
+                'options' => $analystUsers,
+                'optionsCaptionAttribute' => 'name',
+            ])
+
             @include('filters.components.date-range-input', [
                 'label' => 'Date of creation',
                 'attribute' => 'created_at',
