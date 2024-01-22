@@ -6,6 +6,7 @@ use App\Support\Helper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class Kvpp extends Model
 {
@@ -201,6 +202,58 @@ class Kvpp extends Model
         $this->comments()->save(
             new Comment(['body' => $comment, 'user_id' => request()->user()->id, 'created_at' => now()]),
         );
+    }
+
+    public static function exportItems($items)
+    {
+        $template = storage_path(self::STORAGE_EXCEL_TEMPLATE_PATH);
+        $spreadsheet = IOFactory::load($template);
+        $worksheet = $spreadsheet->getActiveSheet();
+        $row = 2;
+
+        // fill excel cells
+        $items->chunk(400, function ($items) use (&$worksheet, &$row) {
+            foreach ($items as $item) {
+                $worksheet->setCellValue('A' . $row, $item->status->name);
+                $worksheet->setCellValue('B' . $row, $item->countryCode->name);
+                $worksheet->setCellValue('C' . $row, $item->priority->name);
+                $worksheet->setCellValue('D' . $row, $item->source->name);
+                $worksheet->setCellValue('E' . $row, $item->mnn->name);
+                $worksheet->setCellValue('F' . $row, $item->form->name);
+                $worksheet->setCellValue('G' . $row, $item->form->parent ? $item->form->parent->name : $item->form->name);
+                $worksheet->setCellValue('H' . $row, $item->dose);
+                $worksheet->setCellValue('I' . $row, $item->pack);
+
+                $promoCompanies = $item->promoCompanies->pluck('name')->implode(' ');
+                $worksheet->setCellValue('J' . $row, $promoCompanies);
+
+                $worksheet->setCellValue('K' . $row, $item->info);
+
+                $comments = $item->comments->pluck('body')->implode(' / ');
+                $worksheet->setCellValue('L' . $row, $comments);
+
+                $worksheet->setCellValue('M' . $row, $item->lastComment?->created_at);
+                $worksheet->setCellValue('N' . $row, $item->date_of_forecast);
+                $worksheet->setCellValue('O' . $row, $item->forecast_year_1);
+                $worksheet->setCellValue('P' . $row, $item->forecast_year_2);
+                $worksheet->setCellValue('Q' . $row, $item->forecast_year_3);
+                $worksheet->setCellValue('R' . $row, $item->portfolioManager?->name);
+                $worksheet->setCellValue('S' . $row, $item->created_at);
+                $worksheet->setCellValue('T' . $row, $item->updated_at);
+                $worksheet->setCellValue('U' . $row, $item->id);
+
+                $row++;
+            }
+        });
+
+        // save file
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $filename = date('Y-m-d H-i-s') . '.xlsx';
+        $filename = Helper::escapeDuplicateFilename($filename, storage_path(self::STORAGE_EXCEL_EXPORT_PATH));
+        $filePath = storage_path(self::STORAGE_EXCEL_EXPORT_PATH  . '/' . $filename);
+        $writer->save($filePath);
+
+        return response()->download($filePath);
     }
 
     /**

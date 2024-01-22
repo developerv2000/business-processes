@@ -68,13 +68,13 @@
 
             @include('form-components.create.text-input', [
                 'label' => 'Dosage',
-                'required' => true,
+                'required' => false,
                 'attribute' => 'dose',
             ])
 
             @include('form-components.create.text-input', [
                 'label' => 'Pack',
-                'required' => true,
+                'required' => false,
                 'attribute' => 'pack',
             ])
         </div>
