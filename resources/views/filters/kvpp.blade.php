@@ -6,7 +6,7 @@
             @include('filters.components.hidden-default-orders')
 
             @include('filters.components.belongs-to-select', [
-                'label' => 'Сountry',
+                'label' => 'Country',
                 'attribute' => 'country_code_id',
                 'options' => $countryCodes,
                 'optionsCaptionAttribute' => 'name',
