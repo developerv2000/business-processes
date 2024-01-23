@@ -167,6 +167,19 @@ class Kvpp extends Model
         return $items;
     }
 
+    public static function getSimilarProducts($request)
+    {
+        // combine all available forms (parent and childs) in array
+        $formFamilyIDs = ProductForm::find($request->form_id)->getFamilyIDs();
+
+        return Kvpp::where('mnn_id', $request->mnn_id)
+            ->whereIn('form_id', $formFamilyIDs)
+            ->where('dose', $request->dose)
+            ->where('pack', $request->pack)
+            ->where('country_code_id', $request->country_code_id)
+            ->get();
+    }
+
     // ********** Miscellaneous **********
     public function getAllComments()
     {

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Kvpp;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreKvppRequest extends FormRequest
 {
@@ -22,7 +24,22 @@ class StoreKvppRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'dose' => [
+                Rule::unique(Kvpp::class)->where(function ($query) {
+                    $query->where('mnn_id', $this->mnn_id)
+                        ->where('form_id', $this->form_id)
+                        ->where('country_code_id', $this->country_code_id)
+                        ->where('dose', $this->dose)
+                        ->where('pack', $this->pack);
+                }),
+            ],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'dose.unique' => trans('validation.unique-kvpp'),
         ];
     }
 }

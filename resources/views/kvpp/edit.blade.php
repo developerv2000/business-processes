@@ -26,14 +26,6 @@
             ])
 
             @include('form-components.edit.belongs-to-select', [
-                'label' => 'Country',
-                'required' => true,
-                'attribute' => 'country_code_id',
-                'options' => $countryCodes,
-                'optionsCaptionAttribute' => 'name',
-            ])
-
-            @include('form-components.edit.belongs-to-select', [
                 'label' => 'Priority',
                 'required' => true,
                 'attribute' => 'priority_id',
@@ -51,6 +43,14 @@
         </div>
 
         <div class="form__divider">
+            @include('form-components.edit.belongs-to-select', [
+                'label' => 'Country',
+                'required' => true,
+                'attribute' => 'country_code_id',
+                'options' => $countryCodes,
+                'optionsCaptionAttribute' => 'name',
+            ])
+
             @include('form-components.edit.belongs-to-select', [
                 'label' => 'Generic',
                 'required' => true,

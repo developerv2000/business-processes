@@ -1,9 +1,10 @@
 import './bootstrap';
 
-const GET_GENERICS_SIMILAR_PRODUCTS_URL = '/generics/get-similar-products'
-const GET_PROCESSES_CREATE_FORM_INPUTS_URL = '/processes/get-create-form-stage-inputs'
-const GET_PROCESSES_CREATE_FORM_YEAR_INPUTS_URL = '/processes/get-create-form-year-inputs'
-const GET_PROCESSES_EDIT_FORM_INPUTS_URL = '/processes/get-edit-form-stage-inputs'
+const GET_GENERICS_SIMILAR_PRODUCTS_URL = '/generics/get-similar-products';
+const GET_KVPP_SIMILAR_PRODUCTS_URL = '/kvpp/get-similar-products';
+const GET_PROCESSES_CREATE_FORM_INPUTS_URL = '/processes/get-create-form-stage-inputs';
+const GET_PROCESSES_CREATE_FORM_YEAR_INPUTS_URL = '/processes/get-create-form-year-inputs';
+const GET_PROCESSES_EDIT_FORM_INPUTS_URL = '/processes/get-edit-form-stage-inputs';
 
 const windowPathName = window.location.origin + window.location.pathname;
 const mainWrapper = document.querySelector('.main-wrapper');
@@ -17,6 +18,15 @@ window.addEventListener('load', () => {
     setupForms();
     setupTables();
 });
+
+function debounce(callback, timeoutDelay = 500) {
+    let timeoutId;
+
+    return (...rest) => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+    };
+}
 
 function setupComponents() {
     // ********** Selectize **********
@@ -64,7 +74,7 @@ function setupComponents() {
         $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
     });
 
-    $('.date-range-input').on('cancel.daterangepicker', function(ev, picker) {
+    $('.date-range-input').on('cancel.daterangepicker', function (ev, picker) {
         $(this).val('');
     });
 
@@ -253,22 +263,23 @@ function setupForms() {
             });
     });
 
-    // ********** Uniqness of Generics on create/update **********
-    if (document.querySelector('.generics-create, .generics-edit')) {
+    // ********** Uniqness of Generics on create **********
+    if (document.querySelector('.generics-create')) {
+        const similarProductsContainer = document.querySelector('.generics-similar-products');
+
         let manufacturerSelect = document.querySelector('select[name="manufacturer_id"]');
         let mnnSelect = document.querySelector('select[name="mnn_id"]');
         let formSelect = document.querySelector('select[name="form_id"]');
-        const similarProductsContainer = document.querySelector('.generics-similar-products');
 
         let selects = [mnnSelect, manufacturerSelect, formSelect];
 
         for (let select of selects) {
             select.selectize.on('change', function (value) {
-                displaySimilarProducts();
+                displayGenericsSimilarProducts();
             });
         }
 
-        function displaySimilarProducts() {
+        function displayGenericsSimilarProducts() {
             const manufacturerID = manufacturerSelect.value;
             const mnnID = mnnSelect.value;
             const formID = formSelect.value;
@@ -286,6 +297,67 @@ function setupForms() {
             }
 
             axios.post(GET_GENERICS_SIMILAR_PRODUCTS_URL, data, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    similarProductsContainer.innerHTML = response.data;
+                })
+                .finally(function () {
+                    hideSpinner();
+                });
+        }
+    }
+
+    // ********** Uniqness of Generics on create **********
+    if (document.querySelector('.kvpp-create')) {
+        const similarProductsContainer = document.querySelector('.kvpp-similar-products');
+
+        let mnnSelect = document.querySelector('select[name="mnn_id"]');
+        let formSelect = document.querySelector('select[name="form_id"]');
+        let countryCodeSelect = document.querySelector('select[name="country_code_id"]');
+
+        let doseInput = document.querySelector('input[name="dose"]');
+        let packInput = document.querySelector('input[name="pack"]');
+
+        let selects = [mnnSelect, formSelect, countryCodeSelect];
+        let inputs = [doseInput, packInput];
+
+        for (let select of selects) {
+            select.selectize.on('change', function (value) {
+                displayKvppSimilarProducts();
+            });
+        }
+
+        for (let input of inputs) {
+            input.addEventListener('input', function () {
+                debounce(displayKvppSimilarProducts());
+            });
+        }
+
+        function displayKvppSimilarProducts() {
+            const mnnID = mnnSelect.value;
+            const formID = formSelect.value;
+            const countryCodeID = countryCodeSelect.value;
+            const dose = doseInput.value;
+            const pack = packInput.value;
+
+            // Return while any required fields is empty
+            if (mnnID == '' || formID == '' || countryCodeID == '') {
+                similarProductsContainer.innerHTML = '';
+                return;
+            }
+
+            const data = {
+                'mnn_id': mnnID,
+                'form_id': formID,
+                'country_code_id': countryCodeID,
+                'dose': dose,
+                'pack': pack,
+            }
+
+            axios.post(GET_KVPP_SIMILAR_PRODUCTS_URL, data, {
                 headers: {
                     'Content-Type': 'application/json'
                 }

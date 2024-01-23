@@ -60,6 +60,13 @@ class KvppController extends Controller
         return redirect($request->input('previous_url'));
     }
 
+    public function getSimilarProducts(Request $request)
+    {
+        $similarProducts = Kvpp::getSimilarProducts($request);
+
+        return view('kvpp.similar-products', compact('similarProducts'));
+    }
+
     public function export()
     {
         Helper::addExportParamsToRequest();

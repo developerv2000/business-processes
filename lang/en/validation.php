@@ -8,6 +8,7 @@ return [
     'unique-manufacturer' => 'Manufacturer with a given name already exists.',
     'unique-meeting' => 'Meeting for such a year, with a current manufacturer already exists.',
     'unique-generic' => 'Generic with a given manufacturer, MMN, form, dose and pack already exists.',
+    'unique-kvpp' => 'Kvpp with a given MMN, form, dose, pack and country already exists.',
     'unique-mnn' => 'MNN with a given name already exists.',
     'unique-user-name' => 'User with a given name already exists.',
     'unique-user-email' => 'User with a given email already exists.',

@@ -85,7 +85,7 @@ Route::middleware('auth', 'auth.session')->group(function () {
         Route::post('/restore', 'restore')->name('restore');
         Route::post('/export', 'export')->name('export');
 
-        Route::post('/get-similar-products', 'getSimilarProducts');  // Used on creating and editing for uniqness
+        Route::post('/get-similar-products', 'getSimilarProducts');  // Used on creating for uniqness
     });
 
     Route::prefix('processes')->controller(ProcessController::class)->name('processes.')->group(function () {
@@ -116,6 +116,8 @@ Route::middleware('auth', 'auth.session')->group(function () {
         Route::post('/destroy', 'destroy')->name('destroy');
         Route::post('/restore', 'restore')->name('restore');
         Route::post('/export', 'export')->name('export');
+
+        Route::post('/get-similar-products', 'getSimilarProducts');  // Used on creating for uniqness
     });
 
     Route::prefix('mnns')->controller(MnnController::class)->name('mnns.')->middleware('moderator')->group(function () {

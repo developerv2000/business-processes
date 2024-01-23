@@ -25,14 +25,6 @@
             ])
 
             @include('form-components.create.belongs-to-select', [
-                'label' => 'Country',
-                'required' => true,
-                'attribute' => 'country_code_id',
-                'options' => $countryCodes,
-                'optionsCaptionAttribute' => 'name',
-            ])
-
-            @include('form-components.create.belongs-to-select', [
                 'label' => 'Priority',
                 'required' => true,
                 'attribute' => 'priority_id',
@@ -50,6 +42,14 @@
         </div>
 
         <div class="form__divider">
+            @include('form-components.create.belongs-to-select', [
+                'label' => 'Country',
+                'required' => true,
+                'attribute' => 'country_code_id',
+                'options' => $countryCodes,
+                'optionsCaptionAttribute' => 'name',
+            ])
+
             @include('form-components.create.belongs-to-select', [
                 'label' => 'Generic',
                 'required' => true,
@@ -78,6 +78,8 @@
                 'attribute' => 'pack',
             ])
         </div>
+
+        <div class="form__divider similar-products kvpp-similar-products"></div>
 
         <div class="form__divider">
             @include('form-components.create.multiple-select', [
