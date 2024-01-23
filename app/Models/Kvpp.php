@@ -295,4 +295,20 @@ class Kvpp extends Model
             'form_id' => $this->form_id,
         ])->count();
     }
+
+    public static function getAllUsedMnns()
+    {
+        $IDs = self::distinct()->pluck('mnn_id');
+        $mnns = Mnn::whereIn('id', $IDs)->orderBy('name')->get();
+
+        return $mnns;
+    }
+
+    public static function getAllUsedForms()
+    {
+        $IDs = self::distinct()->pluck('form_id');
+        $forms = ProductForm::whereIn('id', $IDs)->orderBy('name')->get();
+
+        return $forms;
+    }
 }

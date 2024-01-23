@@ -24,7 +24,7 @@
 
     @case('VPS coincidents')
         @foreach ($item->getCoincidentProcesses() as $coincidentProcess)
-            <a class="td__link" href="{{ route('processes.index') }}?id={{ $coincidentProcess->id }}" target="_blank">
+            <a class="td__link" @if (request()->user()->isAdminOrModerator()) href="{{ route('processes.index') }}?id={{ $coincidentProcess->id }}" target="_blank" @endif>
                 # {{ $coincidentProcess->id }} - {{ $coincidentProcess->status->parent->name }}
             </a><br>
         @endforeach

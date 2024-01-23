@@ -114,7 +114,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         // KVPP
-        View::composer(['filters.kvpp', 'kvpp.create', 'kvpp.edit'], function ($view) {
+        View::composer(['kvpp.create', 'kvpp.edit'], function ($view) {
             $view->with([
                 'statuses' => KvppStatus::getAll(),
                 'countryCodes' => CountryCode::getAll(),
@@ -122,6 +122,21 @@ class AppServiceProvider extends ServiceProvider
                 'sources' => KvppSource::getAll(),
                 'mnns' => Mnn::getAll(),
                 'forms' => ProductForm::getAll(),
+                'promoCompanies' => PromoCompany::getAll(),
+                'portfolioManagers' => PortfolioManager::getAll(),
+                'analystUsers' => User::getAnalystsMinified(),
+            ]);
+        });
+
+        // Mnns and forms vary from create & update
+        View::composer(['filters.kvpp'], function ($view) {
+            $view->with([
+                'statuses' => KvppStatus::getAll(),
+                'countryCodes' => CountryCode::getAll(),
+                'priorities' => KvppPriority::getAll(),
+                'sources' => KvppSource::getAll(),
+                'mnns' => Kvpp::getAllUsedMnns(),
+                'forms' => Kvpp::getAllUsedForms(),
                 'promoCompanies' => PromoCompany::getAll(),
                 'portfolioManagers' => PortfolioManager::getAll(),
                 'analystUsers' => User::getAnalystsMinified(),
