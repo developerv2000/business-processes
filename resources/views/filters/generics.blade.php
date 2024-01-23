@@ -75,7 +75,7 @@
                 'label' => 'Shelf life',
                 'attribute' => 'expiration_date_id',
                 'options' => $expirationDates,
-                'optionsCaptionAttribute' => 'limit',
+                'optionsCaptionAttribute' => 'name',
             ])
 
             @include('filters.components.multiple-select', [

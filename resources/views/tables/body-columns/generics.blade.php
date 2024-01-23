@@ -59,7 +59,7 @@
     @break
 
     @case('Shelf life')
-        {{ $item->expirationDate->limit }}
+        {{ $item->expirationDate->name }}
     @break
 
     @case('Product category')

@@ -33,61 +33,26 @@ class Mnn extends Model
         return $this->hasMany(Generic::class);
     }
 
+    public function kvpps()
+    {
+        return $this->hasMany(Kvpp::class);
+    }
+
+    /**
+     * Used in dashboard of Identical Models
+     */
+    public function getUsageCountAttribute()
+    {
+        $generics = $this->generics()->count();
+        $kvpps = $this->kvpps()->count();
+        $totalCount = $generics + $kvpps;
+
+        return $totalCount;
+    }
+
     // ********** Querying **********
-    public static function getItemsFinalized($params, $items = null, $finaly = 'paginate')
-    {
-        $items = $items ?: self::query();
-        $items = self::filter($items);
-        $items = self::finalize($params, $items, $finaly);
-
-        return $items;
-    }
-
-    private static function filter($items)
-    {
-        $whereLikeColumns = [
-            'name'
-        ];
-
-        $items = Helper::filterWhereLikeColumns($items, $whereLikeColumns);
-
-        return $items;
-    }
-
-    private static function finalize($params, $items, $finaly)
-    {
-        $items = $items
-            ->orderBy($params['orderBy'], $params['orderType'])
-            ->orderBy('id', $params['orderType']);
-
-        switch ($finaly) {
-            case 'paginate':
-                $items = $items
-                    ->paginate($params['paginationLimit'], ['*'], 'page', $params['currentPage'])
-                    ->appends(request()->except('page'));
-                break;
-
-            case 'get':
-                $items = $items->get();
-                break;
-        }
-
-        return $items;
-    }
-
     public static function getAll()
     {
         return self::orderBy('name')->get();
-    }
-
-    // ********** Miscellaneous **********
-    public static function createFromRequest($request)
-    {
-        self::create($request->all());
-    }
-
-    public function updateFromRequest($request)
-    {
-        $this->update($request->all());
     }
 }

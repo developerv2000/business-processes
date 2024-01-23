@@ -129,7 +129,7 @@
     @break
 
     @case('Shelf life')
-        {{ $item->generic->expirationDate->limit }}
+        {{ $item->generic->expirationDate->name }}
     @break
 
     @case('MOQ')

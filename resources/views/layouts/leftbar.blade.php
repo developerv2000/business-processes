@@ -33,8 +33,8 @@
             @if (request()->user()->isAdminOrModerator())
                 <x-navbar.title>{{ __('Dashboard') }}</x-navbar.title>
 
-                <x-navbar.link icon="prescriptions" href="{{ route('mnns.index') }}" @class(['navbar-link--active' => request()->routeIs('mnns.*')])>
-                    {{ __('MNN') }}
+                <x-navbar.link icon="dataset" href="{{ route('identical-models.list') }}" @class(['navbar-link--active' => request()->routeIs('identical-models.*')])>
+                    {{ __('Different') }}
                 </x-navbar.link>
 
                 @if (request()->user()->isAdmin())

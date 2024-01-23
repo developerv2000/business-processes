@@ -82,7 +82,7 @@
                 'required' => true,
                 'attribute' => 'expiration_date_id',
                 'options' => $expirationDates,
-                'optionsCaptionAttribute' => 'limit',
+                'optionsCaptionAttribute' => 'name',
             ])
         </div>
 

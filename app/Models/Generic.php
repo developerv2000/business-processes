@@ -315,7 +315,7 @@ class Generic extends Model
                 $worksheet->setCellValue('H' . $row, $item->dose);
                 $worksheet->setCellValue('I' . $row, $item->pack);
                 $worksheet->setCellValue('J' . $row, $item->minimum_volume);
-                $worksheet->setCellValue('K' . $row, $item->expirationDate->limit);
+                $worksheet->setCellValue('K' . $row, $item->expirationDate->name);
                 $worksheet->setCellValue('L' . $row, $item->category->name);
                 $worksheet->setCellValue('M' . $row, $item->dossier);
 

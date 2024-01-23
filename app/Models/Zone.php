@@ -18,7 +18,19 @@ class Zone extends Model
 
     public function generics()
     {
-        return $this->belongsToMany(Zone::class);
+        return $this->belongsToMany(Generic::class);
+    }
+
+    /**
+     * Used in dashboard of Identical Models
+     */
+    public function getUsageCountAttribute()
+    {
+        $manufacturers = $this->manufacturers()->count();
+        $generics = $this->generics()->count();
+        $totalCount = $generics + $manufacturers;
+
+        return $totalCount;
     }
 
     public static function getAll()

@@ -13,7 +13,15 @@ class ManufacturerCategory extends Model
 
     public function manufacturers()
     {
-        return $this->hasMany(Manufacturer::class);
+        return $this->hasMany(Manufacturer::class, 'category_id');
+    }
+
+    /**
+     * Used in dashboard of Identical Models
+     */
+    public function getUsageCountAttribute()
+    {
+        return $this->manufacturers()->count();
     }
 
     public static function getAll()

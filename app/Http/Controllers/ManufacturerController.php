@@ -17,11 +17,6 @@ class ManufacturerController extends Controller
 
     public $model = Manufacturer::class; // used in Destroyable Trait
 
-    public function glb()
-    {
-        return view('glb');
-    }
-
     public function index(Request $request)
     {
         $params = self::getRequestParams();

@@ -3,10 +3,10 @@
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\GenericController;
+use App\Http\Controllers\IdenticanlModelsController;
 use App\Http\Controllers\KvppController;
 use App\Http\Controllers\ManufacturerController;
 use App\Http\Controllers\MeetingController;
-use App\Http\Controllers\MnnController;
 use App\Http\Controllers\ProcessController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
@@ -23,8 +23,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::get('/glb', [ManufacturerController::class, 'glb']); // TEST GLB
 
 Route::middleware('guest')->controller(AuthenticatedSessionController::class)->group(function () {
     Route::get('/login', 'create')->name('login');
@@ -120,13 +118,14 @@ Route::middleware('auth', 'auth.session')->group(function () {
         Route::post('/get-similar-products', 'getSimilarProducts');  // Used on creating for uniqness
     });
 
-    Route::prefix('mnns')->controller(MnnController::class)->name('mnns.')->middleware('moderator')->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('/create', 'create')->name('create');
-        Route::get('/edit/{item}', 'edit')->name('edit');
+    Route::prefix('models')->controller(IdenticanlModelsController::class)->name('identical-models.')->middleware('admin')->group(function () {
+        Route::get('/', 'list')->name('list');
+        Route::get('/{model}', 'index')->name('index');
+        Route::get('/{model}/create', 'create')->name('create');
+        Route::get('/{model}/edit/{id}', 'edit')->name('edit');
 
         Route::post('/store', 'store')->name('store');
-        Route::post('/update/{item}', 'update')->name('update');
+        Route::post('/update/{id}', 'update')->name('update');
         Route::post('/destroy', 'destroy')->name('destroy');
     });
 

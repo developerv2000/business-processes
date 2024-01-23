@@ -549,7 +549,7 @@ class Process extends Model
                 $worksheet->setCellValue('Y' . $row, $item->increased_price);
                 $worksheet->setCellValue('Z' . $row, $item->increased_price_percentage);
                 $worksheet->setCellValue('AA' . $row, $item->increased_price_date);
-                $worksheet->setCellValue('AB' . $row, $item->generic->expirationDate->limit);
+                $worksheet->setCellValue('AB' . $row, $item->generic->expirationDate->name);
                 $worksheet->setCellValue('AC' . $row, $item->generic->minimum_volume);
 
                 $worksheet->setCellValue('AD' . $row, $item->dossier_status);

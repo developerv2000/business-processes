@@ -26,6 +26,14 @@ class Blacklist extends Model
         return $this->belongsToMany(Manufacturer::class);
     }
 
+    /**
+     * Used in dashboard of Identical Models
+     */
+    public function getUsageCountAttribute()
+    {
+        return $this->manufacturers()->count();
+    }
+
     public static function getAll()
     {
         return self::orderBy('name')->get();

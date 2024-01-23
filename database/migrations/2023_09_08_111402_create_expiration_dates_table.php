@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('expiration_dates', function (Blueprint $table) {
             $table->unsignedSmallInteger('id')->autoIncrement();
-            $table->string('limit')->unique();
+            $table->string('name')->unique();
         });
     }
 

@@ -6,7 +6,7 @@
                 <x-form.group label="{{ __('Shelf life') }}" required="1">
                     <select class="selectize-singular" name="expiration_date_id" required>
                         @foreach ($expirationDates as $date)
-                            <option value="{{ $date->id }}" @selected($generic->expiration_date_id == $date->id)>{{ $date->limit }}</option>
+                            <option value="{{ $date->id }}" @selected($generic->expiration_date_id == $date->id)>{{ $date->name }}</option>
                         @endforeach
                     </select>
                 </x-form.group>
