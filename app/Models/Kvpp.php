@@ -316,16 +316,4 @@ class Kvpp extends Model
 
         return $forms;
     }
-
-    public static function validatePromoCompanies()
-    {
-        self::onlyTrashed()->each(function ($item) {
-            $item->forceDelete();
-        });
-
-        self::withTrashed()->get()->each(function ($item) {
-            $item->promo_company_id = DB::table('kvpp_promocompany')->where('kvpp_id', $item->id)->first()->promo_company_id;
-            $item->save();
-        });
-    }
 }
