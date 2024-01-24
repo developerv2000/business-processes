@@ -29,6 +29,7 @@ class StoreKvppRequest extends FormRequest
                     $query->where('mnn_id', $this->mnn_id)
                         ->where('form_id', $this->form_id)
                         ->where('country_code_id', $this->country_code_id)
+                        ->where('promo_company_id', $this->promo_company_id)
                         ->where('dose', $this->dose)
                         ->where('pack', $this->pack);
                 }),
