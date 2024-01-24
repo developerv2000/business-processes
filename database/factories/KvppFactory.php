@@ -10,6 +10,7 @@ use App\Models\KvppStatus;
 use App\Models\Mnn;
 use App\Models\PortfolioManager;
 use App\Models\ProductForm;
+use App\Models\PromoCompany;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -32,6 +33,7 @@ class KvppFactory extends Factory
             'source_id' => KvppSource::inRandomOrder()->first()->id,
             'mnn_id' => Mnn::inRandomOrder()->first()->id,
             'form_id' => ProductForm::inRandomOrder()->first()->id,
+            'promo_company_id' => PromoCompany::inRandomOrder()->first()->id,
             'dose' => fake()->sentences(1, true),
             'pack' => fake()->numberBetween(10, 1000) . ' ML',
             'info' => fake()->sentences(2, true),
@@ -51,9 +53,6 @@ class KvppFactory extends Factory
                 new Comment(['body' => fake()->sentences(2, true), 'user_id' => User::analysts()->inRandomOrder()->first()->id, 'created_at' => now()]),
                 new Comment(['body' => fake()->sentences(2, true), 'user_id' => User::analysts()->inRandomOrder()->first()->id, 'created_at' => now()]),
             ]);
-
-            $kvpp->promoCompanies()->attach(rand(1, 4));
-            $kvpp->promoCompanies()->attach(rand(5, 9));
         });
     }
 }

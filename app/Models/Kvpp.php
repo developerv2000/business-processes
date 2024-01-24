@@ -6,6 +6,7 @@ use App\Support\Helper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class Kvpp extends Model
@@ -28,7 +29,7 @@ class Kvpp extends Model
         'source',
         'mnn',
         'form',
-        'promoCompanies',
+        'promoCompany',
         'portfolioManager',
         'analyst',
         'lastComment',
@@ -38,8 +39,6 @@ class Kvpp extends Model
     protected static function booted(): void
     {
         static::forceDeleting(function ($item) {
-            $item->promoCompanies()->detach();
-
             foreach ($item->comments as $comment) {
                 $comment->delete();
             }
@@ -82,6 +81,11 @@ class Kvpp extends Model
         return $this->belongsTo(PortfolioManager::class);
     }
 
+    public function promoCompany()
+    {
+        return $this->belongsTo(PromoCompany::class);
+    }
+
     public function analyst()
     {
         return $this->belongsTo(User::class, 'analyst_user_id');
@@ -95,11 +99,6 @@ class Kvpp extends Model
     public function lastComment()
     {
         return $this->morphOne(Comment::class, 'commentable')->latestOfMany();
-    }
-
-    public function promoCompanies()
-    {
-        return $this->belongsToMany(PromoCompany::class, 'kvpp_promocompany');
     }
 
     // ********** Querying **********
@@ -122,6 +121,7 @@ class Kvpp extends Model
             'form_id',
             'portfolio_manager_id',
             'analyst_user_id',
+            'promo_company_id',
         ];
 
         $whereLikeColumns = [
@@ -134,14 +134,9 @@ class Kvpp extends Model
             'updated_at',
         ];
 
-        $belongsToManyRelations = [
-            'promoCompanies',
-        ];
-
         $items = Helper::filterWhereColumns($items, $whereColumns);
         $items = Helper::filterWhereLikeColumns($items, $whereLikeColumns);
         $items = Helper::filterWhereDateRangeColumns($items, $whereDateRangeColumns);
-        $items = Helper::filterBelongsToManyRelations($items, $belongsToManyRelations);
 
         return $items;
     }
@@ -195,21 +190,21 @@ class Kvpp extends Model
 
     public static function createFromRequest($request)
     {
-        $item = self::create($request->all());
+        $promoCompanyIDs = $request->input('promo_company_ids');
 
-        // BelongsToMany relations
-        $item->promoCompanies()->attach($request->input('promoCompanies'));
+        foreach ($promoCompanyIDs as $promoCompanyID) {
+            $item = new self($request->all());
+            $item->promo_company_id = $promoCompanyID;
+            $item->save();
 
-        // HasMany relations
-        $item->storeComment($request->comment);
+            // HasMany relations
+            $item->storeComment($request->comment);
+        }
     }
 
     public function updateFromRequest($request)
     {
         $this->update($request->all());
-
-        // BelongsToMany relations
-        $this->promoCompanies()->sync($request->input('promoCompanies'));
 
         // HasMany relations
         $this->storeComment($request->comment);
@@ -243,10 +238,7 @@ class Kvpp extends Model
                 $worksheet->setCellValue('G' . $row, $item->form->parent ? $item->form->parent->name : $item->form->name);
                 $worksheet->setCellValue('H' . $row, $item->dose);
                 $worksheet->setCellValue('I' . $row, $item->pack);
-
-                $promoCompanies = $item->promoCompanies->pluck('name')->implode(' ');
-                $worksheet->setCellValue('J' . $row, $promoCompanies);
-
+                $worksheet->setCellValue('J' . $row, $item->promoCompany->name);
                 $worksheet->setCellValue('K' . $row, $item->info);
 
                 $comments = $item->comments->pluck('body')->implode(' / ');
@@ -323,5 +315,13 @@ class Kvpp extends Model
         $forms = ProductForm::whereIn('id', $IDs)->orderBy('name')->get();
 
         return $forms;
+    }
+
+    public static function validatePromoCompanies()
+    {
+        self::get()->each(function ($item) {
+            $item->promo_company_id = DB::table('kvpp_promocompany')->where('kvpp_id', $item->id)->first()->promo_company_id;
+            $item->save();
+        });
     }
 }

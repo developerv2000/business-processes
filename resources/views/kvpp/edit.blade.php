@@ -81,11 +81,10 @@
         </div>
 
         <div class="form__divider">
-            @include('form-components.edit.multiple-select', [
+            @include('form-components.edit.belongs-to-select', [
                 'label' => 'MAH',
                 'required' => true,
-                'attribute' => 'promoCompanies[]',
-                'relationName' => 'promoCompanies',
+                'attribute' => 'promo_company_id',
                 'options' => $promoCompanies,
                 'optionsCaptionAttribute' => 'name',
             ])

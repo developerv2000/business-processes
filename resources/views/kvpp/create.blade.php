@@ -85,7 +85,7 @@
             @include('form-components.create.multiple-select', [
                 'label' => 'MAH',
                 'required' => true,
-                'attribute' => 'promoCompanies[]',
+                'attribute' => 'promo_company_ids[]',
                 'options' => $promoCompanies,
                 'optionsCaptionAttribute' => 'name',
             ])

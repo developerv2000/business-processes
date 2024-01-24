@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedSmallInteger('source_id');
             $table->unsignedSmallInteger('mnn_id');
             $table->unsignedSmallInteger('form_id');
+            $table->unsignedSmallInteger('promo_company_id');
             $table->string('dose', 300)->nullable();
             $table->string('pack')->nullable();
             $table->string('info', 1000)->nullable();

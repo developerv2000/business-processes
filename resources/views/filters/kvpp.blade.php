@@ -50,10 +50,9 @@
                 'attribute' => 'pack',
             ])
 
-            @include('filters.components.multiple-select', [
+            @include('filters.components.belongs-to-select', [
                 'label' => 'MAH',
-                'attribute' => 'promoCompanies[]',
-                'requestAttribute' => 'promoCompanies',
+                'attribute' => 'promo_company_id',
                 'options' => $promoCompanies,
                 'optionsCaptionAttribute' => 'name',
             ])

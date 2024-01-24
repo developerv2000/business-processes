@@ -61,9 +61,7 @@
     @break
 
     @case('MAH')
-        @foreach ($item->promoCompanies as $company)
-            {{ $company->name }}<br>
-        @endforeach
+        {{ $item->promoCompany->name }}
     @break
 
     @case('Information')
