@@ -320,7 +320,7 @@ class Kvpp extends Model
     public static function validatePromoCompanies()
     {
         self::onlyTrashed()->each(function ($item) {
-            $item->delete();
+            $item->forceDelete();
         });
 
         self::withTrashed()->get()->each(function ($item) {
