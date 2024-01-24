@@ -1,9 +1,9 @@
-@extends('layouts.app', ['class' => 'mnns-create rightbarless'])
+@extends('layouts.app', ['class' => 'identical-models-create rightbarless'])
 
 @section('main')
     <div class="prehead prehead--intended styled-box">
         @include('layouts.breadcrumbs', [
-            'crumbs' => [__('MNN'), __('Add new element')],
+            'crumbs' => [$model],
             'fullScreen' => false,
         ])
 
@@ -12,8 +12,9 @@
         </div>
     </div>
 
-    <form class="form main-form create-form" action="{{ route('mnns.store') }}" method="POST" id="create-form">
+    <form class="form main-form create-form" action="{{ route('identical-models.store') }}" method="POST" id="create-form">
         @csrf
+        <input type="hidden" name="model" value="{{ $model }}">
 
         <div class="form__divider">
             @include('form-components.create.text-input', [

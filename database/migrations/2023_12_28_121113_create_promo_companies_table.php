@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('promo_companies', function (Blueprint $table) {
             $table->unsignedSmallInteger('id')->autoIncrement();
-            $table->string('name');
+            $table->string('name')->unique();
         });
     }
 

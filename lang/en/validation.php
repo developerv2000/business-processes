@@ -14,6 +14,7 @@ return [
     'unique-user-email' => 'User with a given email already exists.',
     'invalid-timestamp' => 'Invalid date format. Valid format is "year-month-date hour-minute-second"',
     'exists' => 'Field doesn`t exists. Please, reload page and try again.',
+    'is-being-used' => 'The ":name" element cannot be removed because it is used by other tables.',
     /*
     |--------------------------------------------------------------------------
     | Validation Language Lines

@@ -1,9 +1,9 @@
-@extends('layouts.app', ['class' => 'mnns-edit rightbarless'])
+@extends('layouts.app', ['class' => 'identical-models-edit rightbarless'])
 
 @section('main')
     <div class="prehead prehead--intended styled-box">
         @include('layouts.breadcrumbs', [
-            'crumbs' => [__('MNN'), __('Edit'), $item->name],
+            'crumbs' => [$model, '#' . $item->id],
             'fullScreen' => false,
         ])
 
@@ -12,9 +12,10 @@
         </div>
     </div>
 
-    <form class="form main-form edit-form" action="{{ route('mnns.update', $item->id) }}" method="POST" id="edit-form">
+    <form class="form main-form edit-form" action="{{ route('identical-models.update', $item->id) }}" method="POST" id="edit-form">
         @csrf
         @include('form-components.edit.previous-url-input')
+        <input type="hidden" name="model" value="{{ $model }}">
 
         <div class="form__divider">
             @include('form-components.edit.text-input', [

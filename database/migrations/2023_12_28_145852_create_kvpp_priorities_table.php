@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('kvpp_priorities', function (Blueprint $table) {
             $table->unsignedSmallInteger('id')->autoIncrement();
-            $table->string('name');
+            $table->string('name')->unique();
         });
     }
 

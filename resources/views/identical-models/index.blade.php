@@ -1,11 +1,13 @@
 @extends('layouts.app', ['class' => 'identical-models-index rightbarless'])
 
 @section('main')
+    <x-errors.all />
+
     <div class="identical-models-index__box styled-box">
         <div class="prehead">
             @include('layouts.breadcrumbs', [
                 'crumbs' => [$model . ' - ' . $items->total()],
-                'fullScreen' => true,
+                'fullScreen' => false,
             ])
 
             <div class="prehead__actions">
@@ -53,6 +55,8 @@
 
         {{ $items->links('layouts.pagination') }}
 
+        {{-- Also add $model to the form --}}
+        <input type="hidden" name="model" value="{{ $model }}" form="multiple-delete-form">
         @include('tables.styles.pagination-height-validation')
     </div>
 

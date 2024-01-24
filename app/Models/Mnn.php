@@ -10,22 +10,8 @@ class Mnn extends Model
 {
     use HasFactory;
 
-    const DEFAULT_ORDER_BY = 'name';
-    const DEFAULT_ORDER_TYPE = 'asc';
-    const DEFAULT_PAGINATION_LIMIT = 100;
-
     public $timestamps = false;
     protected $guarded = ['id'];
-
-    // ********** Events **********
-    protected static function booted(): void
-    {
-        static::deleting(function ($item) {
-            foreach ($item->generics as $generic) {
-                $generic->forceDelete();
-            }
-        });
-    }
 
     // ********** Relations **********
     public function generics()
