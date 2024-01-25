@@ -385,6 +385,7 @@ class User extends Authenticatable
             ['name' => 'Analyst', 'order' => $order++, 'width' => 142, 'visible' => 1],
             ['name' => 'Date of creation', 'order' => $order++, 'width' => 138, 'visible' => 1],
             ['name' => 'Update date', 'order' => $order++, 'width' => 150, 'visible' => 1],
+            ['name' => 'KVPP coincidents', 'order' => $order++, 'width' => 146, 'visible' => 1],
             ['name' => 'ID', 'order' => $order++, 'width' => 70, 'visible' => 1],
         ];
     }

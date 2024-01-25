@@ -22,6 +22,18 @@
                 </x-buttons.show-modal>
 
                 <x-other.export-form action="{{ route('generics.export') }}" />
+
+                {{-- Export VP --}}
+                @if (request()->manufacturer_id)
+                    <form class="export-form export-generics-vp-form" action="{{ route('generics.export-vp') }}" method="POST">
+                        @csrf
+
+                        <button class="button button--action">
+                            <span class="button__icon material-symbols-outlined">download</span>
+                            <span class="button__text">{{ __('VP') }}</span>
+                        </button>
+                    </form>
+                @endif
             </div>
         </div>
 

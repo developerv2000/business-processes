@@ -403,8 +403,10 @@ function setupForms() {
     }
 
     // ********** Excape multiple export action **********
-    document.querySelector('.export-form')?.addEventListener('submit', (evt) => {
-        evt.target.querySelector('.button').disabled = true;
+    document.querySelectorAll('.export-form').forEach((form) => {
+        form.addEventListener('submit', (evt) => {
+            evt.target.querySelector('.button').disabled = true;
+        });
     });
 }
 

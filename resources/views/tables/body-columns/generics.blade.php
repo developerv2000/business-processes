@@ -135,6 +135,14 @@
         @include('tables.components.td-date', ['attribute' => 'updated_at'])
     @break
 
+    @case('KVPP coincidents')
+        @foreach ($item->getCoincidentKvpps() as $coincidentKvpp)
+            <a class="td__link" href="{{ route('kvpp.index') }}?id={{ $coincidentKvpp->id }}" target="_blank">
+                {{ $coincidentKvpp->countryCode->name }}
+            </a>
+        @endforeach
+    @break
+
     @case('ID')
         {{ $item->id }}
     @break

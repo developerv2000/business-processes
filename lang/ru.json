@@ -21,6 +21,7 @@
     "Columns": "Столбцы",
     "Delete": "Удалить",
     "Export": "Экспорт",
+    "VP": "ВП",
 
     "Filter": "Фильтр",
     "Items per page": "Элементов на стр",
@@ -109,6 +110,7 @@
     "Sold in EU": "Прод. в ЕС",
     "Sold": "Прод.",
     "Down payment": "Доп. платёж",
+    "KVPP coincidents": "Совпадение с КВПП",
     "Similar products": "Похожие продукты",
     "No similar products found": "Похожие продукты не найдены",
 

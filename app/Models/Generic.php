@@ -6,7 +6,11 @@ use App\Support\Helper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Color;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
 
 class Generic extends Model
 {
@@ -18,6 +22,8 @@ class Generic extends Model
 
     const STORAGE_EXCEL_TEMPLATE_PATH = 'app/excel/templates/ivp.xlsx';
     const STORAGE_EXCEL_EXPORT_PATH = 'app/excel/exports/ivp';
+    const STORAGE_VP_EXCEL_TEMPLATE_PATH = 'app/excel/templates/ivp-vp.xlsx';
+    const STORAGE_VP_EXCEL_EXPORT_PATH = 'app/excel/exports/ivp-vp';
 
     protected $guarded = ['id'];
 
@@ -118,11 +124,11 @@ class Generic extends Model
     public function getProcessesLinkAttribute()
     {
         return route('processes.index')
-                . '?manufacturer_id=' . $this->manufacturer_id
-                . '&mnn_id=' . $this->mnn_id
-                . '&form_id=' . $this->form_id
-                . '&dose=' . urlencode($this->dose)
-                . '&pack=' . urlencode($this->pack);
+            . '?manufacturer_id=' . $this->manufacturer_id
+            . '&mnn_id=' . $this->mnn_id
+            . '&form_id=' . $this->form_id
+            . '&dose=' . urlencode($this->dose)
+            . '&pack=' . urlencode($this->pack);
     }
 
     // ********** Querying **********
@@ -352,6 +358,98 @@ class Generic extends Model
         return response()->download($filePath);
     }
 
+    public static function exportVpItems($items)
+    {
+        $template = storage_path(self::STORAGE_VP_EXCEL_TEMPLATE_PATH);
+        $spreadsheet = IOFactory::load($template);
+        $worksheet = $spreadsheet->getActiveSheet();
+
+        // collect unique countries
+        $countries = collect([]);
+
+        $items->chunk(400, function ($items) use (&$countries) {
+            foreach ($items as $item) {
+                if ($item->getCoincidentKvpps()->count()) {
+                    $kvppCountries = $item->getCoincidentKvpps()->pluck('countryCode.name');
+
+                    foreach ($kvppCountries as $country) {
+                        $countries->add($country);
+                    }
+                }
+            }
+        });
+
+        // insert unique country titles between Target Price and ZONE 4B columns
+        $countryTitlesColumnsStart = 'J';
+        $nextCountryTitlesColumn = $countryTitlesColumnsStart; // used in loop for storing next country titles index
+        $countryTitlesRow = 2;
+        $uniqueCountries = $countries->unique();
+
+        foreach ($uniqueCountries as $country) {
+            $worksheet->insertNewColumnBefore($nextCountryTitlesColumn, 1);
+            $insertedCellCoordinates = $nextCountryTitlesColumn . $countryTitlesRow;
+            $worksheet->setCellValue($insertedCellCoordinates, $country);
+
+            // Set background color for the cell
+            $worksheet->getStyle($insertedCellCoordinates)->getFill()->setFillType(Fill::FILL_SOLID);
+            $worksheet->getStyle($insertedCellCoordinates)->getFill()->getStartColor()->setARGB('3366FF');
+
+            // Set text color for the cell
+            $worksheet->getStyle($insertedCellCoordinates)->getFont()->setColor(new Color(Color::COLOR_WHITE));
+
+            $nextCountryTitlesColumn = Coordinate::stringFromColumnIndex(Coordinate::columnIndexFromString($nextCountryTitlesColumn) + 1);
+        }
+
+
+        // fill rows with items starting from row 4
+        $row = 4;
+        $rowsIndex = 1;
+
+        $items->chunk(400, function ($items) use (&$worksheet, &$row, &$rowsIndex, $uniqueCountries, $countryTitlesColumnsStart) {
+            foreach ($items as $item) {
+                if (!$item->getCoincidentKvpps()->count()) continue; // skip items that don`t have coinncidents
+
+                $worksheet->setCellValue('A' . $row, $rowsIndex);
+                $worksheet->setCellValue('B' . $row, $item->mnn->name);
+                $worksheet->setCellValue('C' . $row, $item->form->name);
+                $worksheet->setCellValue('D' . $row, $item->dose);
+                $worksheet->setCellValue('E' . $row, $item->pack);
+                $worksheet->setCellValue('F' . $row, $item->minimum_volume);
+                $worksheet->setCellValue('G' . $row, $item->expirationDate->name);
+
+                $nextCountryColumn = $countryTitlesColumnsStart; // reset value for each row = (J)
+
+                foreach ($uniqueCountries as $uniqueCountry) {
+                    if ($item->getCoincidentKvpps()->contains('countryCode.name', $uniqueCountry)) {
+                        $cellIndex = $nextCountryColumn . $row;
+                        $worksheet->setCellValue($cellIndex, '1');
+
+                        // align center
+                        $worksheet->getStyle($cellIndex)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+                        // Set background color for the cell
+                        $worksheet->getStyle($cellIndex)->getFill()->setFillType(Fill::FILL_SOLID);
+                        $worksheet->getStyle($cellIndex)->getFill()->getStartColor()->setARGB('92D050');
+                    }
+
+                    $nextCountryColumn = Coordinate::stringFromColumnIndex(Coordinate::columnIndexFromString($nextCountryColumn) + 1);
+                }
+
+                $row++;
+                $rowsIndex++;
+            }
+        });
+
+        // save file
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $filename = date('Y-m-d H-i-s') . '.xlsx';
+        $filename = Helper::escapeDuplicateFilename($filename, storage_path(self::STORAGE_VP_EXCEL_EXPORT_PATH));
+        $filePath = storage_path(self::STORAGE_VP_EXCEL_EXPORT_PATH  . '/' . $filename);
+        $writer->save($filePath);
+
+        return response()->download($filePath);
+    }
+
     public function loadComments()
     {
         return $this->load(['comments' => function ($query) {
@@ -377,5 +475,16 @@ class Generic extends Model
         $this->comments()->save(
             new Comment(['body' => $comment, 'user_id' => request()->user()->id, 'created_at' => now()]),
         );
+    }
+
+    public function getCoincidentKvpps()
+    {
+        return Kvpp::where('mnn_id', $this->mnn_id)
+            ->where('form_id', $this->form_id)
+            ->where('dose', $this->dose)
+            ->where('pack', $this->pack)
+            ->select('id', 'country_code_id')
+            ->withOnly('countryCode')
+            ->get();
     }
 }

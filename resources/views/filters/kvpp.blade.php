@@ -81,6 +81,12 @@
                 'attribute' => 'updated_at',
             ])
 
+            {{-- Added because of generic table links --}}
+            @include('filters.components.text-input', [
+                'label' => 'ID',
+                'attribute' => 'id',
+            ])
+
             @include('filters.components.pagination-limit')
 
             <x-form.submit class="fiter-form__submit">{{ __('Update') }}</x-form.submit>

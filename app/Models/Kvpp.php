@@ -122,6 +122,7 @@ class Kvpp extends Model
             'portfolio_manager_id',
             'analyst_user_id',
             'promo_company_id',
+            'id',
         ];
 
         $whereLikeColumns = [

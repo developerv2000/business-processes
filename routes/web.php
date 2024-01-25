@@ -82,6 +82,7 @@ Route::middleware('auth', 'auth.session')->group(function () {
         Route::post('/destroy', 'destroy')->name('destroy');
         Route::post('/restore', 'restore')->name('restore');
         Route::post('/export', 'export')->name('export');
+        Route::post('/export-vp', 'exportVp')->name('export-vp');
 
         Route::post('/get-similar-products', 'getSimilarProducts');  // Used on creating for uniqness
     });
