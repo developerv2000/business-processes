@@ -136,7 +136,7 @@
     @break
 
     @case('KVPP coincidents')
-        @foreach ($item->getCoincidentKvpps() as $coincidentKvpp)
+        @foreach ($item->coincident_kvpps as $coincidentKvpp)
             <a class="td__link" href="{{ route('kvpp.index') }}?id={{ $coincidentKvpp->id }}" target="_blank">
                 {{ $coincidentKvpp->countryCode->name }}
             </a>

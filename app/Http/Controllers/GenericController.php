@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreGenericRequest;
 use App\Http\Requests\UpdateGenericRequest;
 use App\Models\Generic;
+use App\Models\Manufacturer;
 use App\Models\User;
 use App\Support\Helper;
 use App\Support\Traits\Destroyable;
@@ -76,13 +77,14 @@ class GenericController extends Controller
         return Generic::exportItems($items);
     }
 
-    public function exportVp()
+    public function exportVp(Request $request)
     {
+        $manufacturerName = Manufacturer::find($request->manufacturer_id)->name;
         Helper::addExportParamsToRequest();
         $params = self::getRequestParams();
-        $items = Generic::getItemsFinalized($params, null, 'query');
+        $query = Generic::getItemsFinalized($params, null, 'query');
 
-        return Generic::exportVpItems($items);
+        return Generic::exportVpItems($query, $manufacturerName);
     }
 
     private function getRequestParams()

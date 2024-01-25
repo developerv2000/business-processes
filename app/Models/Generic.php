@@ -25,6 +25,29 @@ class Generic extends Model
     const STORAGE_VP_EXCEL_TEMPLATE_PATH = 'app/excel/templates/ivp-vp.xlsx';
     const STORAGE_VP_EXCEL_EXPORT_PATH = 'app/excel/exports/ivp-vp';
 
+    const VP_DEFAULT_COUNTRIES = [
+        'KZ',
+        'TM',
+        'KG',
+        'AM',
+        'TJ',
+        'UZ',
+        'GE',
+        'MN',
+        'RU',
+        'AZ',
+        'AL',
+        'KE',
+        'DO',
+        'KH',
+        'MM',
+    ];
+
+    const VP_FIRST_DEFAULT_COUNTRY_COLUMN_INDEX = 'J';
+    const VP_LAST_DEFAULT_COUNTRY_COLUMN_INDEX = 'X';
+    const VP_TITLES_ROW_INDEX = 2;
+    const VP_PRODUCTS_START_ROW_INDEX = 4;
+
     protected $guarded = ['id'];
 
     protected $with = [
@@ -129,6 +152,17 @@ class Generic extends Model
             . '&form_id=' . $this->form_id
             . '&dose=' . urlencode($this->dose)
             . '&pack=' . urlencode($this->pack);
+    }
+
+    public function getCoincidentKvppsAttribute()
+    {
+        return Kvpp::where('mnn_id', $this->mnn_id)
+            ->where('form_id', $this->form_id)
+            ->where('dose', $this->dose)
+            ->where('pack', $this->pack)
+            ->select('id', 'country_code_id')
+            ->withOnly('countryCode')
+            ->get();
     }
 
     // ********** Querying **********
@@ -358,91 +392,100 @@ class Generic extends Model
         return response()->download($filePath);
     }
 
-    public static function exportVpItems($items)
+    public static function exportVpItems($query, $manufacturerName)
     {
+        // create new excel file from template
         $template = storage_path(self::STORAGE_VP_EXCEL_TEMPLATE_PATH);
         $spreadsheet = IOFactory::load($template);
         $worksheet = $spreadsheet->getActiveSheet();
 
-        // collect unique countries
-        $countries = collect([]);
-
-        $items->chunk(400, function ($items) use (&$countries) {
-            foreach ($items as $item) {
-                if ($item->getCoincidentKvpps()->count()) {
-                    $kvppCountries = $item->getCoincidentKvpps()->pluck('countryCode.name');
-
-                    foreach ($kvppCountries as $country) {
-                        $countries->add($country);
-                    }
-                }
-            }
+        // collect all items chunked
+        $allItems = collect();
+        $query->chunk(400, function ($chunked) use (&$allItems) {
+            $allItems = $allItems->merge($chunked);
         });
 
-        // insert unique country titles between Target Price and ZONE 4B columns
-        $countryTitlesColumnsStart = 'J';
-        $nextCountryTitlesColumn = $countryTitlesColumnsStart; // used in loop for storing next country titles index
-        $countryTitlesRow = 2;
-        $uniqueCountries = $countries->unique();
+        // append coincident_kvpps manually, so it won`t load many times
+        $allItems->each(function ($item) {
+            $item->coincident_kvpps = $item->coincident_kvpps;
+        });
 
-        foreach ($uniqueCountries as $country) {
-            $worksheet->insertNewColumnBefore($nextCountryTitlesColumn, 1);
-            $insertedCellCoordinates = $nextCountryTitlesColumn . $countryTitlesRow;
+        // collect unique additional countries
+        $additionalCountries = collect();
+        foreach ($allItems as $item) {
+            $additionalCountries = $additionalCountries->merge($item->coincident_kvpps->pluck('countryCode.name'));
+        }
+        $additionalCountries = $additionalCountries->unique();
+
+        // remove countries that already exist in default countries from additional countries
+        $defaultCountries = collect(self::VP_DEFAULT_COUNTRIES);
+        $additionalCountries = $additionalCountries->diff($defaultCountries);
+
+        // insert additional country titles between last default country and ZONE 4B columns
+        $lastDefaultCountryColumnIndex = self::VP_LAST_DEFAULT_COUNTRY_COLUMN_INDEX;
+        $lastCountryColumnIndex = $lastDefaultCountryColumnIndex; // used in loop for storing previous inserted country index
+
+        foreach ($additionalCountries as $country) {
+            // insert country title
+            $nextCountryColumnIndex = Coordinate::stringFromColumnIndex(Coordinate::columnIndexFromString($lastCountryColumnIndex) + 1);
+            $worksheet->insertNewColumnBefore($nextCountryColumnIndex, 1);
+            $insertedCellCoordinates = $nextCountryColumnIndex . self::VP_TITLES_ROW_INDEX;
             $worksheet->setCellValue($insertedCellCoordinates, $country);
 
-            // Set background color for the cell
-            $worksheet->getStyle($insertedCellCoordinates)->getFill()->setFillType(Fill::FILL_SOLID);
-            $worksheet->getStyle($insertedCellCoordinates)->getFill()->getStartColor()->setARGB('3366FF');
-
-            // Set text color for the cell
-            $worksheet->getStyle($insertedCellCoordinates)->getFont()->setColor(new Color(Color::COLOR_WHITE));
-
-            $nextCountryTitlesColumn = Coordinate::stringFromColumnIndex(Coordinate::columnIndexFromString($nextCountryTitlesColumn) + 1);
+            // update cell styles
+            $worksheet->getColumnDimension($nextCountryColumnIndex)->setWidth(5);
+            $cellStyle = $worksheet->getCell($insertedCellCoordinates)->getStyle();
+            $cellStyle->getFill()->getStartColor()->setARGB('00FFFF');
+            $cellStyle->getFont()->setColor(new Color(Color::COLOR_BLACK));
         }
 
+        // join default and additional countries
+        $allCountries = $defaultCountries->merge($additionalCountries);
 
-        // fill rows with items starting from row 4
-        $row = 4;
-        $rowsIndex = 1;
+        // insert product rows
+        $rowIndex = self::VP_PRODUCTS_START_ROW_INDEX;
+        $productsCounter = 1;
 
-        $items->chunk(400, function ($items) use (&$worksheet, &$row, &$rowsIndex, $uniqueCountries, $countryTitlesColumnsStart) {
-            foreach ($items as $item) {
-                if (!$item->getCoincidentKvpps()->count()) continue; // skip items that don`t have coinncidents
+        foreach ($allItems as $item) {
+            $worksheet->setCellValue('A' . $rowIndex, $productsCounter);
+            $worksheet->setCellValue('B' . $rowIndex, $item->mnn->name);
+            $worksheet->setCellValue('C' . $rowIndex, $item->form->name);
+            $worksheet->setCellValue('D' . $rowIndex, $item->dose);
+            $worksheet->setCellValue('E' . $rowIndex, $item->pack);
+            $worksheet->setCellValue('F' . $rowIndex, $item->minimum_volume);
+            $worksheet->setCellValue('G' . $rowIndex, $item->expirationDate->name);
 
-                $worksheet->setCellValue('A' . $row, $rowsIndex);
-                $worksheet->setCellValue('B' . $row, $item->mnn->name);
-                $worksheet->setCellValue('C' . $row, $item->form->name);
-                $worksheet->setCellValue('D' . $row, $item->dose);
-                $worksheet->setCellValue('E' . $row, $item->pack);
-                $worksheet->setCellValue('F' . $row, $item->minimum_volume);
-                $worksheet->setCellValue('G' . $row, $item->expirationDate->name);
+            $countryColumnIndex = self::VP_FIRST_DEFAULT_COUNTRY_COLUMN_INDEX; // reset value for each row
 
-                $nextCountryColumn = $countryTitlesColumnsStart; // reset value for each row = (J)
+            foreach ($allCountries as $country) {
+                $cellIndex = $countryColumnIndex . $rowIndex;
+                $cellStyle = $worksheet->getCell($cellIndex)->getStyle();
 
-                foreach ($uniqueCountries as $uniqueCountry) {
-                    if ($item->getCoincidentKvpps()->contains('countryCode.name', $uniqueCountry)) {
-                        $cellIndex = $nextCountryColumn . $row;
-                        $worksheet->setCellValue($cellIndex, '1');
-
-                        // align center
-                        $worksheet->getStyle($cellIndex)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-
-                        // Set background color for the cell
-                        $worksheet->getStyle($cellIndex)->getFill()->setFillType(Fill::FILL_SOLID);
-                        $worksheet->getStyle($cellIndex)->getFill()->getStartColor()->setARGB('92D050');
-                    }
-
-                    $nextCountryColumn = Coordinate::stringFromColumnIndex(Coordinate::columnIndexFromString($nextCountryColumn) + 1);
+                if ($item->coincident_kvpps->contains('countryCode.name', $country)) {
+                    $worksheet->setCellValue($cellIndex, '1');
+                    $cellStyle->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+                    $cellStyle->getFill()->getStartColor()->setARGB('92D050');
+                } else {
+                    // reset background color because new inserted rows copy previous row styles
+                    $cellStyle->getFill()->getStartColor()->setARGB('FFFFFF');
                 }
 
-                $row++;
-                $rowsIndex++;
+                $countryColumnIndex = Coordinate::stringFromColumnIndex(Coordinate::columnIndexFromString($countryColumnIndex) + 1);
             }
-        });
+
+            $rowIndex++;
+            $productsCounter++;
+            $worksheet->insertNewRowBefore($rowIndex, 1); // insert new rows to escape rewriting default countries list
+        }
+
+        // remove last excess inserted row
+        if ($allItems->count()) {
+            $worksheet->removeRow($rowIndex);
+        }
 
         // save file
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $filename = date('Y-m-d H-i-s') . '.xlsx';
+        $filename = $manufacturerName . date(' Y-m-d') . '.xlsx';
         $filename = Helper::escapeDuplicateFilename($filename, storage_path(self::STORAGE_VP_EXCEL_EXPORT_PATH));
         $filePath = storage_path(self::STORAGE_VP_EXCEL_EXPORT_PATH  . '/' . $filename);
         $writer->save($filePath);
@@ -475,16 +518,5 @@ class Generic extends Model
         $this->comments()->save(
             new Comment(['body' => $comment, 'user_id' => request()->user()->id, 'created_at' => now()]),
         );
-    }
-
-    public function getCoincidentKvpps()
-    {
-        return Kvpp::where('mnn_id', $this->mnn_id)
-            ->where('form_id', $this->form_id)
-            ->where('dose', $this->dose)
-            ->where('pack', $this->pack)
-            ->select('id', 'country_code_id')
-            ->withOnly('countryCode')
-            ->get();
     }
 }

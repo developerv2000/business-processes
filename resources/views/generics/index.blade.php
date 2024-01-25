@@ -27,6 +27,7 @@
                 @if (request()->manufacturer_id)
                     <form class="export-form export-generics-vp-form" action="{{ route('generics.export-vp') }}" method="POST">
                         @csrf
+                        <input type="hidden" name="manufacturer_id" value="{{ request()->manufacturer_id }}">
 
                         <button class="button button--action">
                             <span class="button__icon material-symbols-outlined">download</span>
