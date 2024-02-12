@@ -41,7 +41,7 @@
     @break
 
     @case('Generic')
-        {{ $item->mnn->name }}
+        @include('tables.components.td-limited-text', ['text' => $item->mnn->name])
     @break
 
     @case('Form')
