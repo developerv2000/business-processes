@@ -343,7 +343,7 @@ class Generic extends Model
         $row = 2;
 
         // fill excel cells
-        $items->chunk(400, function ($items) use (&$worksheet, &$row) {
+        $items->chunk(800, function ($items) use (&$worksheet, &$row) {
             foreach ($items as $item) {
                 $worksheet->setCellValue('A' . $row, $item->manufacturer->category->name);
                 $worksheet->setCellValue('B' . $row, $item->manufacturer->country->name);

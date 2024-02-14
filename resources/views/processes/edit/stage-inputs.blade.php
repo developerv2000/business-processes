@@ -69,7 +69,7 @@
                     'optionsCaptionAttribute' => 'name',
                 ])
 
-                @unless ($item->our_first_offered_price)
+                @if (!$item->our_first_offered_price || request()->user()->isAdmin())
                     @include('form-components.edit.float-input', [
                         'label' => 'Our price 1',
                         'defaultValue' => 0.0,
@@ -77,7 +77,7 @@
                         'required' => true,
                         'attribute' => 'our_first_offered_price',
                     ])
-                @endunless
+                @endif
 
                 @include('form-components.edit.float-input', [
                     'label' => 'Our price 2',
