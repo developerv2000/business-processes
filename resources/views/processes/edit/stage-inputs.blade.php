@@ -43,7 +43,7 @@
         {{-- Stage 3 (АЦ) --}}
         @if ($processStage > 2)
             <div class="form__divider">
-                @unless ($item->manufacturer_first_offered_price)
+                @if (!$item->manufacturer_first_offered_price || request()->user()->isAdmin())
                     @include('form-components.edit.float-input', [
                         'label' => 'Manufacturer price 1',
                         'defaultValue' => 0.0,
@@ -51,7 +51,7 @@
                         'required' => true,
                         'attribute' => 'manufacturer_first_offered_price',
                     ])
-                @endunless
+                @endif
 
                 @include('form-components.edit.float-input', [
                     'label' => 'Manufacturer price 2',
