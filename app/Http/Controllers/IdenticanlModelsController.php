@@ -54,9 +54,16 @@ class IdenticanlModelsController extends Controller
     {
         $model = $request->model;
         $modelFullName = self::getModelFullName();
-        $items = $modelFullName::orderBy('name')->paginate('50');
+        $items = $modelFullName::query();
 
-        return view('identical-models.index', compact('model', 'items'));
+        if ($request->id) { // if filter is used
+            $items = $items->where('id', $request->id);
+        }
+
+        $items = $items->orderBy('name')->paginate('50');
+        $allItems = $modelFullName::orderBy('name')->select('id', 'name')->get(); // for filtering
+
+        return view('identical-models.index', compact('model', 'items', 'allItems'));
     }
 
     public function create(Request $request)

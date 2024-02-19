@@ -1,4 +1,4 @@
-@extends('layouts.app', ['class' => 'identical-models-index rightbarless'])
+@extends('layouts.app', ['class' => 'identical-models-index'])
 
 @section('main')
     <x-errors.all />
@@ -55,10 +55,14 @@
 
         {{ $items->links('layouts.pagination') }}
 
-        {{-- Also add $model to the form --}}
+        {{-- Also add $model value to multiple delete form --}}
         <input type="hidden" name="model" value="{{ $model }}" form="multiple-delete-form">
         @include('tables.styles.pagination-height-validation')
     </div>
 
     @include('modals.multiple-delete', ['action' => route('identical-models.destroy'), 'permanently' => true])
+@endsection
+
+@section('rightbar')
+    @include('filters.identicalModels', ['action' => url()->current()])
 @endsection

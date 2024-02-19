@@ -29,9 +29,9 @@ return new class extends Migration
             $table->unsignedInteger('year_3')->nullable();
 
             // Stage 3 (АЦ)
-            $table->unsignedDecimal('manufacturer_first_offered_price', 8, 2)->nullable(); // unchangeable
+            $table->unsignedDecimal('manufacturer_first_offered_price', 8, 2)->nullable(); // only admins can edit
             $table->unsignedDecimal('manufacturer_followed_offered_price', 8, 2)->nullable();
-            $table->unsignedDecimal('our_first_offered_price', 8, 2)->nullable(); // unchangeable
+            $table->unsignedDecimal('our_first_offered_price', 8, 2)->nullable(); // only admins can edit
             $table->unsignedDecimal('our_followed_offered_price', 8, 2)->nullable();
             $table->unsignedSmallInteger('currency_id')->nullable();
             $table->unsignedDecimal('manufacturer_followed_offered_price_in_usd', 8, 2)->nullable();
