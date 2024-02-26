@@ -30,8 +30,8 @@
                 {{ __('Meetings') }}
             </x-navbar.link>
 
-            <x-navbar.link icon="info" href="{{ route('info.index') }}" @class([
-                'navbar-link--active' => request()->routeIs('info.index'),
+            <x-navbar.link icon="info" href="{{ route('info.show') }}" @class([
+                'navbar-link--active' => request()->routeIs('info.show'),
             ])>{{ __('Info') }}</x-navbar.link>
 
             @if (request()->user()->isAdminOrModerator())
@@ -45,6 +45,13 @@
 
                 <x-navbar.link icon="account_circle" href="{{ route('users.index') }}" @class(['navbar-link--active' => request()->routeIs('users.*')])>
                     {{ __('Users') }}
+                </x-navbar.link>
+
+                <x-navbar.link icon="info" href="{{ route('info.index') }}" @class([
+                    'navbar-link--active' =>
+                        request()->routeIs('info.*') && !request()->routeIs('info.show'),
+                ])>
+                    {{ __('Info') }}
                 </x-navbar.link>
             @endif
 

@@ -177,6 +177,9 @@ function setupComponents() {
             collapse.classList.toggle("collapse--open");
         });
     });
+
+    setupSimditor();
+    setupNestedSet();
 }
 
 function setupForms() {
@@ -550,4 +553,106 @@ function initializeNewComponents() {
     $('select.selectize-multiple:not(.selectize--manually-initializable):not(.selectized)').selectize({
         plugins: ["auto_position"],
     });
+}
+
+function setupSimditor() {
+    Simditor.locale = 'ru-RU';
+
+    // Simple WYSIWYGS
+    document.querySelectorAll('.simditor-textarea').forEach((textarea) => {
+        new Simditor({
+            textarea: textarea,
+            toolbarFloatOffset: '60px',
+            imageButton: 'upload',
+            toolbar: ['title', 'bold', 'italic', 'underline', 'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link', 'hr', '|', 'indent', 'outdent', 'alignment'] //image removed
+            // cleanPaste: true, //clear all styles after pasting,
+        });
+    });
+
+    // Imaged WYSIWYGS
+    document.querySelectorAll('.simditor-textarea--imaged').forEach((textarea) => {
+        new Simditor({
+            textarea: textarea,
+            toolbarFloatOffset: '60px',
+            imageButton: 'upload',
+            toolbar: ['title', 'bold', 'italic', 'underline', 'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link', 'hr', '|', 'indent', 'outdent', 'alignment', 'image'],
+            upload: {
+                url: '/simditor-image/upload',   // image upload url by server
+                params: { // additional parameters for request
+                    folder: 'posts'
+                },
+                fileKey: 'image', // input name
+                connectionCount: 10,
+                leaveConfirm: 'Пожалуйста дождитесь окончания загрузки изображений на сервер! Вы уверены что хотите закрыть страницу?'
+            },
+            defaultImage: '/img/dashboard/default-image.png', // default image thumb while uploading
+        });
+    });
+}
+
+function setupNestedSet() {
+    // Nested Sortable
+    $('.nested').nestedSortable({
+        handle: 'div',
+        items: 'li',
+        toleranceElement: '> div',
+        excludeRoot: true,
+        maxLevels: 3,
+        isTree: true,
+        expandOnHover: 700,
+        startCollapsed: false,
+        branchClass: 'nested__item--parent',
+        leafClass: 'nested__item--leaf',
+        collapsedClass: 'nested__item--collapsed',
+        expandedClass: 'nested__item--expanded',
+        hoveringClass: 'nested__item--hover',
+    });
+
+    document.querySelectorAll('.nested__item-toggler').forEach((item) => {
+        item.addEventListener('click', (evt) => {
+            let item = evt.target.closest('.nested__item');
+            item.classList.toggle('nested__item--collapsed');
+            item.classList.toggle('nested__item--expanded');
+        });
+    });
+
+    document.querySelectorAll('.nested__item-destroy-btn').forEach((item) => {
+        item.addEventListener('click', (evt) => {
+            evt.target.closest('.nested__item').remove();
+        });
+    });
+
+    let updateNestedBtn = document.querySelector('[data-action="update-nestedset"]');
+
+    if (updateNestedBtn) {
+        updateNestedBtn.addEventListener('click', () => {
+            let url = updateNestedBtn.dataset.url;
+            let model = updateNestedBtn.dataset.model;
+
+            let params = {
+                itemsHierarchy: $('.nested').nestedSortable('toHierarchy', { startDepthCount: 0 }),
+                itemsArray: $('.nested').nestedSortable('toArray', { startDepthCount: 0 })
+            }
+
+            if (model) {
+                params.model = model;
+            }
+
+            axios.post(url, params, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (response.status === 200) {
+                        window.location.reload();
+                    } else {
+                        console.log('Request failed with status:', response.status);
+                    }
+                })
+                .catch(error => {
+                    console.error('An error occurred:', error);
+                });
+        });
+    }
 }

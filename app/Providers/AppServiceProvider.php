@@ -7,6 +7,7 @@ use App\Models\Country;
 use App\Models\CountryCode;
 use App\Models\Currency;
 use App\Models\ExpirationDate;
+use App\Models\Info;
 use App\Models\Kvpp;
 use App\Models\KvppPriority;
 use App\Models\KvppSource;
@@ -149,6 +150,13 @@ class AppServiceProvider extends ServiceProvider
                 'bdmUsers' => User::getBdmsMinifed(),
                 'manufacturers' => Manufacturer::getAllMinifed(),
                 'countries' => Country::getAll(),
+            ]);
+        });
+
+        // Info
+        View::composer(['info.create', 'filters.info'], function ($view) {
+            $view->with([
+                'blocks' => Info::getAllMinified(),
             ]);
         });
 

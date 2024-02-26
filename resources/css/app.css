@@ -515,6 +515,90 @@ a {
 /* ------------ /end Collapse ------------ */
 
 
+/* ------------ Simditor ------------ */
+.simditor {
+    border-color: #0000001f;
+}
+
+.simditor .simditor-body,
+.editor-style {
+    font-size: 14px;
+}
+
+/* ------------ /end Simditor ------------ */
+
+
+/* ------------ Nested Set ------------ */
+.nested {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+    padding: 20px 20px 24px 40px;
+    font-weight: 300;
+}
+
+/* Root elements */
+.nested>.nested__item>.nested__item-body {
+    font-weight: 400;
+    color: black;
+}
+
+/* Childs container */
+.nested .nested__childs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+/* Hide Collapsed items direct childs */
+.nested__item--collapsed>.nested__childs-list {
+    display: none !important;
+}
+
+/* Item body */
+.nested__item-body {
+    display: flex;
+    align-items: center;
+    padding: 6px 8px;
+    border: 1px solid #b7b7b7;
+    border-radius: 4px;
+    cursor: grab;
+}
+
+.nested__item .material-symbols-outlined {
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.nested__item .material-symbols-outlined:hover {
+    background-color: #e1e1e1;
+}
+
+.nested__item-toggler {
+    user-select: none;
+}
+
+/* Items direct body toggler */
+.nested__item--collapsed>.nested__item-body .nested__item-toggler {
+    transform: rotate(180deg);
+}
+
+.nested__item--leaf .nested__item-toggler {
+    display: none;
+}
+
+.nested__item-title {
+    margin-left: 8px;
+    margin-right: auto;
+}
+
+/* ------------ /end Nested Set ------------ */
+
+
 /* ------------ Form ------------ */
 .form {
     display: flex;
@@ -1591,7 +1675,7 @@ a {
 
 
 /* ------------ Info pages ------------ */
-.info-index__blocks {
+.info-show__blocks {
     padding: 24px 20px;
 }
 

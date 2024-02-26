@@ -17,6 +17,9 @@
     {{-- JQuery DateRangePicker --}}
     <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
 
+    {{-- Simditor v2.3.28 --}}
+    <link rel="stylesheet" href="{{ asset('plugins/simditor/simditor.css') }}">
+
     {{-- Styles --}}
     @vite('resources/css/app.css')
 </head>
@@ -53,6 +56,15 @@
 
     {{-- Selectize --}}
     <script src="{{ asset('plugins/selectize/selectize.min.js') }}"></script>
+
+    {{-- JQ Nested Set --}}
+    <script src="{{ asset('plugins/jq-nested/jq-nested-sortable.js') }}"></script>
+
+    {{-- Simditor v2.3.28 --}}
+    <script src="{{ asset('plugins/simditor/module.js') }}"></script>
+    <script src="{{ asset('plugins/simditor/hotkeys.js') }}"></script>
+    <script src="{{ asset('plugins/simditor/uploader.js') }}"></script>
+    <script src="{{ asset('plugins/simditor/simditor.js') }}"></script>
 
     {{-- Scripts --}}
     @vite('resources/js/app.js')

@@ -121,14 +121,16 @@ Route::middleware('auth', 'auth.session')->group(function () {
     });
 
     Route::prefix('info')->controller(InfoController::class)->name('info.')->group(function () {
-        Route::get('/', 'index')->name('index');  // readonly page for all users
-        Route::get('/dashboard', 'dashIndex')->name('dashIndex');  // table
+        Route::get('/show', 'show')->name('show');  // readonly page for all users
+        Route::get('/', 'index')->name('index');  // dashboard table
         Route::get('/create', 'create')->name('create');
         Route::get('/edit/{item}', 'edit')->name('edit');
+        Route::get('/edit-nestedset', 'editNestedset')->name('edit-nestedset');
 
         Route::post('/store', 'store')->name('store');
         Route::post('/update/{item}', 'update')->name('update');
         Route::post('/destroy', 'destroy')->name('destroy');
+        Route::post('/update-nestedset', 'updateNestedset')->name('update-nestedset');
     });
 
     Route::prefix('models')->controller(IdenticanlModelsController::class)->name('identical-models.')->middleware('admin')->group(function () {
@@ -167,4 +169,3 @@ Route::middleware('auth', 'auth.session')->group(function () {
         Route::post('/update', 'update')->name('update');
     });
 });
-
