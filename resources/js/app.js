@@ -169,6 +169,14 @@ function setupComponents() {
             }
         });
     });
+
+    // ********** Collapse **********
+    document.querySelectorAll(".collapse__header").forEach((header) => {
+        header.addEventListener("click", function () {
+            let collapse = this.closest(".collapse");;
+            collapse.classList.toggle("collapse--open");
+        });
+    });
 }
 
 function setupForms() {

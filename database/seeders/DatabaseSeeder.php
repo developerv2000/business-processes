@@ -36,7 +36,8 @@ class DatabaseSeeder extends Seeder
             ManufacturerSeeder::class,
             GenericSeeder::class,
             // ProcessSeeder::class,
-            KvppSeeder::class
+            KvppSeeder::class,
+            InfoSeeder::class,
         ]);
     }
 }

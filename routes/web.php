@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\GenericController;
 use App\Http\Controllers\IdenticanlModelsController;
+use App\Http\Controllers\InfoController;
 use App\Http\Controllers\KvppController;
 use App\Http\Controllers\ManufacturerController;
 use App\Http\Controllers\MeetingController;
@@ -117,6 +118,17 @@ Route::middleware('auth', 'auth.session')->group(function () {
         Route::post('/export', 'export')->name('export');
 
         Route::post('/get-similar-products', 'getSimilarProducts');  // Used on creating for uniqness
+    });
+
+    Route::prefix('info')->controller(InfoController::class)->name('info.')->group(function () {
+        Route::get('/', 'index')->name('index');  // readonly page for all users
+        Route::get('/dashboard', 'dashIndex')->name('dashIndex');  // table
+        Route::get('/create', 'create')->name('create');
+        Route::get('/edit/{item}', 'edit')->name('edit');
+
+        Route::post('/store', 'store')->name('store');
+        Route::post('/update/{item}', 'update')->name('update');
+        Route::post('/destroy', 'destroy')->name('destroy');
     });
 
     Route::prefix('models')->controller(IdenticanlModelsController::class)->name('identical-models.')->middleware('admin')->group(function () {

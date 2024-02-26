@@ -30,18 +30,22 @@
                 {{ __('Meetings') }}
             </x-navbar.link>
 
+            <x-navbar.link icon="info" href="{{ route('info.index') }}" @class([
+                'navbar-link--active' => request()->routeIs('info.index'),
+            ])>{{ __('Info') }}</x-navbar.link>
+
             @if (request()->user()->isAdminOrModerator())
                 <x-navbar.title>{{ __('Dashboard') }}</x-navbar.title>
 
-                <x-navbar.link icon="dataset" href="{{ route('identical-models.list') }}" @class(['navbar-link--active' => request()->routeIs('identical-models.*')])>
+                <x-navbar.link icon="dataset" href="{{ route('identical-models.list') }}" @class([
+                    'navbar-link--active' => request()->routeIs('identical-models.*'),
+                ])>
                     {{ __('Different') }}
                 </x-navbar.link>
 
-                @if (request()->user()->isAdmin())
-                    <x-navbar.link icon="account_circle" href="{{ route('users.index') }}" @class(['navbar-link--active' => request()->routeIs('users.*')])>
-                        {{ __('Users') }}
-                    </x-navbar.link>
-                @endif
+                <x-navbar.link icon="account_circle" href="{{ route('users.index') }}" @class(['navbar-link--active' => request()->routeIs('users.*')])>
+                    {{ __('Users') }}
+                </x-navbar.link>
             @endif
 
             {{-- Temporary statistics --}}
