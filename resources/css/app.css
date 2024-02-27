@@ -980,6 +980,14 @@ a {
 .leftbar__inner {
     position: fixed;
     width: var(--leftbar-width);
+    overflow-y: auto;
+    max-height: 100%;
+    /* For overflow-y visible */
+    padding-bottom: 60px;
+}
+
+.leftbar__inner::-webkit-scrollbar {
+    display: none;
 }
 
 .navbar {

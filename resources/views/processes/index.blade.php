@@ -19,7 +19,9 @@
                     {{ __('Delete') }}
                 </x-buttons.show-modal>
 
-                <x-other.export-form action="{{ route('processes.export') }}" />
+                @unless (request()->user()->isTrainee())
+                    <x-other.export-form action="{{ route('processes.export') }}" />
+                @endunless
             </div>
         </div>
 

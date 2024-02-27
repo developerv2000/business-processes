@@ -21,7 +21,9 @@
                     {{ __('Delete') }}
                 </x-buttons.show-modal>
 
-                <x-other.export-form action="{{ route('generics.export') }}" />
+                @unless (request()->user()->isTrainee())
+                    <x-other.export-form action="{{ route('generics.export') }}" />
+                @endunless
 
                 {{-- Export VP --}}
                 @if (request()->manufacturer_id)

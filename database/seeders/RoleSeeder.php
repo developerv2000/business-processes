@@ -19,6 +19,7 @@ class RoleSeeder extends Seeder
             Role::ANALYST_NAME,
             Role::BDM_NAME,
             Role::ROBOT_NAME,
+            Role::TRAINEE_NAME,
         ];
 
         for ($i = 0; $i < count($name); $i++) {

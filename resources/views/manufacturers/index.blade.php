@@ -21,7 +21,9 @@
                     {{ __('Delete') }}
                 </x-buttons.show-modal>
 
-                <x-other.export-form action="{{ route('manufacturers.export') }}" />
+                @unless (request()->user()->isTrainee())
+                    <x-other.export-form action="{{ route('manufacturers.export') }}" />
+                @endunless
             </div>
         </div>
 

@@ -14,6 +14,7 @@ class Role extends Model
     const ANALYST_NAME = 'Analyst';
     const BDM_NAME = 'Bdm';
     const ROBOT_NAME = 'Robot';
+    const TRAINEE_NAME = 'Trainee';
 
     public $timestamps = false;
 

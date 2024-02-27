@@ -98,6 +98,11 @@ class User extends Authenticatable
         });
     }
 
+    public function isTrainee()
+    {
+        return $this->roles->contains('name', Role::TRAINEE_NAME);
+    }
+
     /**
      * Robots can`t login
      */
