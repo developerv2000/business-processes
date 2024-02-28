@@ -27,9 +27,8 @@ class ProcessStatusSeeder extends Seeder
         }
 
         // Childs
-        $childs = ['Вб', 'SВб', 'ПО', 'SПО', 'АЦ', 'SАЦ', 'СЦ', 'SСЦ', 'ПцКк', 'SКк', 'Кк', 'ПцКД', 'SКД', 'ПцР', 'SПцР', 'РУ', 'Зя'];
-        $parent_id = [1, 1, 2, 2, 3, 3, 4, 4, 4, 4, 5, 6, 6, 7, 7, 8, 9];
-        $stageResponsible = [true, null, true, null, true, null, true, null, null, null, true, true, null, true, null, true, true];
+        $childs = ['Вб', 'SВб', 'ПО', 'SПО', 'АЦ', 'SАЦ', 'СЦ', 'SСЦ', 'ПцКк', 'SПцКк', 'Кк', 'ПцКД', 'SКД', 'ПцР', 'SПцР', 'Р', 'P-', 'Зя'];
+        $parent_id = [1, 1, 2, 2, 3, 3, 4, 4, 4, 5, 5, 6, 6, 7, 7, 8, 9];
 
         for ($i = 0; $i < count($childs); $i++) {
             $item = new ProcessStatus();

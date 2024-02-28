@@ -9,6 +9,8 @@ class ExpirationDate extends Model
 {
     use HasFactory;
 
+    const TBC_NAME = 'TBC';
+
     public $timestamps = false;
 
     public function generics()
@@ -29,8 +31,8 @@ class ExpirationDate extends Model
         return self::orderBy('id')->get();
     }
 
-    public static function getOnGoingID()
+    public static function getTbcID()
     {
-        return self::where('name', 'onGoing')->first()->id;
+        return self::where('name', self::TBC_NAME)->first()->id;
     }
 }

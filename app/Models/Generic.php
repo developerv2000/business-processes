@@ -320,7 +320,7 @@ class Generic extends Model
     public function getProposedProcessStatus()
     {
         // First stage (Вб)
-        if ($this->expiration_date_id == ExpirationDate::getOnGoingID()) {
+        if ($this->expiration_date_id == ExpirationDate::getTbcID()) {
             $stage = 1;
             // Second stage (ПО)
         } else if (!$this->minimum_volume) {

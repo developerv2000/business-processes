@@ -13,7 +13,7 @@ class ExpirationDateSeeder extends Seeder
      */
     public function run(): void
     {
-        $name = ['12', '18', '24', '36', '48', '60', 'onGoing'];
+        $name = ['12', '18', '24', '36', '48', '60', 'TBC'];
 
         for ($i = 0; $i < count($name); $i++) {
             $item = new ExpirationDate();
