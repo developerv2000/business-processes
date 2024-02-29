@@ -254,7 +254,6 @@ class User extends Authenticatable
         // Reset user settings, if roles have been changed
         if (count(array_diff($oldRoles, $newRoles)) || count(array_diff($newRoles, $oldRoles))) {
             $this->loadDefaultSettings();
-            $this->logoutAllDevicesByAdmin($request);
         }
     }
 

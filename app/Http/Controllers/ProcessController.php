@@ -87,8 +87,21 @@ class ProcessController extends Controller
         return redirect($request->previous_url);
     }
 
+    /**
+     * Set process status_id for analysts
+     * as stage fifth ('Кк') responsible child ID,
+     * because only statusses with stage <= 5 are available for analysts
+     *
+     * its is used to select status 'Кк' on status_id select
+     */
     public function edit(Process $item)
     {
+        $stage = $item->status->parent->stage;
+
+        if (!request()->user()->isAdmin() && $stage > 5) {
+            $item->status->id = ProcessStatus::STAGE_FIVE_RESPONSIBLE_CHILD_ID;
+        }
+
         return view('processes.edit.index', compact('item'));
     }
 

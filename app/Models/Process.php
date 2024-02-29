@@ -175,6 +175,7 @@ class Process extends Model
         $items = $items ?: self::query();
         $items = self::filter($items);
         $items = self::additionalFilterByRoles($items);
+        $items = self::additionalStatusFilterByRoles($items);
         $items = self::finalize($params, $items, $finaly);
 
         return $items;
@@ -185,7 +186,6 @@ class Process extends Model
         $whereColumns = [
             'id',
             'country_code_id',
-            'status_id',
             'promo_company_id',
         ];
 
@@ -285,6 +285,34 @@ class Process extends Model
         return $items;
     }
 
+    /**
+     * Return all processes with status stage >= 5 for analysts
+     * while status_id >= 5 is requested,
+     * because filtering processes with status stage > 5
+     * are available only for admins
+     *
+     * else filter simple where status_id
+     */
+    public static function additionalStatusFilterByRoles($items)
+    {
+        $statusID = request()->input('status_id');
+
+        if (!$statusID) return $items;
+
+        $user = request()->user();
+        $parentStatusID = ProcessStatus::find($statusID)->parent->id;
+
+        if (!$user->isAdmin() && $parentStatusID >= 5) {
+            $items = $items->whereHas('status.parent', function ($query) {
+                $query->where('stage', '>=', 5);
+            });
+        } else {
+            $items = $items->where('status_id', $statusID);
+        }
+
+        return $items;
+    }
+
     private static function finalize($params, $items, $finaly)
     {
         $items = $items
@@ -372,9 +400,15 @@ class Process extends Model
         }
     }
 
+    /**
+     * Manually validate status_id
+     * because only first 5 status stages are available for analysts on update
+     */
     public function updateFromRequest($request)
     {
-        $this->update($request->all());
+        $this->fill($request->except('status_id'));
+        $this->validateStatusID();
+        $this->save();
 
         // BelongsToMany relations
         $this->owners()->sync($request->input('owners'));
@@ -382,6 +416,31 @@ class Process extends Model
 
         // HasMany relations
         $this->storeComment($request->comment);
+    }
+
+    /**
+     * Manually validate status_id on updateFromRequest method
+     * because only first 5 status stages are available for analysts on update
+     */
+    public function validateStatusID()
+    {
+        $newStatusID = request()->input('status_id');
+
+        if ($this->status->id != $newStatusID) {
+            // Admin
+            if (request()->user()->isAdmin()) {
+                $this->status_id = $newStatusID;
+                // Analyst. Update status_id only if newStatusStage >= 5
+            } else {
+                // Avoid updating status_id if
+                // old status stage > 5 and new status stage == ProcessStatus::STAGE_FIVE_RESPONSIBLE_CHILD_ID
+                $oldStatusStage = $this->status->parent->stage;
+
+                if (!($oldStatusStage >= 6 && $newStatusID == ProcessStatus::STAGE_FIVE_RESPONSIBLE_CHILD_ID)) {
+                    $this->status_id = $newStatusID;
+                }
+            }
+        }
     }
 
     /**

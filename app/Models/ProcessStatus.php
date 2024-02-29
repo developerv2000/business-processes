@@ -9,11 +9,18 @@ class ProcessStatus extends Model
 {
     use HasFactory;
 
+    const STAGE_FIVE_RESPONSIBLE_CHILD_ID = 20;
+
     public $timestamps = false;
 
     public $with = [
         'parent'
     ];
+
+    public function getNameAttribute()
+    {
+        return request()->user()->isAdmin() ? $this->name_for_admins : $this->name_for_analysts;
+    }
 
     public function parent()
     {
@@ -23,6 +30,21 @@ class ProcessStatus extends Model
     public function childs()
     {
         return $this->hasMany(self::class, 'parent_id');
+    }
+
+    /**
+     * Exclude child statusses that came after stage 5 ('Кк') for analysts.
+     * There are used only by admins
+     */
+    public static function filterChildsByRoles($items)
+    {
+        if (!request()->user()->isAdmin()) {
+            $items = $items->whereHas('parent', function ($query) {
+                $query->where('stage', '<=', '5');
+            });
+        }
+
+        return $items;
     }
 
     /**
@@ -41,13 +63,11 @@ class ProcessStatus extends Model
         $query->whereNotNull('parent_id');
     }
 
-    public static function getAll()
-    {
-        return self::orderBy('id')->get();
-    }
-
     public static function getAllChilds()
     {
-        return self::onlyChilds()->orderBy('id')->get();
+        $query = self::onlyChilds();
+        $query = self::filterChildsByRoles($query);
+
+        return $query->get();
     }
 }
