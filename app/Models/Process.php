@@ -48,6 +48,7 @@ class Process extends Model
             $item->validateStageTwoStartDate();
             $item->validatePriceInUSD();
             $item->validateIncreasedPriceAfterCreate();
+            $item->addStatusUpdateHistoryAfterCreate();
         });
 
         static::updating(function ($item) {
@@ -57,6 +58,10 @@ class Process extends Model
             $item->status_update_date = $item->date;  // remove after old data add finished
             $item->synchronizeGenericColumnsUpdate();
             $item->validateIncreasedPriceOnUpdating();
+
+            if ($item->isDirty('status_id')) {
+                $item->addStatusUpdateHistoryonUpdating();
+            }
         });
 
         static::updated(function ($item) {
@@ -81,6 +86,10 @@ class Process extends Model
 
             foreach ($item->comments as $comment) {
                 $comment->delete();
+            }
+
+            foreach ($item->histories as $history) {
+                $history->delete();
             }
         });
     }
@@ -141,6 +150,25 @@ class Process extends Model
     public function lastComment()
     {
         return $this->morphOne(Comment::class, 'commentable')->latestOfMany();
+    }
+
+    public function histories()
+    {
+        return $this->hasMany(ProcessHistory::class);
+    }
+
+    public function statusUpdates()
+    {
+        return $this->hasMany(ProcessHistory::class)
+            ->where('action', ProcessHistory::STATUS_UPDATE_ACTION_NAME)
+            ->orderBy('id', 'desc');
+    }
+
+    public function latestStatusUpdate()
+    {
+        return $this->hasOne(ProcessHistory::class)
+            ->where('action', ProcessHistory::STATUS_UPDATE_ACTION_NAME)
+            ->latestOfMany();
     }
 
     // ********** Querying **********
@@ -551,6 +579,51 @@ class Process extends Model
             $this->increased_price_date = date('Y-m-d');
             $this->saveQuietly();
         }
+    }
+
+    /**
+     * Keep status change history
+     *
+     * Used on models created event
+     */
+    public function addStatusUpdateHistoryAfterCreate()
+    {
+        $this->statusUpdates()->save(
+            new ProcessHistory([
+                'action' => ProcessHistory::STATUS_UPDATE_ACTION_NAME,
+                'options' => [
+                    'new_status_id' => intval($this->status_id),
+                ],
+            ])
+        );
+    }
+
+    /**
+     * Keep status change history
+     *
+     * Used on models created event
+     */
+    public function addStatusUpdateHistoryonUpdating()
+    {
+        // first add old status duration days
+        $latestStatusUpdate = $this->latestStatusUpdate;
+        $options = $latestStatusUpdate->options;
+
+        // calculate days past
+        $latestStatusUpdateDate = Carbon::parse($latestStatusUpdate->created_at);
+        $options['new_status_duration_days'] = $latestStatusUpdateDate->diffInDays(now());
+        $latestStatusUpdate->options = $options;
+        $latestStatusUpdate->save();
+
+        // then add new history
+        $this->statusUpdates()->save(
+            new ProcessHistory([
+                'action' => ProcessHistory::STATUS_UPDATE_ACTION_NAME,
+                'options' => [
+                    'new_status_id' => intval($this->status_id),
+                ],
+            ])
+        );
     }
 
     /**

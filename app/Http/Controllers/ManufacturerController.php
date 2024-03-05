@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreManufacturerRequest;
 use App\Http\Requests\UpdateManufacturerRequest;
-use App\Models\Kvpp;
 use App\Models\Manufacturer;
 use App\Models\User;
 use App\Support\Helper;
