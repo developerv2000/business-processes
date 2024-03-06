@@ -601,17 +601,20 @@ class Process extends Model
     /**
      * Keep status change history
      *
-     * Used on models created event
+     * Used on models updating event
      */
     public function addStatusUpdateHistoryonUpdating()
     {
-        // first add old status duration days
+        // first update latest history adding last status duration_days & end_date values
         $latestStatusUpdate = $this->latestStatusUpdate;
         $options = $latestStatusUpdate->options;
 
         // calculate days past
         $latestStatusUpdateDate = Carbon::parse($latestStatusUpdate->created_at);
         $options['new_status_duration_days'] = $latestStatusUpdateDate->diffInDays(now());
+
+        // also add finished_at value
+        $options['new_status_end_date'] = now()->format('Y-m-d H:i:s');
         $latestStatusUpdate->options = $options;
         $latestStatusUpdate->save();
 
