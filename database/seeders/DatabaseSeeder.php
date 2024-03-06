@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
             PromoCompanySeeder::class,
             ManufacturerSeeder::class,
             GenericSeeder::class,
-            // ProcessSeeder::class,
+            ProcessSeeder::class,
             KvppSeeder::class,
             InfoSeeder::class,
         ]);

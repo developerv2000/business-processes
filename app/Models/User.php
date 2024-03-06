@@ -403,6 +403,8 @@ class User extends Authenticatable
             ['name' => 'Date', 'order' => $order++, 'width' => 98, 'visible' => 1],
             ['name' => 'Search country', 'order' => $order++, 'width' => 130, 'visible' => 1],
             ['name' => 'Product status', 'order' => $order++, 'width' => 126, 'visible' => 1],
+            ['name' => 'Product status An*', 'order' => $order++, 'width' => 136, 'visible' => 1],
+            ['name' => 'General status', 'order' => $order++, 'width' => 110, 'visible' => 1],
             ['name' => 'Category', 'order' => $order++, 'width' => 84, 'visible' => 1],
             ['name' => 'Manufacturer', 'order' => $order++, 'width' => 140, 'visible' => 1],
             ['name' => 'Country of manufacturer', 'order' => $order++, 'width' => 174, 'visible' => 1],
@@ -414,7 +416,6 @@ class User extends Authenticatable
             ['name' => 'Pack', 'order' => $order++, 'width' => 110, 'visible' => 1],
 
             ['name' => 'MAH', 'order' => $order++, 'width' => 102, 'visible' => 1],
-            ['name' => 'General status', 'order' => $order++, 'width' => 128, 'visible' => 1],
             ['name' => 'Comments', 'order' => $order++, 'width' => 100, 'visible' => 1],
             ['name' => 'Last comment', 'order' => $order++, 'width' => 240, 'visible' => 1],
             ['name' => 'Comments date', 'order' => $order++, 'width' => 116, 'visible' => 1],

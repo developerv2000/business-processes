@@ -15,6 +15,14 @@
         {{ $item->status->name }}
     @break
 
+    @case('Product status An*')
+        {{ $item->status->parent->name_for_analysts }}
+    @break
+
+    @case('General status')
+        {{ $item->status->parent->name_for_admins }}
+    @break
+
     @case('Category')
         <span @class([
             'badge',
@@ -59,10 +67,6 @@
 
     @case('MAH')
         {{ $item->promoCompany?->name }}
-    @break
-
-    @case('General status')
-        {{ $item->status->parent->name }}
     @break
 
     @case('Comments')

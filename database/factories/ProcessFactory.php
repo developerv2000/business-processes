@@ -21,8 +21,9 @@ class ProcessFactory extends Factory
     {
         return [
             'generic_id' => Generic::inRandomOrder()->first()->id,
-            'country_code_id' => CountryCode::inRandomOrder()->first()->id,
             'status_id' => ProcessStatus::onlyChilds()->inRandomOrder()->first()->id,
+            'country_code_id' => CountryCode::inRandomOrder()->first()->id,
+            'status_update_date' => fake()->date(),
             'date' => fake()->date(),
         ];
     }

@@ -13,11 +13,11 @@ class ProcessStatusSeeder extends Seeder
      */
     public function run(): void
     {
-        // Parents (General statuses) id = [1 - 9]
-        $name_for_admins = ['ВП', 'ПО', 'АЦ', 'СЦ', 'Кк', 'КД', 'НПР', 'Р', 'Зя']; // 9 parents
+        // Parents (General statuses) id = [1 - 9]. 9 elements
+        $name_for_admins = ['ВП', 'ПО', 'АЦ', 'СЦ', 'Кк', 'КД', 'НПР', 'Р', 'Зя'];
         $name_for_analysts = ['ВП', 'ПО', 'АЦ', 'СЦ', 'Кк', 'Кк', 'Кк', 'Кк', 'Кк'];
-        $stage = [1, 2, 3, 4, 5, 6, 7, 8, 10]; // stage 9 added after
-        $responsible_child_id = [10, 12, 14, 16, 20, 21, 23, 25, 26];
+        $stage = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        $responsible_child_id = [10, 12, 14, 16, 20, 21, 23, 25, 27];
 
         for ($i = 0; $i < count($name_for_admins); $i++) {
             $item = new ProcessStatus();
@@ -28,10 +28,10 @@ class ProcessStatusSeeder extends Seeder
             $item->save();
         }
 
-        // Childs (Product status) id = [10 - 26]
-        $name_for_admins = ['Вб', 'SВб', 'ПО', 'SПО', 'АЦ', 'SАЦ', 'СЦ', 'SСЦ', 'ПцКк', 'SКк', 'Кк', 'ПцКД', 'SКД', 'ПцР', 'SПцР', 'Р', 'Зя'];
-        $name_for_analysts = ['Вб', 'SВб', 'ПО', 'SПО', 'АЦ', 'SАЦ', 'СЦ', 'SСЦ', 'ПцКк', 'SПцКк', 'Кк', 'Кк', 'Кк', 'Кк', 'Кк', 'Кк', 'Кк']; // 17
-        $parent_id = [1, 1, 2, 2, 3, 3, 4, 4, 4, 5, 5, 6, 6, 7, 7, 8, 9];
+        // Childs (Product status) id = [10 - 27]. 18 elements
+        $name_for_admins = ['Вб', 'SВб', 'ПО', 'SПО', 'АЦ', 'SАЦ', 'СЦ', 'SСЦ', 'ПцКк', 'SПцКк', 'Кк', 'ПцКД', 'SКД', 'ПцР', 'SПцР', 'Р', 'P-', 'Зя'];
+        $name_for_analysts = ['Вб', 'SВб', 'ПО', 'SПО', 'АЦ', 'SАЦ', 'СЦ', 'SСЦ', 'ПцКк', 'SПцКк', 'Кк', 'Кк', 'Кк', 'Кк', 'Кк', 'Кк', 'Кк', 'Кк'];
+        $parent_id = [1, 1, 2, 2, 3, 3, 4, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9];
 
         for ($i = 0; $i < count($name_for_admins); $i++) {
             $item = new ProcessStatus();
@@ -40,20 +40,5 @@ class ProcessStatusSeeder extends Seeder
             $item->parent_id = $parent_id[$i];
             $item->save();
         }
-
-        // New statusses added after all to save added data compability
-        // Parent (General status). id = 27
-        $item = new ProcessStatus();
-        $item->name_for_admins = 'P-';
-        $item->name_for_analysts = 'Кк';
-        $item->stage = 9;
-        $item->responsible_child_id = 28;
-        $item->save();
-        // Child. id = 28
-        $item = new ProcessStatus();
-        $item->name_for_admins = 'P-';
-        $item->name_for_analysts = 'Кк';
-        $item->parent_id = 27;
-        $item->save();
     }
 }

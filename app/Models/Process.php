@@ -664,54 +664,55 @@ class Process extends Model
                 $worksheet->setCellValue('L' . $row, $item->generic->pack);
 
                 $worksheet->setCellValue('M' . $row, $item->promoCompany?->name);
-                $worksheet->setCellValue('N' . $row, $item->status->parent->name);
-                $worksheet->setCellValue('O' . $row, $item->status->name);
+                $worksheet->setCellValue('N' . $row, $item->status->name);
+                $worksheet->setCellValue('O' . $row, $item->status->parent->name_for_analysts);
+                $worksheet->setCellValue('P' . $row, $item->status->parent->name_for_admins);
 
                 $comments = $item->comments->pluck('body')->implode(' / ');
-                $worksheet->setCellValue('P' . $row, $comments);
-                $worksheet->setCellValue('Q' . $row, $item->lastComment?->created_at);
+                $worksheet->setCellValue('Q' . $row, $comments);
+                $worksheet->setCellValue('R' . $row, $item->lastComment?->created_at);
 
-                $worksheet->setCellValue('R' . $row, $item->manufacturer_first_offered_price);
-                $worksheet->setCellValue('S' . $row, $item->manufacturer_followed_offered_price);
-                $worksheet->setCellValue('T' . $row, $item->currency?->name);
-                $worksheet->setCellValue('U' . $row, $item->agreed_price);
-                $worksheet->setCellValue('V' . $row, $item->manufacturer_followed_offered_price_in_usd);
-                $worksheet->setCellValue('W' . $row, $item->our_followed_offered_price);
-                $worksheet->setCellValue('X' . $row, $item->our_first_offered_price);
-                $worksheet->setCellValue('Y' . $row, $item->increased_price);
-                $worksheet->setCellValue('Z' . $row, $item->increased_price_percentage);
-                $worksheet->setCellValue('AA' . $row, $item->increased_price_date);
-                $worksheet->setCellValue('AB' . $row, $item->generic->expirationDate->name);
-                $worksheet->setCellValue('AC' . $row, $item->generic->minimum_volume);
+                $worksheet->setCellValue('S' . $row, $item->manufacturer_first_offered_price);
+                $worksheet->setCellValue('T' . $row, $item->manufacturer_followed_offered_price);
+                $worksheet->setCellValue('U' . $row, $item->currency?->name);
+                $worksheet->setCellValue('V' . $row, $item->agreed_price);
+                $worksheet->setCellValue('W' . $row, $item->manufacturer_followed_offered_price_in_usd);
+                $worksheet->setCellValue('X' . $row, $item->our_followed_offered_price);
+                $worksheet->setCellValue('Y' . $row, $item->our_first_offered_price);
+                $worksheet->setCellValue('Z' . $row, $item->increased_price);
+                $worksheet->setCellValue('AA' . $row, $item->increased_price_percentage);
+                $worksheet->setCellValue('AB' . $row, $item->increased_price_date);
+                $worksheet->setCellValue('AC' . $row, $item->generic->expirationDate->name);
+                $worksheet->setCellValue('AD' . $row, $item->generic->minimum_volume);
 
-                $worksheet->setCellValue('AD' . $row, $item->dossier_status);
-                $worksheet->setCellValue('AE' . $row, $item->clinical_trial_year);
+                $worksheet->setCellValue('AE' . $row, $item->dossier_status);
+                $worksheet->setCellValue('AF' . $row, $item->clinical_trial_year);
 
                 $countries = $item->crbeCountries->pluck('name')->implode(' ');
-                $worksheet->setCellValue('AF' . $row, $countries);
+                $worksheet->setCellValue('AG' . $row, $countries);
 
-                $worksheet->setCellValue('AG' . $row, $item->clinical_trial_ich_country);
+                $worksheet->setCellValue('AH' . $row, $item->clinical_trial_ich_country);
 
                 $zones = $item->generic->zones->pluck('name')->implode(' ');
-                $worksheet->setCellValue('AH' . $row, $zones);
+                $worksheet->setCellValue('AI' . $row, $zones);
 
-                $worksheet->setCellValue('AI' . $row, $item->additional_1);
-                $worksheet->setCellValue('AJ' . $row, $item->additional_2);
-                $worksheet->setCellValue('AK' . $row, $item->stage_2_start_date);
-                $worksheet->setCellValue('AL' . $row, $item->year_1);
-                $worksheet->setCellValue('AM' . $row, $item->year_2);
-                $worksheet->setCellValue('AN' . $row, $item->year_3);
+                $worksheet->setCellValue('AJ' . $row, $item->additional_1);
+                $worksheet->setCellValue('AK' . $row, $item->additional_2);
+                $worksheet->setCellValue('AL' . $row, $item->stage_2_start_date);
+                $worksheet->setCellValue('AM' . $row, $item->year_1);
+                $worksheet->setCellValue('AN' . $row, $item->year_2);
+                $worksheet->setCellValue('AO' . $row, $item->year_3);
 
                 $owners = $item->owners->pluck('name')->implode(' ');
-                $worksheet->setCellValue('AO' . $row, $owners);
+                $worksheet->setCellValue('AP' . $row, $owners);
 
-                $worksheet->setCellValue('AP' . $row, $item->date);
-                $worksheet->setCellValue('AQ' . $row, $item->days_past);
-                $worksheet->setCellValue('AR' . $row, $item->trademark_en);
-                $worksheet->setCellValue('AS' . $row, $item->trademark_ru);
-                $worksheet->setCellValue('AT' . $row, $item->created_at);
-                $worksheet->setCellValue('AU' . $row, $item->updated_at);
-                $worksheet->setCellValue('AV' . $row, $item->generic->category->name);
+                $worksheet->setCellValue('AQ' . $row, $item->date);
+                $worksheet->setCellValue('AR' . $row, $item->days_past);
+                $worksheet->setCellValue('AS' . $row, $item->trademark_en);
+                $worksheet->setCellValue('AT' . $row, $item->trademark_ru);
+                $worksheet->setCellValue('AU' . $row, $item->created_at);
+                $worksheet->setCellValue('AV' . $row, $item->updated_at);
+                $worksheet->setCellValue('AW' . $row, $item->generic->category->name);
                 $row++;
             }
         });
