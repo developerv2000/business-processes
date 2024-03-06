@@ -33,9 +33,9 @@ class ProcessHistory extends Model
         return $this->options['new_status_id'] ?? null;
     }
 
-    public function processes()
+    public function process()
     {
-        return $this->hasMany(Process::class);
+        return $this->belongsTo(Process::class)->withTrashed();
     }
 
     // ********** Events **********
