@@ -694,6 +694,9 @@ class Process extends Model
         $highestPeriod = collect($stages)->max('duration_days');
 
         foreach ($stages as &$stage) {
+            // escape division by zero
+            if (!$highestPeriod) $highestPeriod = $highestPeriod * 1;
+
             $stage["line_length"] = $stage["duration_days"] ? intval($stage["duration_days"] * 100 / $highestPeriod) : 0;
         }
 
