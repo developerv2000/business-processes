@@ -1654,6 +1654,32 @@ a {
     display: none;
 }
 
+/* Table */
+.stage-periods__hr {
+    height: 4px;
+    margin: 8px 0;
+    border: none;
+}
+
+.stage-periods__hr--stage1 {
+    background-color: orange;
+}
+
+.stage-periods__hr--stage2 {
+    background-color: purple;
+}
+
+.stage-periods__hr--stage3 {
+    background-color: green;
+}
+
+.stage-periods__hr--stage4 {
+    background-color: skyblue;
+}
+
+.stage-periods__hr--stage5 {
+    background-color: darkblue;
+}
 /* ------------ /END Processes pages ------------ */
 
 

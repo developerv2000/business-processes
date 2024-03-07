@@ -21,6 +21,10 @@ class ProcessController extends Controller
 
     public function index(Request $request)
     {
+        // $p = Process::find(8);
+        // $p->loadStatusStagePeriods();
+        // dd($p);
+
         $params = self::getRequestParams();
         $items = Process::getItemsFinalized($params);
 

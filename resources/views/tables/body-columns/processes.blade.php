@@ -224,6 +224,26 @@
         <span class="badge badge--green">{{ $item->generic->category->name }}</span>
     @break
 
+    @case('ВП')
+        @include('tables.components.td-status-stages.stage1')
+    @break
+
+    @case('ПО')
+        @include('tables.components.td-status-stages.stage2')
+    @break
+
+    @case('АЦ')
+        @include('tables.components.td-status-stages.stage3')
+    @break
+
+    @case('СЦ')
+        @include('tables.components.td-status-stages.stage4')
+    @break
+
+    @case('Кк')
+        @include('tables.components.td-status-stages.stage5')
+    @break
+
     @case('ID')
         {{ $item->id }}
     @break

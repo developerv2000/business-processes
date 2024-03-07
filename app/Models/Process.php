@@ -650,11 +650,11 @@ class Process extends Model
     {
         // First calculate start_date, end_date and duration_days for each stage
         $stages = [
-            ["number" => 1, "start_date" => null, "end_date" => null, "duration_days" => 0, "line_width" => 0],
-            ["number" => 2, "start_date" => null, "end_date" => null, "duration_days" => 0, "line_width" => 0],
-            ["number" => 3, "start_date" => null, "end_date" => null, "duration_days" => 0, "line_width" => 0],
-            ["number" => 4, "start_date" => null, "end_date" => null, "duration_days" => 0, "line_width" => 0],
-            ["number" => 5, "start_date" => null, "end_date" => null, "duration_days" => 0, "line_width" => 0],
+            ["number" => 1, "start_date" => null, "end_date" => null, "duration_days" => 0, "line_length" => 0],
+            ["number" => 2, "start_date" => null, "end_date" => null, "duration_days" => 0, "line_length" => 0],
+            ["number" => 3, "start_date" => null, "end_date" => null, "duration_days" => 0, "line_length" => 0],
+            ["number" => 4, "start_date" => null, "end_date" => null, "duration_days" => 0, "line_length" => 0],
+            ["number" => 5, "start_date" => null, "end_date" => null, "duration_days" => 0, "line_length" => 0],
         ];
 
         foreach ($stages as &$stage) {
@@ -666,7 +666,7 @@ class Process extends Model
             }
 
             if ($stageUpdates->count()) {
-                $stage["start_date"] = $stageUpdates->sortBy('id')->first()->created_at;
+                $stage["start_date"] = Carbon::parse($stageUpdates->sortBy('id')->first()->created_at)->format('d/m/Y');
 
                 // Calculate prcocess current status duration_days & set current stage end_date as current date
                 // because they are null for current process status stage
@@ -674,14 +674,14 @@ class Process extends Model
                 $lastUpdateOptions = $lastUpdate->options;
 
                 if (!key_exists('new_status_end_date', $lastUpdate->options)) {
-                    $stage["end_date"] = now()->format('Y-m-d H:i:s');
+                    $stage["end_date"] = now()->format('d/m/Y');
 
                     // add directly to collection, because sum aggregate function is used to calculate stage duration days
                     $lastUpdateOptions['new_status_duration_days'] = Carbon::parse($lastUpdate->created_at)->diffInDays(now(), false);
                     $lastUpdate->options = $lastUpdateOptions;
                     // For past stages duration_days & end_date are already calculated
                 } else {
-                    $stage["end_date"] = $lastUpdate->options['new_status_end_date'];
+                    $stage["end_date"] = Carbon::parse($lastUpdate->options['new_status_end_date'])->format('d/m/Y');
                 }
 
                 $stage["duration_days"] = $stageUpdates->sum(function ($update) {
@@ -690,11 +690,11 @@ class Process extends Model
             }
         }
 
-        // Then calculate width of line for each stages accordiing to the highest period
+        // Then calculate length of line for each stages accordiing to the highest period
         $highestPeriod = collect($stages)->max('duration_days');
 
         foreach ($stages as &$stage) {
-            $stage["line_width"] = $stage["duration_days"] ? intval($stage["duration_days"] * 100 / $highestPeriod) : 0;
+            $stage["line_length"] = $stage["duration_days"] ? intval($stage["duration_days"] * 100 / $highestPeriod) : 0;
         }
 
         $this->status_stage_periods = $stages;
