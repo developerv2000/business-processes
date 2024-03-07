@@ -643,6 +643,63 @@ class Process extends Model
         }
     }
 
+    /**
+     * Attach each stage periods to the process (only first 5 stages)
+     */
+    public function loadStatusStagePeriods()
+    {
+        // First calculate start_date, end_date and duration_days for each stage
+        $stages = [
+            ["number" => 1, "start_date" => null, "end_date" => null, "duration_days" => 0, "line_width" => 0],
+            ["number" => 2, "start_date" => null, "end_date" => null, "duration_days" => 0, "line_width" => 0],
+            ["number" => 3, "start_date" => null, "end_date" => null, "duration_days" => 0, "line_width" => 0],
+            ["number" => 4, "start_date" => null, "end_date" => null, "duration_days" => 0, "line_width" => 0],
+            ["number" => 5, "start_date" => null, "end_date" => null, "duration_days" => 0, "line_width" => 0],
+        ];
+
+        foreach ($stages as &$stage) {
+            // Stages after stage 5 are also included in stage 5
+            if ($stage['number'] == 5) {
+                $stageUpdates = $this->statusUpdates->where('newStatus.parent.stage', '>=', $stage['number']);
+            } else {
+                $stageUpdates = $this->statusUpdates->where('newStatus.parent.stage', $stage['number']);
+            }
+
+            if ($stageUpdates->count()) {
+                $stage["start_date"] = $stageUpdates->sortBy('id')->first()->created_at;
+
+                // Calculate prcocess current status duration_days & set current stage end_date as current date
+                // because they are null for current process status stage
+                $lastUpdate = $stageUpdates->sortByDesc('id')->first();
+                $lastUpdateOptions = $lastUpdate->options;
+
+                if (!key_exists('new_status_end_date', $lastUpdate->options)) {
+                    $stage["end_date"] = now()->format('Y-m-d H:i:s');
+
+                    // add directly to collection, because sum aggregate function is used to calculate stage duration days
+                    $lastUpdateOptions['new_status_duration_days'] = Carbon::parse($lastUpdate->created_at)->diffInDays(now(), false);
+                    $lastUpdate->options = $lastUpdateOptions;
+                    // For past stages duration_days & end_date are already calculated
+                } else {
+                    $stage["end_date"] = $lastUpdate->options['new_status_end_date'];
+                }
+
+                $stage["duration_days"] = $stageUpdates->sum(function ($update) {
+                    return $update->options['new_status_duration_days'];
+                });
+            }
+        }
+
+        // Then calculate width of line for each stages accordiing to the highest period
+        $highestPeriod = collect($stages)->max('duration_days');
+
+        foreach ($stages as &$stage) {
+            $stage["line_width"] = $stage["duration_days"] ? intval($stage["duration_days"] * 100 / $highestPeriod) : 0;
+        }
+
+        $this->status_stage_periods = $stages;
+    }
+
     public static function exportItems($items)
     {
         $template = storage_path(self::STORAGE_EXCEL_TEMPLATE_PATH);

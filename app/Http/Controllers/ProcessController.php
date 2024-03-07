@@ -24,6 +24,12 @@ class ProcessController extends Controller
         $params = self::getRequestParams();
         $items = Process::getItemsFinalized($params);
 
+        if ($request->user()->isAdmin()) {
+            $items->each(function ($item) {
+                $item->loadStatusStagePeriods();
+            });
+        }
+
         $allColumns = collect($request->user()->settings['processColumns']);
         $visibleColumns = User::filterVisibleColumns($allColumns);
 
