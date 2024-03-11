@@ -55,6 +55,16 @@
                 'attribute' => 'pack',
             ])
 
+            @include('filters.components.text-input', [
+                'label' => 'Brand Eng',
+                'attribute' => 'trademark_en',
+            ])
+
+            @include('filters.components.text-input', [
+                'label' => 'Brand Rus',
+                'attribute' => 'trademark_ru',
+            ])
+
             @if (request()->user()->isAdminOrModerator())
                 @include('filters.components.belongs-to-select', [
                     'label' => 'Analyst',

@@ -226,6 +226,11 @@ class Process extends Model
             'updated_at',
         ];
 
+        $whereLikeColumns = [
+            'trademark_en',
+            'trademark_ru',
+        ];
+
         $whereRelationColumns = [
             [
                 'relationName' => 'generic',
@@ -289,6 +294,7 @@ class Process extends Model
 
         $items = Helper::filterWhereColumns($items, $whereColumns);
         $items = Helper::filterWhereDateColumns($items, $whereDateColumns);
+        $items = Helper::filterWhereLikeColumns($items, $whereLikeColumns);
         $items = Helper::filterWhereRelationColumns($items, $whereRelationColumns);
         $items = Helper::filterWhereRelationAmbigiousColumns($items, $whereRelationAmbigiousColumns);
         $items = Helper::filterBelongsToManyRelations($items, $belongsToManyRelations);
