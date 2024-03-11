@@ -342,10 +342,10 @@ function setupForms() {
         }
 
         for (let input of inputs) {
-            input.addEventListener('input', function () {
-                // delay 1000 is used because input values are also formatted via debounce
-                debounce(displayKvppSimilarProducts(), 1000);
-            });
+            // delay 1000 is used because input values are also formatted via debounce
+            input.addEventListener('input', debounce((evt) => {
+                displayKvppSimilarProducts();
+            }, 1000));
         }
 
         function displayKvppSimilarProducts() {
