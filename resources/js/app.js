@@ -321,7 +321,7 @@ function setupForms() {
         }
     }
 
-    // ********** Uniqness of Generics on create **********
+    // ********** Uniqness of KVPP on create **********
     if (document.querySelector('.kvpp-create')) {
         const similarProductsContainer = document.querySelector('.kvpp-similar-products');
 
@@ -381,6 +381,19 @@ function setupForms() {
                 });
         }
     }
+
+    // ********** Validate dose & pack inputs on Generic & Kvpp create/update **********
+    document.querySelectorAll('input[name="dose"], input[name="pack"]').forEach((input) => {
+        input.addEventListener('input', debounce((evt) => {
+            // add spaces before and after '*', '+', and '/' symbols
+            let targ = evt.target;
+            targ.value = targ.value.replace(/([+/*])/g, ' $1 ').replace(/\s+/g, ' ').trim();
+
+            // separate letters from numbers
+            targ.value = targ.value.replace(/(\d+)([a-zA-Z]+)/g, '$1 $2');
+            targ.value = targ.value.replace(/([a-zA-Z]+)(\d+)/g, '$1 $2');
+        }));
+    });
 
     // ********** Processes create/update form **********
     // Create form statuses select

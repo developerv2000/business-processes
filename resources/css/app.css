@@ -1615,6 +1615,11 @@ a {
 
 
 /* ------------ Generic pages ------------ */
+input[name="dose"],
+input[name="pack"] {
+    text-transform: uppercase;
+}
+
 .similar-products {
     gap: 0;
     font-size: 15px;
@@ -1680,6 +1685,7 @@ a {
 .stage-periods__hr--stage5 {
     background-color: darkblue;
 }
+
 /* ------------ /END Processes pages ------------ */
 
 
