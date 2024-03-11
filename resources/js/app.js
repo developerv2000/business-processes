@@ -386,13 +386,22 @@ function setupForms() {
     // ********** Validate dose & pack inputs on Generic & Kvpp create/update **********
     document.querySelectorAll('input[name="dose"], input[name="pack"]').forEach((input) => {
         input.addEventListener('input', debounce((evt) => {
-            // add spaces before and after '*', '+', and '/' symbols
+            // add spaces before and after '*', '+', '%' and '/' symbols
             let targ = evt.target;
-            targ.value = targ.value.replace(/([+/*])/g, ' $1 ').replace(/\s+/g, ' ').trim();
+            targ.value = targ.value.replace(/([+%/*])/g, ' $1 ').replace(/\s+/g, ' ');
 
             // separate letters from numbers
             targ.value = targ.value.replace(/(\d+)([a-zA-Z]+)/g, '$1 $2');
             targ.value = targ.value.replace(/([a-zA-Z]+)(\d+)/g, '$1 $2');
+
+            // remove non english characters
+            targ.value = targ.value.replace(/[^a-zA-Z0-9\s!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g, '');
+
+            // remove inner whitespaces
+            targ.value = targ.value.replace(/\s+(?=\S)/g, ' ');
+
+            // replace symbols ',' with '.'
+            targ.value = targ.value.replace(/,/g, '.');
         }));
     });
 
