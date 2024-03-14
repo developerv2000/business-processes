@@ -15,7 +15,7 @@ class ProcessStatusSeeder extends Seeder
     {
         // Parents (General statuses) id = [1 - 9]. 9 elements
         $name_for_admins = ['ВП', 'ПО', 'АЦ', 'СЦ', 'Кк', 'КД', 'НПР', 'Р', 'Зя'];
-        $name_for_analysts = ['ВП', 'ПО', 'АЦ', 'СЦ', 'Кк', 'Кк', 'Кк', 'Кк', 'Кк'];
+        $name_for_analysts = ['1ВП', '2ПО', '3АЦ', '4СЦ', '5Кк', '5Кк', '5Кк', '5Кк', '5Кк'];
         $stage = [1, 2, 3, 4, 5, 6, 7, 8, 9];
         $responsible_child_id = [10, 12, 14, 16, 20, 21, 23, 25, 27];
 
