@@ -402,6 +402,9 @@ function setupForms() {
 
             // replace symbols ',' with '.'
             targ.value = targ.value.replace(/,/g, '.');
+
+            // uppercase letters
+            targ.value = targ.value.toUpperCase();
         }));
     });
 

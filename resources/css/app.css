@@ -1615,11 +1615,6 @@ a {
 
 
 /* ------------ Generic pages ------------ */
-input[name="dose"],
-input[name="pack"] {
-    text-transform: uppercase;
-}
-
 .similar-products {
     gap: 0;
     font-size: 15px;
