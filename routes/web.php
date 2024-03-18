@@ -5,6 +5,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\GenericController;
 use App\Http\Controllers\IdenticanlModelsController;
 use App\Http\Controllers\InfoController;
+use App\Http\Controllers\KpeController;
 use App\Http\Controllers\KvppController;
 use App\Http\Controllers\ManufacturerController;
 use App\Http\Controllers\MeetingController;
@@ -32,10 +33,10 @@ Route::middleware('guest')->controller(AuthenticatedSessionController::class)->g
 
 Route::middleware('auth', 'auth.session')->group(function () {
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy']);
-
-    Route::get('/', [ManufacturerController::class, 'index'])->name('manufacturers.index');
+    Route::get('/', [KpeController::class, 'index'])->name('kpe.index');
 
     Route::prefix('manufacturers')->controller(ManufacturerController::class)->name('manufacturers.')->group(function () {
+        Route::get('/', 'index')->name('index');
         Route::get('/create', 'create')->name('create');
         Route::get('/edit/{item}', 'edit')->name('edit');
         Route::get('/trash', 'trash')->name('trash');

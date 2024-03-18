@@ -9,6 +9,10 @@
                     request()->routeIs('comments.manufacturer'),
             ])>{{ __('EPP') }}</x-navbar.link>
 
+            <x-navbar.link icon="view_list" href="{{ route('kpe.index') }}" @class([
+                'navbar-link--active' => request()->routeIs('kpe.index'),
+            ])>{{ __('КПЭ') }}</x-navbar.link>
+
             <x-navbar.link icon="content_paste_search" href="{{ route('kvpp.index') }}" @class([
                 'navbar-link--active' =>
                     request()->routeIs('kvpp.*') || request()->routeIs('comments.kvpp'),
