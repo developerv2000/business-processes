@@ -9,10 +9,6 @@
                     request()->routeIs('comments.manufacturer'),
             ])>{{ __('EPP') }}</x-navbar.link>
 
-            <x-navbar.link icon="view_list" href="{{ route('kpe.index') }}" @class([
-                'navbar-link--active' => request()->routeIs('kpe.index'),
-            ])>{{ __('КПЭ') }}</x-navbar.link>
-
             <x-navbar.link icon="content_paste_search" href="{{ route('kvpp.index') }}" @class([
                 'navbar-link--active' =>
                     request()->routeIs('kvpp.*') || request()->routeIs('comments.kvpp'),
@@ -33,6 +29,10 @@
             <x-navbar.link icon="calendar_month" href="{{ route('meetings.index') }}" @class(['navbar-link--active' => request()->routeIs('meetings.*')])>
                 {{ __('Meetings') }}
             </x-navbar.link>
+
+            <x-navbar.link icon="view_list" href="{{ route('kpe.index') }}" @class([
+                'navbar-link--active' => request()->routeIs('kpe.index'),
+            ])>{{ __('КПЭ') }}</x-navbar.link>
 
             <x-navbar.link icon="info" href="{{ route('info.show') }}" @class([
                 'navbar-link--active' => request()->routeIs('info.show'),

@@ -33,10 +33,10 @@ Route::middleware('guest')->controller(AuthenticatedSessionController::class)->g
 
 Route::middleware('auth', 'auth.session')->group(function () {
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy']);
-    Route::get('/', [KpeController::class, 'index'])->name('kpe.index');
+    Route::get('/', [ManufacturerController::class, 'index'])->name('manufacturers.index');
+    Route::get('/kpe', [KpeController::class, 'index'])->name('kpe.index');
 
     Route::prefix('manufacturers')->controller(ManufacturerController::class)->name('manufacturers.')->group(function () {
-        Route::get('/', 'index')->name('index');
         Route::get('/create', 'create')->name('create');
         Route::get('/edit/{item}', 'edit')->name('edit');
         Route::get('/trash', 'trash')->name('trash');

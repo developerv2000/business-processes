@@ -12,7 +12,8 @@
         </div>
     </div>
 
-    <form class="form main-form edit-form" action="{{ route('identical-models.update', $item->id) }}" method="POST" id="edit-form">
+    {{-- validations added for Mnn forms name inputs via JS --}}
+    <form class="form main-form edit-form @if($model == 'Mnn') mnn-form @endif" action="{{ route('identical-models.update', $item->id) }}" method="POST" id="edit-form">
         @csrf
         @include('form-components.edit.previous-url-input')
         <input type="hidden" name="model" value="{{ $model }}">

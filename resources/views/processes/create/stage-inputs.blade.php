@@ -75,8 +75,34 @@
             </div>
         @endif
 
+        {{-- Trademark and MAH inputs are different for stage == 4 and stage > 4 --}}
+        @if ($processStage == 4)
+            <div class="form__divider">
+                @include('form-components.create.belongs-to-select', [
+                    'label' => 'MAH',
+                    'required' => false,
+                    'attribute' => 'promo_company_id',
+                    'options' => $promoCompanies,
+                    'optionsCaptionAttribute' => 'name',
+                ])
+
+                @include('form-components.create.text-input', [
+                    'label' => 'Brand Eng',
+                    'required' => false,
+                    'attribute' => 'trademark_en',
+                ])
+
+                @include('form-components.create.text-input', [
+                    'label' => 'Brand Rus',
+                    'required' => false,
+                    'attribute' => 'trademark_ru',
+                ])
+            </div>
+        @endif
+
         {{-- Stage 5 (КК) --}}
         @if ($processStage > 4)
+            {{-- Trademark and MAH inputs are different for stage == 4 and stage > 4 --}}
             <div class="form__divider">
                 @include('form-components.create.belongs-to-select', [
                     'label' => 'MAH',

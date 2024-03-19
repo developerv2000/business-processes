@@ -383,8 +383,8 @@ function setupForms() {
         }
     }
 
-    // ********** Validate dose & pack inputs on Generic & Kvpp create/update **********
-    document.querySelectorAll('input[name="dose"], input[name="pack"]').forEach((input) => {
+    // ********** Validate dose, pack & mnn inputs on Generic, Kvpp & Mnn create/update **********
+    document.querySelectorAll('input[name="dose"], input[name="pack"], .mnn-form input[name="name"]').forEach((input) => {
         input.addEventListener('input', debounce((evt) => {
             // add spaces before and after '*', '+', '%' and '/' symbols
             let targ = evt.target;

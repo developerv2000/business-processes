@@ -12,7 +12,8 @@
         </div>
     </div>
 
-    <form class="form main-form create-form" action="{{ route('identical-models.store') }}" method="POST" id="create-form">
+    {{-- validations added for Mnn forms name inputs via JS --}}
+    <form class="form main-form create-form @if($model == 'Mnn') mnn-form @endif" action="{{ route('identical-models.store') }}" method="POST" id="create-form">
         @csrf
         <input type="hidden" name="model" value="{{ $model }}">
 
