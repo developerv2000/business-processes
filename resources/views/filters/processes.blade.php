@@ -5,7 +5,7 @@
         <form class="form filter-form" action="{{ $action }}" method="GET">
             @include('filters.components.hidden-default-orders')
 
-            @include('filters.components.date-input', [
+            @include('filters.components.date-range-input', [
                 'label' => 'Date',
                 'attribute' => 'date',
             ])

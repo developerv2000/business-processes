@@ -217,11 +217,8 @@ class Process extends Model
             'promo_company_id',
         ];
 
-        $whereDateColumns = [
-            'date',
-        ];
-
         $whereDateRangeColumns = [
+            'date',
             'created_at',
             'updated_at',
         ];
@@ -293,7 +290,6 @@ class Process extends Model
         ];
 
         $items = Helper::filterWhereColumns($items, $whereColumns);
-        $items = Helper::filterWhereDateColumns($items, $whereDateColumns);
         $items = Helper::filterWhereLikeColumns($items, $whereLikeColumns);
         $items = Helper::filterWhereRelationColumns($items, $whereRelationColumns);
         $items = Helper::filterWhereRelationAmbigiousColumns($items, $whereRelationAmbigiousColumns);
