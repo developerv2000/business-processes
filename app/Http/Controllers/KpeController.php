@@ -79,7 +79,7 @@ class KpeController extends Controller
         // Calculate all processes count of current year stage 1 - 5. (Table 1)
         $yearTotalProcessesCount = 0;
 
-        foreach ($monthes as $month) {
+        foreach ($monthes as &$month) {
             $yearTotalProcessesCount += $month['current_statusses_total_count'];
         }
 
@@ -137,7 +137,7 @@ class KpeController extends Controller
         // Calculate all processes count of current year stage 1 - 5. (Table 2)
         $yearTotalTransitionalProcessesCount = 0;
 
-        foreach ($monthes as $month) {
+        foreach ($monthes as &$month) {
             $yearTotalTransitionalProcessesCount += $month['transitional_statusses_total_count'];
         }
 
