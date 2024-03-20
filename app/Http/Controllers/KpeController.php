@@ -29,28 +29,33 @@ class KpeController extends Controller
 
         $statusses = ProcessStatus::whereNull('parent_id')->where('stage', '<=', 5)->get();
         $currentYear = date('Y');
+        $user = $request->user();
 
         // calculate all 5 stages current status count by month (Table 1)
         foreach ($statusses as $status) {
             foreach ($monthes as &$month) {
+                $query = Process::whereMonth('status_update_date', $month['number'])
+                    ->whereYear('status_update_date', $currentYear);
+
+                // Count only current analysts processes for non admins
+                if (!$user->isAdmin()) {
+                    $query = $query->whereHas('manufacturer', function ($q) use ($user) {
+                        $q->where('analyst_user_id', $user->id);
+                    });
+                }
+
                 if ($status->stage <= 4) {
-                    $month['stage_' . $status->stage . '_current_statusses_count'] =
-                        Process::whereMonth('status_update_date', $month['number'])
-                        ->whereYear('status_update_date', $currentYear)
-                        ->whereHas('status.parent', function ($query) use ($status) {
-                            $query->where('stage', $status->stage);
-                        })
-                        ->count();
+                    $query = $query->whereHas('status.parent', function ($q) use ($status) {
+                        $q->where('stage', $status->stage);
+                    });
                     // Stage 5 includes all other following stages
                 } else {
-                    $month['stage_' . $status->stage . '_current_statusses_count'] =
-                        Process::whereMonth('status_update_date', $month['number'])
-                        ->whereYear('status_update_date', $currentYear)
-                        ->whereHas('status.parent', function ($query) {
-                            $query->where('stage', '>=', 5);
-                        })
-                        ->count();
+                    $query = $query->whereHas('status.parent', function ($q) {
+                        $q->where('stage', '>=', 5);
+                    });
                 }
+
+                $month['stage_' . $status->stage . '_current_statusses_count'] = $query->count();
             }
         }
 

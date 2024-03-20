@@ -1714,4 +1714,25 @@ a {
     padding: 24px 20px;
 }
 
+.info-show table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.info-show th,
+.info-show td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.info-show th {
+    background-color: #f2f2f2;
+}
+
+.info-show tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
 /* ------------ /END Info pages ------------ */
