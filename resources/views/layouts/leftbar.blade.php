@@ -60,7 +60,7 @@
             @endif
 
             {{-- Temporary statistics --}}
-            {{-- <x-navbar.title>{{ __('Статистика') }}</x-navbar.title>
+            <x-navbar.title>{{ __('Статистика') }}</x-navbar.title>
 
             <div class="statistics">
                 @foreach ($analysts as $analyst)
@@ -74,7 +74,7 @@
                         <a class="statistics__analyst-link">TOTAL - {{ $analyst->created_total }}</a>
                     </div>
                 @endforeach
-            </div> --}}
+            </div>
         </nav>
     </div>
 </aside>
