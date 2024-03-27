@@ -19,11 +19,6 @@ class ManufacturerController extends Controller
 
     public function index(Request $request)
     {
-        Generic::where('expiration_date_id', 1)->each(function ($generic) {
-            $generic->expiration_date_id = 7;
-            $generic->saveQuietly();
-        });
-
         $params = self::getRequestParams();
         $items = Manufacturer::getItemsFinalized($params);
 
