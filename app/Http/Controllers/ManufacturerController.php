@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreManufacturerRequest;
 use App\Http\Requests\UpdateManufacturerRequest;
+use App\Models\Generic;
 use App\Models\Manufacturer;
 use App\Models\User;
 use App\Support\Helper;
@@ -18,6 +19,11 @@ class ManufacturerController extends Controller
 
     public function index(Request $request)
     {
+        Generic::where('expiration_date_id', 1)->each(function ($generic) {
+            $generic->expiration_date_id = 7;
+            $generic->saveQuietly();
+        });
+
         $params = self::getRequestParams();
         $items = Manufacturer::getItemsFinalized($params);
 
