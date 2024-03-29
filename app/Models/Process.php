@@ -325,7 +325,7 @@ class Process extends Model
      */
     public static function additionalStatusFilterByRoles($items)
     {
-        $statusID = request()->input('status_id');
+        $statusID = request()->status_id;
 
         if (!$statusID) return $items;
 
