@@ -596,6 +596,7 @@ class Process extends Model
                 'options' => [
                     'new_status_id' => intval($this->status_id),
                 ],
+                'created_at' => $this->status_update_date
             ])
         );
     }
