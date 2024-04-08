@@ -42,7 +42,7 @@ class ProcessHistory extends Model
     protected static function booted(): void
     {
         static::creating(function ($item) {
-            $item->created_at = now();
+            $item->created_at = $item->created_at ?: now();
         });
     }
 }
