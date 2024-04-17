@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('mnns', function (Blueprint $table) {
             $table->unsignedMediumInteger('id')->autoIncrement();
-            $table->string('name')->unique();
+            $table->string('name', 800);
         });
     }
 
