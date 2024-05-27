@@ -658,15 +658,14 @@ class Process extends Model
             ["number" => 3, "start_date" => null, "end_date" => null, "duration_days" => 0, "line_length" => 0],
             ["number" => 4, "start_date" => null, "end_date" => null, "duration_days" => 0, "line_length" => 0],
             ["number" => 5, "start_date" => null, "end_date" => null, "duration_days" => 0, "line_length" => 0],
+            ["number" => 6, "start_date" => null, "end_date" => null, "duration_days" => 0, "line_length" => 0],
+            ["number" => 7, "start_date" => null, "end_date" => null, "duration_days" => 0, "line_length" => 0],
+            ["number" => 8, "start_date" => null, "end_date" => null, "duration_days" => 0, "line_length" => 0],
+            ["number" => 9, "start_date" => null, "end_date" => null, "duration_days" => 0, "line_length" => 0],
         ];
 
         foreach ($stages as &$stage) {
-            // Stages after stage 5 are also included in stage 5
-            if ($stage['number'] == 5) {
-                $stageUpdates = $this->statusUpdates->where('newStatus.parent.stage', '>=', $stage['number']);
-            } else {
-                $stageUpdates = $this->statusUpdates->where('newStatus.parent.stage', $stage['number']);
-            }
+            $stageUpdates = $this->statusUpdates->where('newStatus.parent.stage', $stage['number']);
 
             if ($stageUpdates->count()) {
                 $stage["start_date"] = Carbon::parse($stageUpdates->sortBy('id')->first()->created_at)->format('d/m/Y');
@@ -716,6 +715,8 @@ class Process extends Model
         // fill excel cells
         $items->chunk(800, function ($items) use (&$worksheet, &$row) {
             foreach ($items as $item) {
+                $item->loadStatusStagePeriods();
+
                 $worksheet->setCellValue('A' . $row, $item->id);
                 $worksheet->setCellValue('B' . $row, $item->status_update_date);
                 $worksheet->setCellValue('C' . $row, $item->countryCode->name);
@@ -779,6 +780,17 @@ class Process extends Model
                 $worksheet->setCellValue('AU' . $row, $item->created_at);
                 $worksheet->setCellValue('AV' . $row, $item->updated_at);
                 $worksheet->setCellValue('AW' . $row, $item->generic->category->name);
+
+                $worksheet->setCellValue('AX' . $row, $item->status_stage_periods[0]['start_date'] . ' - ' .  $item->status_stage_periods[0]['end_date']);
+                $worksheet->setCellValue('AY' . $row, $item->status_stage_periods[1]['start_date'] . ' - ' .  $item->status_stage_periods[1]['end_date']);
+                $worksheet->setCellValue('AZ' . $row, $item->status_stage_periods[2]['start_date'] . ' - ' .  $item->status_stage_periods[2]['end_date']);
+                $worksheet->setCellValue('BA' . $row, $item->status_stage_periods[3]['start_date'] . ' - ' .  $item->status_stage_periods[3]['end_date']);
+                $worksheet->setCellValue('BB' . $row, $item->status_stage_periods[4]['start_date'] . ' - ' .  $item->status_stage_periods[4]['end_date']);
+                $worksheet->setCellValue('BC' . $row, $item->status_stage_periods[5]['start_date'] . ' - ' .  $item->status_stage_periods[5]['end_date']);
+                $worksheet->setCellValue('BD' . $row, $item->status_stage_periods[6]['start_date'] . ' - ' .  $item->status_stage_periods[6]['end_date']);
+                $worksheet->setCellValue('BE' . $row, $item->status_stage_periods[7]['start_date'] . ' - ' .  $item->status_stage_periods[7]['end_date']);
+                $worksheet->setCellValue('BF' . $row, $item->status_stage_periods[8]['start_date'] . ' - ' .  $item->status_stage_periods[8]['end_date']);
+
                 $row++;
             }
         });

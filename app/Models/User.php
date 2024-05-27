@@ -465,6 +465,10 @@ class User extends Authenticatable
                 ['name' => 'АЦ', 'order' => $order++, 'width' => 200, 'visible' => 1],
                 ['name' => 'СЦ', 'order' => $order++, 'width' => 200, 'visible' => 1],
                 ['name' => 'Кк', 'order' => $order++, 'width' => 200, 'visible' => 1],
+                ['name' => 'КД', 'order' => $order++, 'width' => 200, 'visible' => 1],
+                ['name' => 'НПР', 'order' => $order++, 'width' => 200, 'visible' => 1],
+                ['name' => 'Р', 'order' => $order++, 'width' => 200, 'visible' => 1],
+                ['name' => 'Зя', 'order' => $order++, 'width' => 200, 'visible' => 1],
             );
         }
 
@@ -571,5 +575,12 @@ class User extends Authenticatable
         $this->statistics_ivp_link = route('generics.index') . $urlFilterParams;
         $this->statistics_vps_link = route('processes.index') . $urlFilterParams;
         $this->statistics_kvpp_link = route('kvpp.index') . $urlFilterParams;
+    }
+
+    public static function resetAllUserSettings()
+    {
+        self::get()->each(function ($user) {
+            $user->loadDefaultSettings();
+        });
     }
 }

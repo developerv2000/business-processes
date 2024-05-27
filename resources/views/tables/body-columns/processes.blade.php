@@ -244,6 +244,22 @@
         @include('tables.components.td-status-stages.stage5')
     @break
 
+    @case('КД')
+        @include('tables.components.td-status-stages.stagen', ['n' => 5])
+    @break
+
+    @case('НПР')
+        @include('tables.components.td-status-stages.stagen', ['n' => 6])
+    @break
+
+    @case('Р')
+        @include('tables.components.td-status-stages.stagen', ['n' => 7])
+    @break
+
+    @case('Зя')
+        @include('tables.components.td-status-stages.stagen', ['n' => 8])
+    @break
+
     @case('ID')
         {{ $item->id }}
     @break
