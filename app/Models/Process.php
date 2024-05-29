@@ -781,15 +781,25 @@ class Process extends Model
                 $worksheet->setCellValue('AV' . $row, $item->updated_at);
                 $worksheet->setCellValue('AW' . $row, $item->generic->category->name);
 
-                $worksheet->setCellValue('AX' . $row, $item->status_stage_periods[0]['start_date'] . ' - ' .  $item->status_stage_periods[0]['end_date']);
-                $worksheet->setCellValue('AY' . $row, $item->status_stage_periods[1]['start_date'] . ' - ' .  $item->status_stage_periods[1]['end_date']);
-                $worksheet->setCellValue('AZ' . $row, $item->status_stage_periods[2]['start_date'] . ' - ' .  $item->status_stage_periods[2]['end_date']);
-                $worksheet->setCellValue('BA' . $row, $item->status_stage_periods[3]['start_date'] . ' - ' .  $item->status_stage_periods[3]['end_date']);
-                $worksheet->setCellValue('BB' . $row, $item->status_stage_periods[4]['start_date'] . ' - ' .  $item->status_stage_periods[4]['end_date']);
-                $worksheet->setCellValue('BC' . $row, $item->status_stage_periods[5]['start_date'] . ' - ' .  $item->status_stage_periods[5]['end_date']);
-                $worksheet->setCellValue('BD' . $row, $item->status_stage_periods[6]['start_date'] . ' - ' .  $item->status_stage_periods[6]['end_date']);
-                $worksheet->setCellValue('BE' . $row, $item->status_stage_periods[7]['start_date'] . ' - ' .  $item->status_stage_periods[7]['end_date']);
-                $worksheet->setCellValue('BF' . $row, $item->status_stage_periods[8]['start_date'] . ' - ' .  $item->status_stage_periods[8]['end_date']);
+                // $worksheet->setCellValue('AX' . $row, $item->status_stage_periods[0]['start_date'] . ' - ' .  $item->status_stage_periods[0]['end_date']);
+                // $worksheet->setCellValue('AY' . $row, $item->status_stage_periods[1]['start_date'] . ' - ' .  $item->status_stage_periods[1]['end_date']);
+                // $worksheet->setCellValue('AZ' . $row, $item->status_stage_periods[2]['start_date'] . ' - ' .  $item->status_stage_periods[2]['end_date']);
+                // $worksheet->setCellValue('BA' . $row, $item->status_stage_periods[3]['start_date'] . ' - ' .  $item->status_stage_periods[3]['end_date']);
+                // $worksheet->setCellValue('BB' . $row, $item->status_stage_periods[4]['start_date'] . ' - ' .  $item->status_stage_periods[4]['end_date']);
+                // $worksheet->setCellValue('BC' . $row, $item->status_stage_periods[5]['start_date'] . ' - ' .  $item->status_stage_periods[5]['end_date']);
+                // $worksheet->setCellValue('BD' . $row, $item->status_stage_periods[6]['start_date'] . ' - ' .  $item->status_stage_periods[6]['end_date']);
+                // $worksheet->setCellValue('BE' . $row, $item->status_stage_periods[7]['start_date'] . ' - ' .  $item->status_stage_periods[7]['end_date']);
+                // $worksheet->setCellValue('BF' . $row, $item->status_stage_periods[8]['start_date'] . ' - ' .  $item->status_stage_periods[8]['end_date']);
+
+                $worksheet->setCellValue('AX' . $row, $item->status_stage_periods[0]['start_date']); Carbon::parse($item->status_stage_periods[0]['start_date'])->isoformat('d.m.Y');
+                $worksheet->setCellValue('AY' . $row, $item->status_stage_periods[1]['start_date']); Carbon::parse($item->status_stage_periods[0]['start_date'])->isoformat('d.m.Y');
+                $worksheet->setCellValue('AZ' . $row, $item->status_stage_periods[2]['start_date']); Carbon::parse($item->status_stage_periods[0]['start_date'])->isoformat('d.m.Y');
+                $worksheet->setCellValue('BA' . $row, $item->status_stage_periods[3]['start_date']); Carbon::parse($item->status_stage_periods[0]['start_date'])->isoformat('d.m.Y');
+                $worksheet->setCellValue('BB' . $row, $item->status_stage_periods[4]['start_date']); Carbon::parse($item->status_stage_periods[0]['start_date'])->isoformat('d.m.Y');
+                $worksheet->setCellValue('BC' . $row, $item->status_stage_periods[5]['start_date']); Carbon::parse($item->status_stage_periods[0]['start_date'])->isoformat('d.m.Y');
+                $worksheet->setCellValue('BD' . $row, $item->status_stage_periods[6]['start_date']); Carbon::parse($item->status_stage_periods[0]['start_date'])->isoformat('d.m.Y');
+                $worksheet->setCellValue('BE' . $row, $item->status_stage_periods[7]['start_date']); Carbon::parse($item->status_stage_periods[0]['start_date'])->isoformat('d.m.Y');
+                $worksheet->setCellValue('BF' . $row, $item->status_stage_periods[8]['start_date']); Carbon::parse($item->status_stage_periods[0]['start_date'])->isoformat('d.m.Y');
 
                 $row++;
             }
