@@ -649,9 +649,9 @@ class Process extends Model
     /**
      * Attach each stage periods to the process (only first 5 stages)
      */
-    public function loadStatusStagePeriods()
+    public function loadStatusStagePeriods($originalStatuses)
     {
-        $statuses = ProcessStatus::getAllChilds();
+        $statuses = clone $originalStatuses;
 
         foreach ($statuses as &$status) {
             $statusUpdates = $this->statusUpdates->where('new_status_id', $status->id);
@@ -760,10 +760,12 @@ class Process extends Model
         $worksheet = $spreadsheet->getActiveSheet();
         $row = 2;
 
+        $originalStatuses = ProcessStatus::getAllChilds();
+
         // fill excel cells
-        $items->chunk(800, function ($items) use (&$worksheet, &$row) {
+        $items->chunk(800, function ($items) use (&$worksheet, &$row, $originalStatuses) {
             foreach ($items as $item) {
-                $item->loadStatusStagePeriods();
+                $item->loadStatusStagePeriods($originalStatuses);
 
                 $worksheet->setCellValue('A' . $row, $item->id);
                 $worksheet->setCellValue('B' . $row, str_replace('-', '.', $item->status_update_date));

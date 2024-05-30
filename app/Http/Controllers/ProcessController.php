@@ -23,10 +23,11 @@ class ProcessController extends Controller
     {
         $params = self::getRequestParams();
         $items = Process::getItemsFinalized($params);
+        $statuses = ProcessStatus::getAllChilds();
 
         if ($request->user()->isAdmin()) {
-            $items->each(function ($item) {
-                $item->loadStatusStagePeriods();
+            $items->each(function ($item) use ($statuses) {
+                $item->loadStatusStagePeriods($statuses);
             });
         }
 
@@ -136,6 +137,7 @@ class ProcessController extends Controller
         Helper::addExportParamsToRequest();
         $params = self::getRequestParams();
         $items = Process::getItemsFinalized($params, null, 'query');
+        $items->load('statusUpdates');
 
         return Process::exportItems($items);
     }
