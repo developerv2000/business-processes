@@ -43,15 +43,13 @@
         {{-- Stage 3 (АЦ) --}}
         @if ($processStage > 2)
             <div class="form__divider">
-                @if (!$item->manufacturer_first_offered_price || request()->user()->isAdmin())
-                    @include('form-components.edit.float-input', [
-                        'label' => 'Manufacturer price 1',
-                        'defaultValue' => 0.0,
-                        'step' => 0.01,
-                        'required' => true,
-                        'attribute' => 'manufacturer_first_offered_price',
-                    ])
-                @endif
+                @include('form-components.edit.float-input', [
+                    'label' => 'Manufacturer price 1',
+                    'defaultValue' => 0.0,
+                    'step' => 0.01,
+                    'required' => true,
+                    'attribute' => 'manufacturer_first_offered_price',
+                ])
 
                 @include('form-components.edit.float-input', [
                     'label' => 'Manufacturer price 2',
@@ -69,15 +67,13 @@
                     'optionsCaptionAttribute' => 'name',
                 ])
 
-                @if (!$item->our_first_offered_price || request()->user()->isAdmin())
-                    @include('form-components.edit.float-input', [
-                        'label' => 'Our price 1',
-                        'defaultValue' => 0.0,
-                        'step' => 0.01,
-                        'required' => true,
-                        'attribute' => 'our_first_offered_price',
-                    ])
-                @endif
+                @include('form-components.edit.float-input', [
+                    'label' => 'Our price 1',
+                    'defaultValue' => 0.0,
+                    'step' => 0.01,
+                    'required' => true,
+                    'attribute' => 'our_first_offered_price',
+                ])
 
                 @include('form-components.edit.float-input', [
                     'label' => 'Our price 2',
