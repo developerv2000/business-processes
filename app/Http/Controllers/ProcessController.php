@@ -23,11 +23,10 @@ class ProcessController extends Controller
     {
         $params = self::getRequestParams();
         $items = Process::getItemsFinalized($params);
-        $statuses = ProcessStatus::getAllChilds();
 
         if ($request->user()->isAdmin()) {
-            $items->each(function ($item) use ($statuses) {
-                $item->loadStatusStagePeriods($statuses);
+            $items->each(function ($item) {
+                $item->loadStatusStagePeriods();
             });
         }
 
