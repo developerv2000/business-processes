@@ -460,14 +460,23 @@ class User extends Authenticatable
         if ($this->isAdmin()) {
             array_push(
                 $columns,
-                ['name' => 'ВП', 'order' => $order++, 'width' => 200, 'visible' => 1],
+                ['name' => 'Вб', 'order' => $order++, 'width' => 200, 'visible' => 1],
+                ['name' => 'SВб', 'order' => $order++, 'width' => 200, 'visible' => 1],
                 ['name' => 'ПО', 'order' => $order++, 'width' => 200, 'visible' => 1],
+                ['name' => 'SПО', 'order' => $order++, 'width' => 200, 'visible' => 1],
                 ['name' => 'АЦ', 'order' => $order++, 'width' => 200, 'visible' => 1],
+                ['name' => 'SАЦ', 'order' => $order++, 'width' => 200, 'visible' => 1],
                 ['name' => 'СЦ', 'order' => $order++, 'width' => 200, 'visible' => 1],
+                ['name' => 'SСЦ', 'order' => $order++, 'width' => 200, 'visible' => 1],
+                ['name' => 'ПцКк', 'order' => $order++, 'width' => 200, 'visible' => 1],
+                ['name' => 'SПцКк', 'order' => $order++, 'width' => 200, 'visible' => 1],
                 ['name' => 'Кк', 'order' => $order++, 'width' => 200, 'visible' => 1],
-                ['name' => 'КД', 'order' => $order++, 'width' => 200, 'visible' => 1],
-                ['name' => 'НПР', 'order' => $order++, 'width' => 200, 'visible' => 1],
+                ['name' => 'ПцКД', 'order' => $order++, 'width' => 200, 'visible' => 1],
+                ['name' => 'SКД', 'order' => $order++, 'width' => 200, 'visible' => 1],
+                ['name' => 'ПцР', 'order' => $order++, 'width' => 200, 'visible' => 1],
+                ['name' => 'SПцР', 'order' => $order++, 'width' => 200, 'visible' => 1],
                 ['name' => 'Р', 'order' => $order++, 'width' => 200, 'visible' => 1],
+                ['name' => 'P-', 'order' => $order++, 'width' => 200, 'visible' => 1],
                 ['name' => 'Зя', 'order' => $order++, 'width' => 200, 'visible' => 1],
             );
         }

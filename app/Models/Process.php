@@ -651,6 +651,54 @@ class Process extends Model
      */
     public function loadStatusStagePeriods()
     {
+        $statuses = ProcessStatus::getAllChilds();
+
+        foreach ($statuses as &$status) {
+            $statusUpdates = $this->statusUpdates->where('new_status_id', $status->id);
+
+            if ($statusUpdates->count()) {
+                $status["start_date"] = Carbon::parse($statusUpdates->sortBy('id')->first()->created_at)->format('d.m.Y');
+
+                // Calculate process current status duration_days & set current stage end_date as current date
+                // because they are null for current process status stage
+                $lastUpdate = $statusUpdates->sortByDesc('id')->first();
+                $lastUpdateOptions = $lastUpdate->options;
+
+                if (!key_exists('new_status_end_date', $lastUpdate->options)) {
+                    $status["end_date"] = now()->format('d.m.Y');
+
+                    // add directly to collection, because sum aggregate function is used to calculate stage duration days
+                    $lastUpdateOptions['new_status_duration_days'] = Carbon::parse($lastUpdate->created_at)->diffInDays(now(), false);
+                    $lastUpdate->options = $lastUpdateOptions;
+                    // For past stages duration_days & end_date are already calculated
+                } else {
+                    $status["end_date"] = Carbon::parse($lastUpdate->options['new_status_end_date'])->format('d.m.Y');
+                }
+
+                $status["duration_days"] = $statusUpdates->sum(function ($update) {
+                    return $update->options['new_status_duration_days'];
+                });
+            }
+        }
+
+        // Then calculate length of line for each stages accordiing to the highest period
+        $highestPeriod = collect($statuses)->max('duration_days');
+
+        foreach ($statuses as &$status) {
+            // escape division by zero
+            if (!$highestPeriod) $highestPeriod = 1;
+
+            $status["line_length"] = $status["duration_days"] ? intval($status["duration_days"] * 100 / $highestPeriod) : 0;
+        }
+
+        $this->status_periods = $statuses;
+    }
+
+    /**
+     * Attach each stage periods to the process (only first 5 stages)
+     */
+    public function loadStatusStagePeriods2()
+    {
         // First calculate start_date, end_date and duration_days for each stage
         $stages = [
             ["number" => 1, "start_date" => null, "end_date" => null, "duration_days" => 0, "line_length" => 0],
@@ -718,7 +766,7 @@ class Process extends Model
                 $item->loadStatusStagePeriods();
 
                 $worksheet->setCellValue('A' . $row, $item->id);
-                $worksheet->setCellValue('B' . $row, $item->status_update_date);
+                $worksheet->setCellValue('B' . $row, str_replace('-', '.', $item->status_update_date));
                 $worksheet->setCellValue('C' . $row, $item->countryCode->name);
                 $worksheet->setCellValue('D' . $row, $item->manufacturer->category->name);
                 $worksheet->setCellValue('E' . $row, $item->manufacturer->name);
@@ -765,7 +813,7 @@ class Process extends Model
 
                 $worksheet->setCellValue('AJ' . $row, $item->additional_1);
                 $worksheet->setCellValue('AK' . $row, $item->additional_2);
-                $worksheet->setCellValue('AL' . $row, $item->stage_2_start_date);
+                $worksheet->setCellValue('AL' . $row, str_replace('-', '.', $item->stage_2_start_date));
                 $worksheet->setCellValue('AM' . $row, $item->year_1);
                 $worksheet->setCellValue('AN' . $row, $item->year_2);
                 $worksheet->setCellValue('AO' . $row, $item->year_3);
@@ -777,8 +825,8 @@ class Process extends Model
                 $worksheet->setCellValue('AR' . $row, $item->days_past);
                 $worksheet->setCellValue('AS' . $row, $item->trademark_en);
                 $worksheet->setCellValue('AT' . $row, $item->trademark_ru);
-                $worksheet->setCellValue('AU' . $row, $item->created_at);
-                $worksheet->setCellValue('AV' . $row, $item->updated_at);
+                $worksheet->setCellValue('AU' . $row, $item->created_at->format('d.m.Y H:i:s'));
+                $worksheet->setCellValue('AV' . $row, $item->updated_at->format('d.m.Y H:i:s'));
                 $worksheet->setCellValue('AW' . $row, $item->generic->category->name);
 
                 // $worksheet->setCellValue('AX' . $row, $item->status_stage_periods[0]['start_date'] . ' - ' .  $item->status_stage_periods[0]['end_date']);
@@ -791,15 +839,24 @@ class Process extends Model
                 // $worksheet->setCellValue('BE' . $row, $item->status_stage_periods[7]['start_date'] . ' - ' .  $item->status_stage_periods[7]['end_date']);
                 // $worksheet->setCellValue('BF' . $row, $item->status_stage_periods[8]['start_date'] . ' - ' .  $item->status_stage_periods[8]['end_date']);
 
-                $worksheet->setCellValue('AX' . $row, str_replace('/', '.', $item->status_stage_periods[0]['start_date']));
-                $worksheet->setCellValue('AY' . $row, str_replace('/', '.', $item->status_stage_periods[1]['start_date']));
-                $worksheet->setCellValue('AZ' . $row, str_replace('/', '.', $item->status_stage_periods[2]['start_date']));
-                $worksheet->setCellValue('BA' . $row, str_replace('/', '.', $item->status_stage_periods[3]['start_date']));
-                $worksheet->setCellValue('BB' . $row, str_replace('/', '.', $item->status_stage_periods[4]['start_date']));
-                $worksheet->setCellValue('BC' . $row, str_replace('/', '.', $item->status_stage_periods[5]['start_date']));
-                $worksheet->setCellValue('BD' . $row, str_replace('/', '.', $item->status_stage_periods[6]['start_date']));
-                $worksheet->setCellValue('BE' . $row, str_replace('/', '.', $item->status_stage_periods[7]['start_date']));
-                $worksheet->setCellValue('BF' . $row, str_replace('/', '.', $item->status_stage_periods[8]['start_date']));
+                $worksheet->setCellValue('AX' . $row, $item->status_periods[0]['start_date']);
+                $worksheet->setCellValue('AY' . $row, $item->status_periods[1]['start_date']);
+                $worksheet->setCellValue('AZ' . $row, $item->status_periods[2]['start_date']);
+                $worksheet->setCellValue('BA' . $row, $item->status_periods[3]['start_date']);
+                $worksheet->setCellValue('BB' . $row, $item->status_periods[4]['start_date']);
+                $worksheet->setCellValue('BC' . $row, $item->status_periods[5]['start_date']);
+                $worksheet->setCellValue('BD' . $row, $item->status_periods[6]['start_date']);
+                $worksheet->setCellValue('BE' . $row, $item->status_periods[7]['start_date']);
+                $worksheet->setCellValue('BF' . $row, $item->status_periods[8]['start_date']);
+                $worksheet->setCellValue('BG' . $row, $item->status_periods[9]['start_date']);
+                $worksheet->setCellValue('BH' . $row, $item->status_periods[10]['start_date']);
+                $worksheet->setCellValue('BI' . $row, $item->status_periods[11]['start_date']);
+                $worksheet->setCellValue('BJ' . $row, $item->status_periods[12]['start_date']);
+                $worksheet->setCellValue('BK' . $row, $item->status_periods[13]['start_date']);
+                $worksheet->setCellValue('BL' . $row, $item->status_periods[14]['start_date']);
+                $worksheet->setCellValue('BM' . $row, $item->status_periods[15]['start_date']);
+                $worksheet->setCellValue('BN' . $row, $item->status_periods[16]['start_date']);
+                $worksheet->setCellValue('BO' . $row, $item->status_periods[17]['start_date']);
 
                 $row++;
             }

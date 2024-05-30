@@ -224,40 +224,76 @@
         <span class="badge badge--green">{{ $item->generic->category->name }}</span>
     @break
 
-    @case('ВП')
-        @include('tables.components.td-status-stages.stage1')
+    @case('Вб')
+        @include('tables.components.td-status-stages.stagen', ['n' => 0])
+    @break
+
+    @case('SВб')
+        @include('tables.components.td-status-stages.stagen', ['n' => 1])
     @break
 
     @case('ПО')
-        @include('tables.components.td-status-stages.stage2')
+        @include('tables.components.td-status-stages.stagen', ['n' => 2])
+    @break
+
+    @case('SПО')
+        @include('tables.components.td-status-stages.stagen', ['n' => 3])
     @break
 
     @case('АЦ')
-        @include('tables.components.td-status-stages.stage3')
+        @include('tables.components.td-status-stages.stagen', ['n' => 4])
     @break
 
-    @case('СЦ')
-        @include('tables.components.td-status-stages.stage4')
-    @break
-
-    @case('Кк')
-        @include('tables.components.td-status-stages.stage5')
-    @break
-
-    @case('КД')
+    @case('SАЦ')
         @include('tables.components.td-status-stages.stagen', ['n' => 5])
     @break
 
-    @case('НПР')
+    @case('СЦ')
         @include('tables.components.td-status-stages.stagen', ['n' => 6])
     @break
 
-    @case('Р')
+    @case('SСЦ')
         @include('tables.components.td-status-stages.stagen', ['n' => 7])
     @break
 
-    @case('Зя')
+    @case('ПцКк')
         @include('tables.components.td-status-stages.stagen', ['n' => 8])
+    @break
+
+    @case('SПцКк')
+        @include('tables.components.td-status-stages.stagen', ['n' => 9])
+    @break
+
+    @case('Кк')
+        @include('tables.components.td-status-stages.stagen', ['n' => 10])
+    @break
+
+    @case('ПцКД')
+        @include('tables.components.td-status-stages.stagen', ['n' => 11])
+    @break
+
+    @case('SКД')
+        @include('tables.components.td-status-stages.stagen', ['n' => 12])
+    @break
+
+    @case('ПцР')
+        @include('tables.components.td-status-stages.stagen', ['n' => 13])
+    @break
+
+    @case('SПцР')
+        @include('tables.components.td-status-stages.stagen', ['n' => 14])
+    @break
+
+    @case('Р')
+        @include('tables.components.td-status-stages.stagen', ['n' => 15])
+    @break
+
+    @case('P-')
+        @include('tables.components.td-status-stages.stagen', ['n' => 16])
+    @break
+
+    @case('Зя')
+        @include('tables.components.td-status-stages.stagen', ['n' => 17])
     @break
 
     @case('ID')
