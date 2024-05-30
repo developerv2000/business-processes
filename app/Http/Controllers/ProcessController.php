@@ -137,7 +137,6 @@ class ProcessController extends Controller
         Helper::addExportParamsToRequest();
         $params = self::getRequestParams();
         $items = Process::getItemsFinalized($params, null, 'query');
-        $items->load('statusUpdates');
 
         return Process::exportItems($items);
     }

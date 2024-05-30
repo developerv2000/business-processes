@@ -764,6 +764,8 @@ class Process extends Model
 
         // fill excel cells
         $items->chunk(800, function ($items) use (&$worksheet, &$row, $originalStatuses) {
+            $items->load('statusUpdates');
+
             foreach ($items as $item) {
                 $item->loadStatusStagePeriods($originalStatuses);
 
