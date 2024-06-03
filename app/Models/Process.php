@@ -36,10 +36,7 @@ class Process extends Model
     protected static function booted(): void
     {
         static::creating(function ($item) {
-            // disabled because old data is being added
-            // uncomment after all old data add finished
-            // $item->status_update_date = now();
-            $item->status_update_date = $item->date;  // remove after old data add finished
+            $item->status_update_date = now();
             $item->synchronizeGenericColumnsUpdate();
         });
 
@@ -52,10 +49,7 @@ class Process extends Model
         });
 
         static::updating(function ($item) {
-            // disabled because old data is being added
-            // uncomment after all old data add finished
-            // $item->validateStatusUpdateDate();
-            $item->status_update_date = $item->date;  // remove after old data add finished
+            $item->validateStatusUpdateDate();
             $item->synchronizeGenericColumnsUpdate();
             $item->validateIncreasedPriceOnUpdating();
 
@@ -502,7 +496,7 @@ class Process extends Model
     public function validateStatusUpdateDate()
     {
         if ($this->isDirty('status_id')) {
-            $this->status_update_date = date('Y-m-d');
+            $this->status_update_date = now();
         }
     }
 
